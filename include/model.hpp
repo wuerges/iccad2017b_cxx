@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 namespace model 
 {
 
@@ -12,12 +14,13 @@ struct P2D {
 };
 
 struct Input {
-  int viaCost, spacing, layers, shapes, vias, obst;
+
+  int viaCost, spacing, layers, n_shapes, n_vias, n_obst;
   R2D boundary;
 
-  vector<vector<R2D>> shapes;
-  vector<vector<P2D>> vias;
-  vector<vector<R2D>> obstacles;
+  std::vector<std::vector<R2D>> shapes;
+  std::vector<std::vector<P2D>> vias;
+  std::vector<std::vector<R2D>> obstacles;
 };
 
 }
