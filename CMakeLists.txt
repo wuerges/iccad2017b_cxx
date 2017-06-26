@@ -3,7 +3,7 @@ set (CMAKE_CXX_STANDARD 14)
 
 project (ICCAD_2016_B)
 include_directories(include)
-add_subdirectory("ext-lib/rapidcheck")
+add_subdirectory("rapidcheck")
 add_subdirectory("lib")
 add_subdirectory("test")
 add_subdirectory("app")
