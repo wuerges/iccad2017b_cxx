@@ -24,40 +24,62 @@ namespace parser
     {
       using x3::lit;
       using x3::char_;
+      using x3::uint_;
       using x3::_attr;
       using x3::string;
       using x3::phrase_parse;
       using ascii::space;
+      int layers, n_shapes, n_vias, n_obst;
 
-      auto module_lit    = lit("module");
-      auto endmodule_lit = lit("endmodule");
-      auto input_lit     = lit("input");
-      auto output_lit    = lit("output");
-      auto wire_lit      = lit("wire");
+      auto viacost_lit = lit("ViaCost");
+      auto spacing_lit = lit("Spacing");
+      auto boundary_lit = lit("Boundary");
+      auto metal_n_lit = lit("#MetalLayers");
+      auto rs_n_lit = lit("#RoutedShapes");
+      auto rv_n_lit = lit("#RoutedVias");
+      auto obs_n_lit = lit("#Obstacles");
+      auto rs_lit = lit("RoutedShape");
+      auto rv_lit = lit("RoutedVia");
+      auto obs_lit = lit("Obstacle");
 
-      typedef std::vector<std::string> string_vector; 
+      R2D temp_rect;
+      P2D temp_pt;
 
-	  // auto print_debug = [&](auto &c){ std::cout << "DEBUG: " << _attr(c) << std::endl; };
-      
-      auto identifier 
-        = x3::rule<class identifier, std::string>{}
-        = (char_("a-zA-Z_") > *char_("a-zA-Z0-9_")) | string("1'b0") | string("1'b1");
-      auto identifier_list = identifier % ',';
+      auto set_vc = [&](auto & c){ i.viaCost = _attr(c); };
+      auto viacost_decl = viacost_lit >> '=' >> uint_[set_vc] >> x3::eol;
 
-      auto add_inputs = [&](auto &c){ v.add_inputs(_attr(c)); };
-      auto input_decl
-        = input_lit > identifier_list[add_inputs] > ';';
+      auto set_sp = [&](auto & c){ i.spacing = _attr(c); };
+      auto spacing_decl = spacing_lit >> '=' >> uint_[set_vc] >> x3::eol;
 
-      auto add_outputs = [&](auto &c){ v.add_outputs(_attr(c)); };
-      auto output_decl 
-        = output_lit > identifier_list[add_outputs] > ';';
+      auto pt_decl
+        = x3::rule<class pt_decl, P2D>{}
+        = 
 
-      auto add_wires = [&](auto &c){ v.add_wires(_attr(c)); };
-      auto wire_decl 
-        = wire_lit > identifier_list[add_wires] > ';';
+          /*
+      auto set_bd = [&](auto & c){ i.viaCost = _attr(c); };
+      auto boundary_decl = 
+        boundary_lit >> 
+        '=' 
+        >> char_('(')
+        >> char_(')')
+        >> char_('(')
+        >> char_(')')
+        >> uint_[set_vc] >> x3::eol;
 
-      std::string op;
-      
+      auto set_m_n = [&](auto & c){ i.viaCost = _attr(c); };
+      auto viacost_decl = viacost_lit >> '=' >> uint_[set_vc] >> x3::eol;
+
+      auto set_rs_n = [&](auto & c){ i.viaCost = _attr(c); };
+      auto viacost_decl = viacost_lit >> '=' >> uint_[set_vc] >> x3::eol;
+
+      auto set_rv_n = [&](auto & c){ i.viaCost = _attr(c); };
+      auto viacost_decl = viacost_lit >> '=' >> uint_[set_vc] >> x3::eol;
+
+      auto set_obs_n = [&](auto & c){ i.viaCost = _attr(c); };
+      auto viacost_decl = viacost_lit >> '=' >> uint_[set_vc] >> x3::eol;
+
+      */
+      /*
       auto set_function_op = [&](auto &c){ op = _attr(c); };
       auto function_name 
         = x3::rule<class function_name, std::string>{}
@@ -93,14 +115,12 @@ namespace parser
           >> module_body 
           >> endmodule_lit;
 	
-	  auto cpp_style_comment = "//" > *(~char_('\n')) > char_('\n');
-	  auto rest_of_cpp_comment = *(~char_('\n')) > char_('\n');
-	  auto rest_of_c_comment = *(char_ - "*/") > "*/";
 	  
-	  auto comment = +space | (char_('/') >> ((char_('/') >> rest_of_cpp_comment) | (char_('*') > rest_of_c_comment)));
-
       phrase_parse(first, last,
           module >> x3::eoi, comment);
+    */
+      phrase_parse(first, last,
+          viacost_decl >> x3::eoi, space);
 
       if (first != last) {
         std::cout << "ERROR: PARSE FAILED" << std::endl;
@@ -110,12 +130,12 @@ namespace parser
       return 0;
     }
 
-    int parse_verilog_file(verilog::ast::Verilog &v, char* filename) {
+    int parse_file(model::Input &i, char* filename) {
       std::ifstream input(filename);
       input.unsetf(std::ios::skipws);
       boost::spirit::istream_iterator begin(input);
       boost::spirit::istream_iterator end;
-      return parse_verilog(v, begin, end);
+      return parse_it(i, begin, end);
     }
 
 
