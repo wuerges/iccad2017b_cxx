@@ -6,17 +6,20 @@
 namespace model 
 {
 
-typedef std::pair<unsigned int, unsigned int> P2D;
-typedef std::pair<P2D, P2D> R2D;
+/**
+ * Represents either a point, with size 2
+ * or a rectangle with size 4.
+ */
+typedef std::vector<unsigned int> V1D;
 
 struct Input {
 
   int viaCost, spacing, layers, n_shapes, n_vias, n_obst;
-  R2D boundary;
+  V1D boundary;
 
-  std::vector<std::vector<R2D>> shapes;
-  std::vector<std::vector<P2D>> vias;
-  std::vector<std::vector<R2D>> obstacles;
+  std::vector<std::vector<V1D>> shapes;
+  std::vector<std::vector<V1D>> vias;
+  std::vector<std::vector<V1D>> obstacles;
 };
 
 }
