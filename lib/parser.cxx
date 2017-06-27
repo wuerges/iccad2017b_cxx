@@ -52,16 +52,18 @@ namespace parser
       auto spacing_decl = spacing_lit >> '=' >> uint_[set_vc] >> x3::eol;
 
       auto pt_decl
-        = x3::rule<class pt_decl, P2D>{}
-        = 
+        = x3::rule<class pt_decl, P2D >{}
+	= char_('(') >> uint_ >> char(',') >> uint_ >> char_(')');
+     
+
+      auto rect_decl
+	      =
 
           /*
       auto set_bd = [&](auto & c){ i.viaCost = _attr(c); };
       auto boundary_decl = 
         boundary_lit >> 
         '=' 
-        >> char_('(')
-        >> char_(')')
         >> char_('(')
         >> char_(')')
         >> uint_[set_vc] >> x3::eol;

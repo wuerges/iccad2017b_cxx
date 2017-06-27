@@ -1,17 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 
 namespace model 
 {
 
-struct R2D {
-  int x1, x2, y1, y2;
-};
-
-struct P2D {
-  int x, y;
-};
+typedef std::pair<unsigned int, unsigned int> P2D;
+typedef std::pair<P2D, P2D> R2D;
 
 struct Input {
 
