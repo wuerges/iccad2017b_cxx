@@ -20,5 +20,9 @@ int main(int n, char**argv) {
   std::cout << i.shapes.size() << '\n';
   std::cout << i.vias.size() << '\n';
   std::cout << i.obstacles.size() << '\n';
+
+  model::Grid g;
+
+  convert(i, g);
   return 0;
 }
