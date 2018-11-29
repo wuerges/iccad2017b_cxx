@@ -43,7 +43,6 @@ void Grid::add_obstacle(unsigned int layer, const V1D & v) {
 }
 
 void model::convert(const Input & inp, Grid & g) {
-	// std::vector<unsigned int> xs, ys, zs;
 	for(int i = 0; i < inp.shapes.size(); ++i) {
 		for(auto & shape : inp.shapes[i]) {
 			g.add_shape(i*inp.viaCost, shape);

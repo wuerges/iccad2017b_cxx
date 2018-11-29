@@ -25,7 +25,10 @@ int main(int n, char**argv) {
   std::cout << i.obstacles.size() << '\n';
 
   model::Grid g;
-
   convert(i, g);
+  std::cout << "Generating all combination of points\n";
+
+  g.complete_grid();
+
   return 0;
 }

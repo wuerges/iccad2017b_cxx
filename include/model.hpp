@@ -30,6 +30,7 @@ bool operator<(const P3D & p1, const P3D & p2);
 
 struct Grid {
   std::set<P3D> grid;
+  std::set<P3D> complete;
 
 	void add_shape(unsigned int layer, const V1D & v);
 	void add_via(unsigned int l1, unsigned int l2, const V1D & v);
