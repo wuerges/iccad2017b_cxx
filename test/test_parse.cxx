@@ -7,9 +7,12 @@ int main(int n, char**argv) {
   std::cout << "Parsing file " << argv[1] << '\n';
 
   model::Input i;
-  if(model::parser::parse_file(i, argv[1]) < 0) {
-	  std::cerr << "ERROR: PARSE FAILED\n";
-  }
+  // try {
+    model::parser::parse_file(i, argv[1]);
+  // }
+  // catch (...) {
+  //   std::cerr << "ERROR: PARSE FAILED\n";
+  // }
 
   std::cout << "Via Cost: " << i.viaCost << '\n';
   std::cout << "sp: " << i.spacing << '\n';
