@@ -26,9 +26,5 @@ int main(int n, char**argv) {
 
   model::Grid g;
   convert(i, g);
-  std::cout << "Generating all combination of points\n";
-
-  g.complete_grid();
-
   return 0;
 }
