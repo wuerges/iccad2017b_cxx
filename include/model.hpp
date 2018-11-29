@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <map>
+#include <set>
 #include <utility>
 
 namespace model
@@ -23,14 +23,19 @@ struct Input {
   std::vector<std::vector<V1D>> obstacles;
 };
 
-typedef std::tuple<unsigned int, unsigned int, unsigned int> P3D;
+struct P3D {
+  unsigned x,y,z;
+};
+bool operator<(const P3D & p1, const P3D & p2);
 
 struct Grid {
-	std::map<P3D, std::vector<P3D>> graph;
+  std::set<P3D> grid;
+
 	void add_shape(unsigned int layer, const V1D & v);
 	void add_via(unsigned int l1, unsigned int l2, const V1D & v);
 	void add_obstacle(unsigned int layer, const V1D & v);
 
+private:
 	void add_edge(const P3D p1, const P3D p2);
 };
 
