@@ -4,14 +4,14 @@
 #include <map>
 #include <utility>
 
-namespace model 
+namespace model
 {
 
 /**
  * Represents either a point, with size 2
  * or a rectangle with size 4.
  */
-typedef std::vector<unsigned int> V1D;
+using V1D = std::vector<unsigned int>;
 
 struct Input {
 
