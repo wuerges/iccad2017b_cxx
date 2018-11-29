@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="7000" height="3000">
+<marker xmlns="http://www.w3.org/2000/svg" id="lineEnd" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+<rect x="0" y="0" width="10" height="10" fill="red" />
+</marker>
+<rect x="0" y="0" width="7000" height="3000" style="fill:white;stroke:black;stroke-width:1;fill-opacity:0;stroke-opacity:0.6" />
+<rect x="3625" y="2011" width="73" height="49" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3813" y="2509" width="120" height="69" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="80" y="2032" width="150" height="37" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1347" y="2986" width="197" height="5" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4645" y="788" width="168" height="73" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5621" y="1640" width="13" height="10" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2552" y="405" width="81" height="39" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2552" y="150" width="24" height="56" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4086" y="2488" width="10" height="27" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6483" y="1844" width="115" height="46" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6262" y="1657" width="58" height="15" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5514" y="1844" width="42" height="12" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="876" y="313" width="54" height="35" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4360" y="1029" width="83" height="13" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="866" y="9" width="76" height="41" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5337" y="569" width="50" height="24" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4033" y="1812" width="169" height="33" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5730" y="1650" width="113" height="206" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="8" y="1925" width="92" height="133" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3343" y="2760" width="144" height="66" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1896" y="1581" width="21" height="43" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6007" y="2311" width="34" height="17" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="187" y="533" width="299" height="163" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6523" y="1253" width="344" height="172" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="672" y="2224" width="106" height="69" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6156" y="2344" width="320" height="130" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="707" y="1351" width="364" height="75" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6105" y="1235" width="236" height="115" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1894" y="25" width="316" height="11" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6358" y="2667" width="108" height="64" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1219" y="70" width="267" height="135" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4622" y="2496" width="202" height="123" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6762" y="2255" width="238" height="90" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1401" y="27" width="362" height="27" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6172" y="2486" width="259" height="97" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="689" y="1181" width="251" height="66" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="769" y="1350" width="12" height="82" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<circle cx="648" cy="1045" r="10" style="fill:blue;stroke:blue;stroke-width:3;fill-opacity:0.1;stroke-opacity:0.8" />
+<circle cx="447" cy="1589" r="10" style="fill:blue;stroke:blue;stroke-width:3;fill-opacity:0.1;stroke-opacity:0.8" />
+<circle cx="4861" cy="579" r="10" style="fill:blue;stroke:blue;stroke-width:3;fill-opacity:0.1;stroke-opacity:0.8" />
+<circle cx="110" cy="2909" r="10" style="fill:orange;stroke:orange;stroke-width:3;fill-opacity:0.1;stroke-opacity:0.8" />
+<line x1="10" y1="2980" x2="50" y2="2980" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="10" y1="2980" x2="10" y2="2970" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="10" y1="2970" x2="50" y2="2970" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="10" y1="2970" x2="10" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="10" y1="2930" x2="50" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="50" y1="2980" x2="50" y2="2970" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="50" y1="2970" x2="50" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="50" y1="2930" x2="69" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="81" y1="2920" x2="100" y2="2920" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="81" y1="2930" x2="100" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="81" y1="2909" x2="100" y2="2909" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="69" y1="2920" x2="81" y2="2920" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="69" y1="2930" x2="81" y2="2930" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="69" y1="2909" x2="81" y2="2909" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="69" y1="2920" x2="69" y2="2909" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="100" y1="2930" x2="100" y2="2920" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+<line x1="100" y1="2909" x2="110" y2="2909" marker-end="url(#lineEnd)" marker-start="url(#lineEnd)" style="stroke:red;stroke-width:3;stroke-opacity:0.8" />
+</svg>

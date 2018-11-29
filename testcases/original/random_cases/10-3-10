@@ -1,0 +1,30 @@
+ViaCost = 10
+Spacing = 8
+Boundary = (0,0) (7000,3000)
+#MetalLayers = 3
+#RoutedShapes = 10
+#RoutedVias = 3
+#Obstacles = 10
+RoutedShape M2 (694,482) (700,517)
+RoutedShape M3 (743,1704) (790,1746)
+RoutedShape M3 (876,2731) (927,2751)
+RoutedShape M3 (4768,2513) (4774,2538)
+RoutedShape M1 (3288,1903) (3292,1907)
+RoutedShape M1 (4522,2640) (4618,2689)
+RoutedShape M3 (3155,1724) (3200,1740)
+RoutedShape M1 (8,523) (109,660)
+RoutedShape M2 (5501,1497) (5638,1530)
+RoutedShape M3 (2484,977) (2594,987)
+RoutedVia V1 (447,1411)
+RoutedVia V1 (4861,2421)
+RoutedVia V1 (648,1955)
+Obstacle M3 (6985,0) (7000,168)
+Obstacle M1 (5134,4) (5233,134)
+Obstacle M3 (5760,2813) (6035,2934)
+Obstacle M3 (5195,49) (5308,89)
+Obstacle M2 (5165,0) (5430,57)
+Obstacle M2 (2473,1529) (2733,1632)
+Obstacle M3 (1660,2152) (1917,2213)
+Obstacle M3 (943,2446) (1187,2505)
+Obstacle M1 (769,1568) (781,1650)
+Obstacle M1 (5157,1196) (5412,1295)

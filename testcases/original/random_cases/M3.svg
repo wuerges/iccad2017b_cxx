@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="7000" height="3000">
+<marker xmlns="http://www.w3.org/2000/svg" id="lineEnd" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+<rect x="0" y="0" width="10" height="10" fill="red" />
+</marker>
+<rect x="0" y="0" width="7000" height="3000" style="fill:white;stroke:black;stroke-width:1;fill-opacity:0;stroke-opacity:0.6" />
+<rect x="5750" y="2864" width="111" height="38" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2531" y="38" width="69" height="64" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="849" y="1813" width="93" height="215" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3714" y="2107" width="17" height="18" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4548" y="2132" width="43" height="11" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5447" y="1937" width="78" height="55" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3740" y="2721" width="128" height="45" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4592" y="2411" width="133" height="47" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2542" y="2686" width="103" height="38" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6647" y="2696" width="126" height="32" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1287" y="1584" width="48" height="39" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2417" y="123" width="48" height="13" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3628" y="41" width="33" height="24" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2614" y="1023" width="26" height="206" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1164" y="1209" width="76" height="60" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3661" y="1933" width="94" height="45" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4639" y="1057" width="46" height="52" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5619" y="2020" width="91" height="54" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1201" y="1269" width="42" height="9" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2447" y="948" width="35" height="141" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1632" y="1974" width="53" height="56" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="538" y="149" width="66" height="167" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1329" y="1600" width="72" height="157" style="fill:blue;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="1896" y="1755" width="277" height="97" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5321" y="1361" width="180" height="90" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6414" y="2556" width="148" height="64" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5283" y="1175" width="309" height="20" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4998" y="22" width="321" height="161" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5084" y="1767" width="164" height="169" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="6798" y="184" width="202" height="177" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5282" y="2947" width="271" height="49" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="4067" y="1842" width="151" height="159" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="3306" y="666" width="491" height="116" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2287" y="707" width="149" height="17" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5012" y="994" width="125" height="85" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="5287" y="2708" width="206" height="167" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+<rect x="2625" y="0" width="305" height="98" style="fill:gray;stroke:black;stroke-width:1;fill-opacity:0.2;stroke-opacity:0.6" />
+</svg>
