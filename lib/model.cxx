@@ -49,9 +49,9 @@ void model::convert(const Input & inp, Grid & g) {
 		}
 	}
 
-	for(int i = 0; i < inp.obstacles.size(); ++i) {
-		for(auto & obs : inp.obstacles[i]) {
-			g.add_obstacle(i*inp.viaCost, obs);
-		}
-	}
+	// for(int i = 0; i < inp.obstacles.size(); ++i) {
+	// 	for(auto & obs : inp.obstacles[i]) {
+	// 		g.add_obstacle(i*inp.viaCost, obs);
+	// 	}
+	// }
 }
