@@ -38,6 +38,9 @@ struct Grid {
   // keypoints is a set with all the points that must be connected
   std::set<P3D> keypoints;
 
+  // keypoints is a set with all the hannan points
+  std::set<P3D> hannan;
+
 	void add_shape(unsigned int layer, const V1D & v);
 	void add_via(unsigned int l1, unsigned int l2, const V1D & v);
 	void add_obstacle(unsigned int layer, const V1D & v);
@@ -53,7 +56,7 @@ struct Shapes {
 
   // This should build a tree-like structure to query the shapes to be routed,
   // or obstacles to be avoided
-  
+
 
   void add_shape(unsigned int layer, const V1D & v);
   void add_via(unsigned int l1, unsigned int l2, const V1D & v);
@@ -61,5 +64,6 @@ struct Shapes {
 };
 
 void convert(const Input & i, Grid & g);
+void generate_hannan(Grid & g);
 
 }

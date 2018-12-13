@@ -26,5 +26,6 @@ int main(int n, char**argv) {
 
   model::Grid g;
   convert(i, g);
+  generate_hannan(g);
   return 0;
 }
