@@ -11,7 +11,7 @@ namespace iccad
  * Represents either a point, with size 2
  * or a rectangle with size 4.
  */
-using V1D = std::vector<unsigned int>;
+using V1D = std::vector<int>;
 
 struct Input {
 
@@ -24,7 +24,7 @@ struct Input {
 };
 
 struct P3D {
-  unsigned x,y,z;
+  int x,y,z;
 };
 bool operator<(const P3D & p1, const P3D & p2);
 
@@ -41,9 +41,9 @@ struct Grid {
   // keypoints is a set with all the hannan points
   std::set<P3D> hannan;
 
-	void add_shape(unsigned int layer, const V1D & v);
-	void add_via(unsigned int l1, unsigned int l2, const V1D & v);
-	void add_obstacle(unsigned int layer, const V1D & v);
+	void add_shape(int layer, const V1D & v);
+	void add_via(int l1, int l2, const V1D & v);
+	void add_obstacle(int layer, const V1D & v);
 
 private:
 	void add_edge(const P3D p1, const P3D p2);
@@ -58,9 +58,9 @@ struct Shapes {
   // or obstacles to be avoided
 
 
-  void add_shape(unsigned int layer, const V1D & v);
-  void add_via(unsigned int l1, unsigned int l2, const V1D & v);
-  void add_obstacle(unsigned int layer, const V1D & v);
+  void add_shape(int layer, const V1D & v);
+  void add_via(int l1, int l2, const V1D & v);
+  void add_obstacle(int layer, const V1D & v);
 };
 
 

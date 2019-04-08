@@ -41,11 +41,11 @@ namespace parser
       auto spacing_decl = lit("Spacing") >> '=' >> uint_[set_sp];
 
       auto pt_decl
-        = x3::rule<struct _, std::vector<unsigned int> >{}
+        = x3::rule<struct _, std::vector<int> >{}
 	= '(' > uint_ > ',' > uint_ > ')';
      
       auto rect_decl
-        = x3::rule<struct _, std::vector<unsigned int> >{}
+        = x3::rule<struct _, std::vector<int> >{}
         = pt_decl >> pt_decl;
 
 

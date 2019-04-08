@@ -20,7 +20,7 @@ void Grid::add_edge(const P3D p1, const P3D p2) {
 	grid.insert(p2);
 }
 
-void Grid::add_shape(unsigned int layer, const V1D & v) {
+void Grid::add_shape(int layer, const V1D & v) {
 	/*
 	 *    v[0],v[1] ----- v[2],v[1]
 	 *     |                  |
@@ -33,11 +33,11 @@ void Grid::add_shape(unsigned int layer, const V1D & v) {
 	add_edge(P3D{v[0], v[3], layer}, P3D{v[2], v[4], layer});
 }
 
-void Grid::add_via(unsigned int layer_1, unsigned int layer_2, const V1D & v) {
+void Grid::add_via(int layer_1, int layer_2, const V1D & v) {
 	add_edge(P3D{v[0], v[1], layer_1}, P3D{v[0], v[1], layer_2});
 }
 
-void Grid::add_obstacle(unsigned int layer, const V1D & v) {
+void Grid::add_obstacle(int layer, const V1D & v) {
 	assert(false && "unimplemented");
 	// TODO
 }
