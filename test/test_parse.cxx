@@ -1,14 +1,42 @@
 #include <model.hpp>
 #include <parser.hpp>
 #include <iostream>
+#include <algo.hpp>
+#include <vector>
+
+using namespace std;
+using namespace iccad;
+
+int test_treap()
+{
+    vector<pair<int, int>> inputs = {{1, 2}, {5, 7}, {2, 8}, {3, 4}};
+
+    unique_ptr<Node> root(new Node({0, 0, 0, 0, 1}));
+
+    for(auto [a, b] :inputs) {
+        root->add(Shape{PT{a, b, 0}, PT{a+1, b+1, 0}});
+    }
+
+    cout << root->count << '\n';
+    root->print();
+
+    for(int a = 0; a < 10; ++a) {
+        for(int b = a; b < 10; ++b) {
+            int q = root->query({a, b, 0});
+            cout << "query "<<a<<","<<b<<" = " << q << "\n\n";
+        }
+    }
+    return 0;
+}
+
 
 int main(int n, char**argv) {
 
   std::cout << "Parsing file " << argv[1] << '\n';
 
-  model::Input i;
+  Input i;
   // try {
-    model::parser::parse_file(i, argv[1]);
+    parser::parse_file(i, argv[1]);
   // }
   // catch (...) {
   //   std::cerr << "ERROR: PARSE FAILED\n";
@@ -24,8 +52,14 @@ int main(int n, char**argv) {
   std::cout << i.vias.size() << '\n';
   std::cout << i.obstacles.size() << '\n';
 
-  model::Grid g;
+  Grid g;
   convert(i, g);
   generate_hannan(g);
+
+
+  test_treap();
+
+
+
   return 0;
 }

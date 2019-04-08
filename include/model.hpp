@@ -4,7 +4,7 @@
 #include <set>
 #include <utility>
 
-namespace model
+namespace iccad
 {
 
 /**
@@ -62,6 +62,7 @@ struct Shapes {
   void add_via(unsigned int l1, unsigned int l2, const V1D & v);
   void add_obstacle(unsigned int layer, const V1D & v);
 };
+
 
 void convert(const Input & i, Grid & g);
 void generate_hannan(Grid & g);

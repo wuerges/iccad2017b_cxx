@@ -2,14 +2,14 @@
 
 #include <model.hpp>
 
-namespace model
+namespace iccad
 {
 
 namespace parser
 {
     template <typename Iterator>
-    int parse_it(model::Input & m, Iterator first, Iterator last);
-    int parse_file(model::Input &m, char* filename);
+    int parse_it(iccad::Input & m, Iterator first, Iterator last);
+    int parse_file(iccad::Input &m, char* filename);
 }
 
 }

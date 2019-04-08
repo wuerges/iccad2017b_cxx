@@ -7,9 +7,9 @@
 #include <utility>
 #include <cassert>
 
-using namespace model;
+using namespace iccad;
 
-bool model::operator<(const P3D & p1, const P3D & p2) {
+bool iccad::operator<(const P3D & p1, const P3D & p2) {
  if(p1.x != p2.x) return p1.x < p2.x;
  if(p1.y != p2.y) return p1.y < p2.y;
  return p1.z < p2.z;
@@ -42,7 +42,7 @@ void Grid::add_obstacle(unsigned int layer, const V1D & v) {
 	// TODO
 }
 
-void model::convert(const Input & inp, Grid & g) {
+void iccad::convert(const Input & inp, Grid & g) {
 	for(int i = 0; i < inp.shapes.size(); ++i) {
 		for(auto & shape : inp.shapes[i]) {
 			g.add_shape(i*inp.viaCost, shape);

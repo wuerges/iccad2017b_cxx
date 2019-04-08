@@ -13,7 +13,7 @@
 #include <vector>
 #include <fstream>
 
-namespace model {
+namespace iccad {
 
 namespace parser
 {
@@ -21,7 +21,7 @@ namespace parser
     namespace ascii = boost::spirit::x3::ascii;
 
     template <typename Iterator>
-    int parse_it(model::Input & i, 
+    int parse_it(iccad::Input & i, 
         Iterator first, Iterator last)
     {
       using x3::lit;
@@ -123,7 +123,7 @@ namespace parser
       return 0;
     }
 
-    int parse_file(model::Input &i, char* filename) {
+    int parse_file(iccad::Input &i, char* filename) {
       std::ifstream input(filename);
       input.unsetf(std::ios::skipws);
       boost::spirit::istream_iterator begin(input);
