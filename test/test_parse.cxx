@@ -22,7 +22,32 @@ int test_treap(const Input & inp)
     }
 
     cout << root->count << '\n';
-    //root->print();
+    root->print();
+    //
+
+
+
+    for (int i = 0; i < inp.shapes.size(); i++) {
+        int layer = i*inp.viaCost;
+        for(auto & v : inp.shapes[i]) {
+            Shape shape{
+                    PT{v[0], v[1], layer}, 
+                    PT{v[2], v[3], layer}};
+
+            int result = 100000;
+            int xsize = inp.boundary[2] - inp.boundary[0];
+            int ysize = inp.boundary[3] - inp.boundary[1];
+            int zsize = inp.n_vias*inp.viaCost;
+            while(result > 1000) {
+                result = root->query(shape[0], shape[1]);
+
+            }
+
+            cout << result << " ";
+        }
+    }
+    cout << "\n";
+
 
     for(int a = 0; a < 10; ++a) {
         for(int b = a; b < 10; ++b) {
