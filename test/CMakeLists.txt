@@ -6,10 +6,13 @@ IF (Boost_FOUND)
 ENDIF()
 
 add_executable(TestParse test_parse.cxx)
-target_link_libraries(TestParse 
-  Model 
+target_link_libraries(TestParse
+  Model
   Parser
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   )
 
+add_executable(TestTreap test_treap.cxx)
+target_link_libraries(TestTreap
+  Model)
