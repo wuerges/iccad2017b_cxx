@@ -6,10 +6,7 @@
 
 namespace iccad {
     using std::unique_ptr, std::make_unique,
-          iccad::min, iccad::max,
           std::cout;
-
-
 
     struct Node {
         const Shape x;

@@ -52,7 +52,7 @@ int test_treap(const vector<Shape> & shapes)
 
     for (const Shape & s : shapes) {
       unsigned count = root->query(s.a, s.b);
-      assert(count > 0);
+      RC_ASSERT(count > 0);
     }
     return 0;
 }
