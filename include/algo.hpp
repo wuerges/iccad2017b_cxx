@@ -9,7 +9,7 @@ namespace iccad {
           std::cout;
 
     struct Node {
-        Node(const Shape & _x):
+        Node(const Shape _x):
           x(_x), low(_x.a), high(_x.b), count(1)
           {}
 

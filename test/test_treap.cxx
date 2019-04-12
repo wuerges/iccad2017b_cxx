@@ -40,7 +40,8 @@ namespace rc {
 
 int test_treap(const vector<Shape> & shapes)
 {
-    unique_ptr<Node> root = make_unique<Node>(shapes[0]);
+    if(shapes.size() == 0) return 0;
+    unique_ptr<Node> root(new Node(shapes[0]));
 
     for (size_t i = 1; i < shapes.size(); i++) {
       root->add(shapes[i]);
