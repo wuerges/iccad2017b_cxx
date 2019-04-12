@@ -10,6 +10,8 @@ namespace iccad {
      * Each position represents the x, y and z coordinates, in this order.
      */
     // using PT = std::array<int, 3>;
+
+    using std::ostream;
     struct PT {
       int x, y, z;
       int operator[](int i) const {
@@ -31,6 +33,7 @@ namespace iccad {
       bool operator>=(const PT & o) const {
         return o <= *this;
       }
+      friend ostream & operator<<(ostream &out, const PT & p);
 
       friend PT min(PT a, PT b) {
           using std::min;
