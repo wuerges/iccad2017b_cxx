@@ -15,4 +15,4 @@ target_link_libraries(TestParse
 
 add_executable(TestTreap test_treap.cxx)
 target_link_libraries(TestTreap
-  Model)
+  Model rapidcheck)

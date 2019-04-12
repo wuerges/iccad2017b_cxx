@@ -1,3 +1,6 @@
 [submodule "rapidcheck"]
 	path = rapidcheck
 	url = https://github.com/emil-e/rapidcheck
+[submodule "ext-libs/rapidcheck"]
+	path = ext-libs/rapidcheck
+	url = https://github.com/emil-e/rapidcheck

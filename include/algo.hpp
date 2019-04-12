@@ -19,16 +19,16 @@ namespace iccad {
         unique_ptr<Node> left, right;
 
         void add(const Shape & shape, int level=0) {
-            int a = x[0][level % 3];
-            int b = x[1][level % 3];
-            int l = shape[0][level % 3];
-            int r = shape[1][level % 3];
+            int a = x.a[level % 3];
+            int b = x.b[level % 3];
+            int l = shape.a[level % 3];
+            int r = shape.b[level % 3];
             if(r < a) {
                 if(left) {
                     left->add(shape, level+1);
                 }
                 else {
-                    left = make_unique<Node>(Node{shape, shape[0], shape[1], 1});
+                    left = make_unique<Node>(Node{shape, shape.a, shape.b, 1});
                 }
             }
             else {
@@ -36,7 +36,7 @@ namespace iccad {
                     right->add(shape, level+1);
                 }
                 else {
-                    right = make_unique<Node>(Node{shape, shape[0], shape[1], 1});
+                    right = make_unique<Node>(Node{shape, shape.a, shape.b, 1});
                 }
             }
             if(left) {
@@ -71,14 +71,14 @@ namespace iccad {
             //if(hits) { printf("(%d ,%d)\n", a, b); }
             bool hits = false;
 
-            return (hits?1:0) 
-                + (left?left->query(l, r, level+1):0) 
+            return (hits?1:0)
+                + (left?left->query(l, r, level+1):0)
                 + (right?right->query(l, r, level+1):0);
         }
 
         void print(int h=0, int level=0) {
-            int a = x[0][level % 3];
-            int b = x[1][level % 3];
+            int a = x.a[level % 3];
+            int b = x.b[level % 3];
 
             if(right) {
                 //for(int i = 0; i < h; ++i) { cout << ' '; }
@@ -88,18 +88,18 @@ namespace iccad {
             for(int i = 0; i < h; ++i) { cout << ' '; }
             printf("%d:{{(%d, %d, %d), (%d , %d, %d)} (%d, %d, %d) (%d, %d, %d) %d}\n",
                     level,
-                    x[0][0], 
-                    x[0][1], 
-                    x[0][2], 
-                    x[1][0], 
-                    x[1][1], 
-                    x[1][2], 
-                    low[0], 
-                    low[1], 
-                    low[2], 
-                    high[0], 
-                    high[1], 
-                    high[2], 
+                    x.a[0],
+                    x.a[1],
+                    x.a[2],
+                    x.b[0],
+                    x.b[1],
+                    x.b[2],
+                    low[0],
+                    low[1],
+                    low[2],
+                    high[0],
+                    high[1],
+                    high[2],
                     count);
             if(left) {
                 //for(int i = 0; i < h; ++i) { cout << ' '; }
