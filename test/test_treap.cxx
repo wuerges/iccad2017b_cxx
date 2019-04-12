@@ -13,18 +13,28 @@ using namespace iccad;
 
 namespace rc {
 
-template<>
-struct Arbitrary<Shape> {
-  static Gen<Shape> arbitrary() {
-    return gen::map(gen::arbitrary<array<PT, 2>>(),
-      [](array<PT, 2> pts) {
-        return Shape{
-          PT{min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), min(pts[0][2], pts[1][2])},
-          PT{max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), max(pts[0][2], pts[1][2])},
-        };
-      });
-  }
-};
+  template<>
+  struct Arbitrary<PT> {
+    static Gen<PT> arbitrary() {
+      return gen::build<PT>(
+        gen::set(&PT::x, gen::inRange(0, 100000)),
+        gen::set(&PT::y, gen::inRange(0, 100000)),
+        gen::set(&PT::z, gen::inRange(0, 7)));
+    }
+  };
+
+  template<>
+  struct Arbitrary<Shape> {
+    static Gen<Shape> arbitrary() {
+      return gen::map(gen::arbitrary<array<PT, 2>>(),
+        [](array<PT, 2> pts) {
+          return Shape{
+            PT{min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), min(pts[0][2], pts[1][2])},
+            PT{max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), max(pts[0][2], pts[1][2])},
+          };
+        });
+    }
+  };
 
 }
 
