@@ -36,7 +36,7 @@ namespace iccad {
      */
 
     struct Shape {
-      Shape(const PT _a, const PT _b): a(a), b(b) {}
+      Shape(const PT _a, const PT _b): a(_a), b(_b) {}
       const PT a, b;
       friend const bool collides(const Shape & a, const Shape & b);
       friend std::ostream & operator<<(std::ostream & out, const Shape & s);

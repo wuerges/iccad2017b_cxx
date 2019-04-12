@@ -11,42 +11,53 @@ using namespace iccad;
 
 int test_treap(const Input & inp)
 {
-    unique_ptr<Node> root = make_unique<Node>(Shape(PT(0, 0, 0), PT(0, 0, 0)));
 
-
-    for (int i = 0; i < inp.shapes.size(); i++) {
-        int layer = i*inp.viaCost;
-        for(auto & v : inp.shapes[i]) {
-                root->add(Shape{
-                        PT{v[0], v[1], layer},
-                        PT{v[2], v[3], layer}});
-            }
-
-    }
-
-    // cout << root->count << '\n';
-    // root->print();
+    vector<Shape> shapes;
 
     for (int i = 0; i < inp.shapes.size(); i++) {
         int layer = i*inp.viaCost;
         for(auto & v : inp.shapes[i]) {
-            Shape shape{
-                    PT{v[0], v[1], layer},
-                    PT{v[2], v[3], layer}};
-
-            int result = 100000;
-            int xsize = inp.boundary[2] - inp.boundary[0];
-            int ysize = inp.boundary[3] - inp.boundary[1];
-            int zsize = inp.n_vias*inp.viaCost;
-            while(result > 1000) {
-                result = root->query(shape.a, shape.b);
-
-            }
-
-            cout << result << " ";
+          shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
+          // cout << "back: " << shapes.back() << '\n';
+          // cout << "a: " << PT(v[0], v[1], layer) << " b: " << PT(v[2], v[3], layer) << "\n";
+          // cout << "shape:" << Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)) << "\n\n";
         }
     }
+
+    unique_ptr<Node> root = make_unique<Node>(shapes[0]);
+    for (size_t i = 1; i < shapes.size(); i++) {
+      root->add(shapes[i]);
+    }
+
+
+    cout << root->count << '\n';
+    // root->print();
+
+    for(auto s : shapes) {
+      int result = 100000;
+      result = root->query(s.a, s.b);
+      cout << result << " ";
+    }
     cout << "\n";
+
+    // for (int i = 0; i < inp.shapes.size(); i++) {
+    //     int layer = i*inp.viaCost;
+    //     for(auto & v : inp.shapes[i]) {
+    //         Shape shape{
+    //                 PT{v[0], v[1], layer},
+    //                 PT{v[2], v[3], layer}};
+    //
+    //         int result = 100000;
+    //         int xsize = inp.boundary[2] - inp.boundary[0];
+    //         int ysize = inp.boundary[3] - inp.boundary[1];
+    //         int zsize = inp.n_vias*inp.viaCost;
+    //         while(result > 1000) {
+    //             result = root->query(shape.a, shape.b);
+    //         }
+    //         cout << result << " ";
+    //     }
+    // }
+    // cout << "\n";
 
     //
     // for(int a = 0; a < 10; ++a) {
@@ -82,7 +93,7 @@ int main(int n, char**argv) {
   std::cout << i.obstacles.size() << '\n';
 
 
-  // shuffle(i.shapes.begin(), i.shapes.end(), std::default_random_engine(0));
+  shuffle(i.shapes.begin(), i.shapes.end(), std::default_random_engine(0));
 
 
   // Grid g;
