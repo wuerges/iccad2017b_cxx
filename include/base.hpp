@@ -14,42 +14,17 @@ namespace iccad {
     using std::ostream;
     struct PT {
       int x, y, z;
-      int operator[](int i) const {
-        if(i==0) return x;
-        if(i==1) return y;
-        if(i==2) return z;
-        assert(0 && "point index out of bounds");
-        return -1;
-      }
-      bool operator<(const PT & o) const {
-        return x < o.x && y < o.y && z < o.z;
-      }
-      bool operator<=(const PT & o) const {
-        return x <= o.x && y <= o.y && z <= o.z;
-      }
-      bool operator>(const PT & o) const {
-        return o < *this;
-      }
-      bool operator>=(const PT & o) const {
-        return o <= *this;
-      }
+      int operator[](int i) const;
+
       friend ostream & operator<<(ostream &out, const PT & p);
 
-      friend PT min(PT a, PT b) {
-          using std::min;
-          return PT{
-              min(a[0], b[0]),
-              min(a[1], b[1]),
-              min(a[2], b[2])};
-      }
+      friend const bool operator<(const PT & a, const PT & b);
+      friend const bool operator<=(const PT & a, const PT & b);
+      friend const bool operator>(const PT & a, const PT & b);
+      friend const bool operator>=(const PT & a, const PT & b);
+      friend const PT min(const PT & a, const PT & b);
+      friend const PT max(const PT & a, const PT & b);
 
-      friend PT max(PT a, PT b) {
-          using std::max;
-          return PT{
-              max(a[0], b[0]),
-              max(a[1], b[1]),
-              max(a[2], b[2])};
-      }
 
     };
     /**
@@ -60,6 +35,7 @@ namespace iccad {
 
     struct Shape {
       PT a, b;
+      friend const bool collides(const Shape & a, const Shape & b);
       friend std::ostream & operator<<(std::ostream & out, const Shape & s);
     };
     // using Shape = std::array<PT, 2>;

@@ -54,19 +54,25 @@ namespace iccad {
             //int l = shape[0][level % 3];
             //int r = shape[1][level % 3];
 
-            //printf("query(%d, %d) -> (%d, %d)\n", l, r, a, b);
+            // for (size_t i = 0; i < level; i++) cout << "  ";
+            // cout << "query("<<l<<","<<r<<") x="<<x<<"\n";
+            // printf("query(%d, %d) -> (%d, %d)\n", l, r, a, b);
 
             if(l <= low && r >= high) {
+                // for (size_t i = 0; i < level; i++) cout << "  ";
+                // cout << "caso1: "<< count << "\n";
                 return count;
             }
             if(l > high || r < low) {
+              // for (size_t i = 0; i < level; i++) cout << "  ";
+              // cout << "caso2\n";
                 return 0;
             }
 
-            // TODO
-            //bool hits = (l <= b && r >= b) || (l <= a && r >= a);
-            //if(hits) { printf("(%d ,%d)\n", a, b); }
-            bool hits = false;
+            bool hits = collides(x, Shape{l, r});
+
+            // for (size_t i = 0; i < level; i++) cout << "  ";
+            // cout << "caso3\n";
 
             return (hits?1:0)
                 + (left?left->query(l, r, level+1):0)

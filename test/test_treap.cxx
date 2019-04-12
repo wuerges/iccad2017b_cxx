@@ -52,8 +52,10 @@ int test_treap(const vector<Shape> & shapes)
 
     for (const Shape & s : shapes) {
       unsigned count = root->query(s.a, s.b);
+      cout << count << " ";
       RC_ASSERT(count > 0);
     }
+    cout << '\n';
     return 0;
 }
 

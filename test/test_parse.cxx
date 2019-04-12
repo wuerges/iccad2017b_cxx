@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algo.hpp>
 #include <vector>
+#include <random>
+#include <algorithm>
 
 using namespace std;
 using namespace iccad;
@@ -10,6 +12,7 @@ using namespace iccad;
 int test_treap(const Input & inp)
 {
     unique_ptr<Node> root(new Node({0, 0, 0, 0, 1}));
+
 
     for (int i = 0; i < inp.shapes.size(); i++) {
         int layer = i*inp.viaCost;
@@ -21,11 +24,8 @@ int test_treap(const Input & inp)
 
     }
 
-    cout << root->count << '\n';
-    root->print();
-    //
-
-
+    // cout << root->count << '\n';
+    // root->print();
 
     for (int i = 0; i < inp.shapes.size(); i++) {
         int layer = i*inp.viaCost;
@@ -48,13 +48,13 @@ int test_treap(const Input & inp)
     }
     cout << "\n";
 
-
-    for(int a = 0; a < 10; ++a) {
-        for(int b = a; b < 10; ++b) {
-            //int q = root->query({a, b, 0});
-            //cout << "query "<<a<<","<<b<<" = " << q << "\n\n";
-        }
-    }
+    //
+    // for(int a = 0; a < 10; ++a) {
+    //     for(int b = a; b < 10; ++b) {
+    //         //int q = root->query({a, b, 0});
+    //         //cout << "query "<<a<<","<<b<<" = " << q << "\n\n";
+    //     }
+    // }
     return 0;
 }
 
@@ -81,9 +81,13 @@ int main(int n, char**argv) {
   std::cout << i.vias.size() << '\n';
   std::cout << i.obstacles.size() << '\n';
 
-  Grid g;
-  convert(i, g);
-  generate_hannan(g);
+
+  shuffle(i.shapes.begin(), i.shapes.end(), std::default_random_engine(0));
+
+
+  // Grid g;
+  // convert(i, g);
+  // generate_hannan(g);
 
 
   test_treap(i);
