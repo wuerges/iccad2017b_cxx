@@ -11,7 +11,7 @@ using namespace iccad;
 
 int test_treap(const Input & inp)
 {
-    unique_ptr<Node> root(new Node({0, 0, 0, 0, 1}));
+    unique_ptr<Node> root = make_unique<Node>(Shape(PT(0, 0, 0), PT(0, 0, 0)));
 
 
     for (int i = 0; i < inp.shapes.size(); i++) {
@@ -82,7 +82,7 @@ int main(int n, char**argv) {
   std::cout << i.obstacles.size() << '\n';
 
 
-  shuffle(i.shapes.begin(), i.shapes.end(), std::default_random_engine(0));
+  // shuffle(i.shapes.begin(), i.shapes.end(), std::default_random_engine(0));
 
 
   // Grid g;

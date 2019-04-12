@@ -13,6 +13,8 @@ namespace iccad {
 
     using std::ostream;
     struct PT {
+      PT(int _x, int _y, int _z): x(_x), y(_y), z(_z) {}
+
       int x, y, z;
       int operator[](int i) const;
 
@@ -34,7 +36,8 @@ namespace iccad {
      */
 
     struct Shape {
-      PT a, b;
+      Shape(const PT _a, const PT _b): a(a), b(b) {}
+      const PT a, b;
       friend const bool collides(const Shape & a, const Shape & b);
       friend std::ostream & operator<<(std::ostream & out, const Shape & s);
     };

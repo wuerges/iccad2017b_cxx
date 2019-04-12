@@ -16,22 +16,22 @@ namespace rc {
   template<>
   struct Arbitrary<PT> {
     static Gen<PT> arbitrary() {
-      return gen::build<PT>(
-        gen::set(&PT::x, gen::inRange(0, 100000)),
-        gen::set(&PT::y, gen::inRange(0, 100000)),
-        gen::set(&PT::z, gen::inRange(0, 7)));
+      return gen::map(gen::arbitrary<array<int, 3>>(),
+        [](array<int, 3> vs) {
+          return PT(vs[0], vs[1], vs[2]);
+        });
     }
   };
 
   template<>
   struct Arbitrary<Shape> {
     static Gen<Shape> arbitrary() {
-      return gen::map(gen::arbitrary<array<PT, 2>>(),
-        [](array<PT, 2> pts) {
-          return Shape{
-            PT{min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), min(pts[0][2], pts[1][2])},
-            PT{max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), max(pts[0][2], pts[1][2])},
-          };
+      return gen::map(gen::arbitrary<array<array<int, 3>, 2>>(),
+        [](array<array<int, 3>, 2> pts) {
+          return Shape(
+            PT(min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), min(pts[0][2], pts[1][2])),
+            PT(max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), max(pts[0][2], pts[1][2]))
+          );
         });
     }
   };
@@ -40,10 +40,10 @@ namespace rc {
 
 int test_treap(const vector<Shape> & shapes)
 {
-    unique_ptr<Node> root(new Node({0, 0, 0, 0, 1}));
+    unique_ptr<Node> root = make_unique<Node>(shapes[0]);
 
-    for (const Shape & s : shapes) {
-      root->add(s);
+    for (size_t i = 1; i < shapes.size(); i++) {
+      root->add(shapes[i]);
     }
 
     cout << root->count << '\n';

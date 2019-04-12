@@ -9,6 +9,11 @@ namespace iccad {
           std::cout;
 
     struct Node {
+        Node(const Shape & _x):
+          x(_x), low(_x.a), high(_x.b), count(1)
+          {}
+
+
         const Shape x;
         PT low, high;
         int count;
@@ -25,7 +30,7 @@ namespace iccad {
                     left->add(shape, level+1);
                 }
                 else {
-                    left = make_unique<Node>(Node{shape, shape.a, shape.b, 1});
+                    left = make_unique<Node>(shape);
                 }
             }
             else {
@@ -33,7 +38,7 @@ namespace iccad {
                     right->add(shape, level+1);
                 }
                 else {
-                    right = make_unique<Node>(Node{shape, shape.a, shape.b, 1});
+                    right = make_unique<Node>(shape);
                 }
             }
             if(left) {

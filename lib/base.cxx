@@ -42,18 +42,18 @@ namespace iccad {
   }
   const PT min(const PT & a, const PT & b) {
       using std::min;
-      return PT{
+      return PT(
           min(a.x, b.x),
           min(a.y, b.y),
-          min(a.z, b.z)};
+          min(a.z, b.z));
   }
 
   const PT max(const PT & a, const PT & b) {
       using std::max;
-      return PT{
+      return PT(
           max(a.x, b.x),
           max(a.y, b.y),
-          max(a.z, b.z)};
+          max(a.z, b.z));
   }
 
   const bool collides(const Shape & s1, const Shape & s2) {
