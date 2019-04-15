@@ -93,7 +93,11 @@ int test_treap_collect(const vector<Shape> & shapes)
 
 int test_treap_collect_neg(const vector<Shape> & shapes)
 {
-    if(shapes.size() == 0) return 0;
+    if(shapes.size() == 0) {
+      RC_DISCARD("discarding empty testcase");
+      return 0;
+    }
+
     unique_ptr<Node> root(new Node(shapes[0]));
 
 
@@ -109,6 +113,9 @@ int test_treap_collect_neg(const vector<Shape> & shapes)
 
       vector<Shape> res;
       root->collect(res, s.a, s.b);
+      if(res.size() == 0) {
+        RC_DISCARD("discarding empty testcase");
+      }
 
       RC_LOG() << "\n\n// Query\n" << s << '\n';
 
