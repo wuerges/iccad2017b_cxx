@@ -3,6 +3,7 @@
 #include <base.hpp>
 #include <memory>
 #include <iostream>
+#include <vector>
 
 namespace iccad {
     struct Node {
@@ -19,6 +20,8 @@ namespace iccad {
 
         void add(const Shape & shape, int level=0);
         int query(const PT l, const PT r, int level = 0);
+        int collect(std::vector<Shape> & results,
+          const PT l, const PT r, int level = 0);
         void print(int h=0, int level=0);
     };
 

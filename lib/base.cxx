@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <array>
 // #include <string>
 // #include <vector>
 // #include <map>
@@ -34,6 +35,21 @@ namespace iccad {
     assert(0 && "point index out of bounds");
     return -1;
   }
+
+  const bool operator<(const Shape & a, const Shape & b) {
+    std::array<int, 6> va = {a.a.x, a.a.y, a.a.z, a.b.x, a.b.y, a.b.z };
+    std::array<int, 6> vb = {b.a.x, b.a.y, b.a.z, b.b.x, b.b.y, b.b.z };
+    return va < vb;
+    // return
+    //   a.a.x < b.a.x ||
+    //   a.a.y < b.a.y ||
+    //   a.a.z < b.a.z ||
+    //   a.b.x < b.b.x ||
+    //   a.b.y < b.b.y ||
+    //   a.b.z < b.b.z;
+  }
+
+
   const bool operator<(const PT & a, const PT & b) {
     return a.x < b.x && a.y < b.y && a.z < b.z;
   }

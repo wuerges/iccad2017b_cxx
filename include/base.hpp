@@ -40,6 +40,8 @@ namespace iccad {
       const PT a, b;
       friend const bool collides(const Shape & a, const Shape & b);
       friend std::ostream & operator<<(std::ostream & out, const Shape & s);
+
+      friend const bool operator<(const Shape & a, const Shape & b);
     };
     // using Shape = std::array<PT, 2>;
 

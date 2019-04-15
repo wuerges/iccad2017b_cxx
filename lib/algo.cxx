@@ -1,5 +1,6 @@
 #include <base.hpp>
 #include <algo.hpp>
+#include <vector>
 
 #include <iostream>
 
@@ -43,38 +44,35 @@ namespace iccad {
 
   int Node::query(const PT l, const PT r, int level) {
 
-      //int a = x[0][level % 3];
-      //int b = x[1][level % 3];
-      //int l = shape[0][level % 3];
-      //int r = shape[1][level % 3];
-
-      // for (size_t i = 0; i < level; i++) cout << "  ";
-      // cout << "query("<<l<<","<<r<<") x="<<x<<"\n";
-      // printf("query(%d, %d) -> (%d, %d)\n", l, r, a, b);
-
       if(l <= low && r >= high) {
-          // for (size_t i = 0; i < level; i++) cout << "  ";
-          // cout << "caso1: "<< count << "\n";
           return count;
       }
       if(l > high || r < low) {
-        // for (size_t i = 0; i < level; i++) cout << "  ";
-        // cout << "caso2\n";
           return 0;
       }
 
       bool hits = collides(x, Shape{l, r});
-      // if (hits) {
-      //   cout << "HIT:" << x << " bounds=" << Shape(l, r) << '\n';
-      // }
-
-      // for (size_t i = 0; i < level; i++) cout << "  ";
-      // cout << "caso3\n";
 
       return (hits?1:0)
           + (left?left->query(l, r, level+1):0)
           + (right?right->query(l, r, level+1):0);
   }
+
+  int Node::collect(std::vector<Shape> & results, const PT l, const PT r, int level) {
+
+      if(l > high || r < low) {
+          return 0;
+      }
+
+      bool hits = collides(x, Shape{l, r});
+      if(hits) results.push_back(x);
+
+      return (hits?1:0)
+          + (left?left->collect(results, l, r, level+1):0)
+          + (right?right->collect(results, l, r, level+1):0);
+  }
+
+
 
   void Node::print(int h, int level) {
       int a = x.a[level % 3];
