@@ -50,6 +50,9 @@ namespace iccad {
       if(l > high || r < low) {
           return 0;
       }
+      if(l[level % 3] > high[level % 3] || r[level % 3] < low[level % 3]) {
+          return 0;
+      }
 
       bool hits = collides(x, Shape{l, r});
 
@@ -61,6 +64,9 @@ namespace iccad {
   int Node::collect(std::vector<Shape> & results, const PT l, const PT r, int level) {
 
       if(l > high || r < low) {
+          return 0;
+      }
+      if(l[level % 3] > high[level % 3] || r[level % 3] < low[level % 3]) {
           return 0;
       }
 

@@ -59,9 +59,7 @@ int main(int n, char**argv) {
 
   Input i;
   // try {
-    parser::parse_file(i, argv[2]);
-
-    int slice = atoi(argv[1]);
+    parser::parse_file(i, argv[1]);
 
   // }
   // catch (...) {
@@ -87,9 +85,10 @@ int main(int n, char**argv) {
   size_t n_shapes = count_shapes(i);
 
 
-  for(int slice = 100; slice < n_shapes; slice+= 500) {
+  for(int slice = 100; slice < n_shapes+500; slice+= 500) {
     auto t1 = std::chrono::high_resolution_clock::now();
     size_t result = test_treap(slice, i);
+   // size_t result = test_treap(n_shapes, i);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = duration_cast<microseconds>( t2 - t1 ).count();
     cout << slice << ", " << duration <<","<< result<<'\n';
