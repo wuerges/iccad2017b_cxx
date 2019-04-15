@@ -75,6 +75,9 @@ namespace iccad {
             }
 
             bool hits = collides(x, Shape{l, r});
+            // if (hits) {
+            //   cout << "HIT:" << x << " bounds=" << Shape(l, r) << '\n';
+            // }
 
             // for (size_t i = 0; i < level; i++) cout << "  ";
             // cout << "caso3\n";

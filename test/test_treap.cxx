@@ -20,7 +20,7 @@ namespace rc {
     static Gen<PT> arbitrary() {
       return gen::map(genPT,
         [](array<int, 3> vs) {
-          return PT(vs[0], vs[1], vs[2]);
+          return PT(vs[0], vs[1], 0);
         });
     }
   };
@@ -32,8 +32,8 @@ namespace rc {
       return gen::map(gen::container<array<array<int, 3>, 2>>(genPT),
         [](array<array<int, 3>, 2> pts) {
           return Shape(
-            PT(min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), min(pts[0][2], pts[1][2])),
-            PT(max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), max(pts[0][2], pts[1][2]))
+            PT(min(pts[0][0], pts[1][0]), min(pts[0][1], pts[1][1]), 0 ), // min(pts[0][2], pts[1][2])),
+            PT(max(pts[0][0], pts[1][0]), max(pts[0][1], pts[1][1]), 0 ) //max(pts[0][2], pts[1][2]))
           );
         });
     }
@@ -50,16 +50,21 @@ int test_treap(const vector<Shape> & shapes)
       root->add(shapes[i]);
     }
 
-    cout << root->count << '\n';
-    root->print();
+    // cout << root->count << '\n';
+    // root->print();
     //
 
     for (const Shape & s : shapes) {
       unsigned count = root->query(s.a, s.b);
-      cout << count << " ";
+      // cout << count << " ";
+      // if(count > 1 && root->count < 10)  {
+      //   cout << "-----------------\n";
+      //   root->print();
+      //   cout << "shape: " <<s<<" count: " << count<< "\n";
+      // }
       RC_ASSERT(count > 0);
     }
-    cout << '\n';
+    // cout << '\n';
     return 0;
 }
 
