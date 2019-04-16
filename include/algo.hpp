@@ -25,4 +25,40 @@ namespace iccad {
         void print(int h=0, int level=0);
     };
 
+    /**
+     * A facade for the Treap, with easier to use functions.
+     */
+    struct Treap {
+      std::unique_ptr<Node> root;
+
+      void populate(const vector<Shape> & shapes) {
+        for(const Shape & s : shapes) {
+          add(s);
+        }
+      }
+
+      void add(const Shape & shape) {
+        if(root) {
+          root->add(shape);
+        }
+        else {
+          root = make_unique<Node>(shape);
+        }
+      }
+
+      int query(const PT l, const PT r) {
+        if(root) {
+          return root->query(l, r);
+        }
+        return 0;
+      }
+
+      vector<Shape> collect(const PT l, const PT r) {
+        vector<Shape> results;
+        if(root) {
+          root->collect(results, l, r);
+        }
+        return results;
+      }
+    };
 }
