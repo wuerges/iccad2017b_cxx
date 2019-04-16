@@ -31,7 +31,7 @@ namespace iccad {
     struct Treap {
       std::unique_ptr<Node> root;
 
-      void populate(const vector<Shape> & shapes) {
+      void populate(const std::vector<Shape> & shapes) {
         for(const Shape & s : shapes) {
           add(s);
         }
@@ -42,7 +42,7 @@ namespace iccad {
           root->add(shape);
         }
         else {
-          root = make_unique<Node>(shape);
+          root = std::make_unique<Node>(shape);
         }
       }
 
@@ -53,8 +53,8 @@ namespace iccad {
         return 0;
       }
 
-      vector<Shape> collect(const PT l, const PT r) {
-        vector<Shape> results;
+      std::vector<Shape> collect(const PT l, const PT r) {
+        std::vector<Shape> results;
         if(root) {
           root->collect(results, l, r);
         }

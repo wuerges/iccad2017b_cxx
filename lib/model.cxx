@@ -61,3 +61,18 @@ void iccad::convert(const Input & inp, Grid & g) {
 		}
 	}
 }
+
+std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
+  std::vector<Shape> shapes;
+
+  for (int i = 0; i < inp.shapes.size(); i++) {
+    int layer = i*inp.viaCost;
+      for(auto & v : inp.shapes[i]) {
+        shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
+      }
+
+      // TODO add vias
+  }
+
+  return shapes;
+}

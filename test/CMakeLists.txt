@@ -13,6 +13,14 @@ target_link_libraries(TestParse
   ${Boost_SYSTEM_LIBRARY}
   )
 
+add_executable(TestMST test_mst.cxx)
+target_link_libraries(TestMST
+  Model
+  Parser
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  )
+
 add_executable(TestTreap test_treap.cxx)
 target_link_libraries(TestTreap
   Model rapidcheck)

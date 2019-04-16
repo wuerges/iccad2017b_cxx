@@ -47,7 +47,7 @@ namespace iccad {
         vector<pair<Shape, Shape>> edges;
 
         for(Shape & u : shapes) {
-          vector<Shape> vs; // = treap.collect(u); TODO need to improve this
+          vector<Shape> vs = treap.neighboors(u, 10);
           for(Shape & v : vs) {
             edges.push_back(u, v);
           }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <utility>
+#include <base.hpp>
 
 namespace iccad
 {
@@ -66,5 +67,7 @@ struct Shapes {
 
 void convert(const Input & i, Grid & g);
 void generate_hannan(Grid & g);
+
+std::vector<Shape> get_routed_shapes(const Input & i);
 
 }
