@@ -54,11 +54,29 @@ namespace iccad {
       }
 
       std::vector<Shape> collect(const PT l, const PT r) {
+
+
         std::vector<Shape> results;
         if(root) {
           root->collect(results, l, r);
         }
         return results;
+      }
+
+      std::vector<Shape> neighboors(const Shape & u, size_t number) {
+        int w = 1;
+        PT l = u.a;
+        PT r = u.b;
+        int q = query(PT(l.x-w, l.y-w, l.z-w), PT(r.x+w, r.y+w, r.z+w));
+        std::cout << " w =" << w << "\n";
+        while(q <= 10 && w < 1e8) {
+          w = w * 2;
+          q = query(PT(l.x-w, l.y-w, l.z-w), PT(r.x+w, r.y+w, r.z+w));
+          std::cout << "Query=" << q << " w=" << w
+            << " pts=" << PT(l.x-w, l.y-w, l.z-w)
+            << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
+        }
+        return collect(PT(l.x-w, l.y-w, l.z-w), PT(l.x+w, l.y+w, l.z+w));
       }
     };
 }

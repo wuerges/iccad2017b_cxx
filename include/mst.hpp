@@ -5,10 +5,18 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <map>
+
+
+
 
 namespace iccad {
-
-  void sort_by_distance(vector<pair<Shape, Shape>> & edges) {}
+  using std::vector, std::pair, std::map;
+  void sort_by_distance(vector<pair<Shape, Shape>> & edges) {
+    sort(edges.begin(), edges.end(), [&](auto & p1, auto & p2) {
+      return distance(p1.first, p1.second) < distance(p2.first, p2.second);
+    });
+  }
 
     struct MST {
 
@@ -38,18 +46,18 @@ namespace iccad {
         }
       }
 
-      vector<Shape> shapes;
-      vector<pair<Shape, Shape>> result;
-      Treap  treap;
 
-      void run() {
+      vector<pair<Shape, Shape>> run(const vector<Shape> & shapes) {
+        vector<pair<Shape, Shape>> result;
 
         vector<pair<Shape, Shape>> edges;
+        Treap  treap;
+        treap.populate(shapes);
 
-        for(Shape & u : shapes) {
+        for(const Shape & u : shapes) {
           vector<Shape> vs = treap.neighboors(u, 10);
           for(Shape & v : vs) {
-            edges.push_back(u, v);
+            edges.push_back({u, v});
           }
         }
         sort_by_distance(edges);
@@ -60,6 +68,7 @@ namespace iccad {
             result.push_back({u, v});
           }
         }
+        return result;
       }
     };
 

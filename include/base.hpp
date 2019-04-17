@@ -14,6 +14,7 @@ namespace iccad {
     using std::ostream;
     struct PT {
       PT(int _x, int _y, int _z): x(_x), y(_y), z(_z) {}
+      PT() {}
 
       int x, y, z;
       int operator[](int i) const;
@@ -27,6 +28,11 @@ namespace iccad {
       friend const PT min(const PT & a, const PT & b);
       friend const PT max(const PT & a, const PT & b);
 
+      // void operator=(const PT & p) {
+      //   x = p.x;
+      //   y = p.y;
+      //   z = p.z;
+      // }
 
     };
     /**
@@ -37,11 +43,22 @@ namespace iccad {
 
     struct Shape {
       Shape(const PT _a, const PT _b): a(_a), b(_b) {}
-      const PT a, b;
+      Shape() {}
+      PT a, b;
       friend const bool collides(const Shape & a, const Shape & b);
       friend std::ostream & operator<<(std::ostream & out, const Shape & s);
 
       friend const bool operator<(const Shape & a, const Shape & b);
+      friend const bool operator!=(const Shape & a, const Shape & b);
+      friend const bool operator==(const Shape & a, const Shape & b);
+
+      friend const int distance(const Shape & a, const Shape & b);
+
+      // void operator=(const Shape & s) {
+      //   a = s.a;
+      //   b = s.b;
+      // }
+
     };
     // using Shape = std::array<PT, 2>;
 

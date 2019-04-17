@@ -49,6 +49,24 @@ namespace iccad {
     //   a.b.z < b.b.z;
   }
 
+  const bool operator==(const Shape & a, const Shape & b) {
+    std::array<int, 6> va = {a.a.x, a.a.y, a.a.z, a.b.x, a.b.y, a.b.z };
+    std::array<int, 6> vb = {b.a.x, b.a.y, b.a.z, b.b.x, b.b.y, b.b.z };
+    return va == vb;
+  }
+  const bool operator!=(const Shape & a, const Shape & b) {
+    return ! (a == b);
+  }
+
+  int dist(int a, int b, int aw, int bw) {
+    return std::max(abs(a - b) - (aw + bw), 0);
+  }
+
+  const int distance(const Shape & s1, const Shape & s2) {
+    return dist(s1.a.x, s2.a.x, s1.b.x - s1.a.x, s2.b.x - s2.a.x)
+          + dist(s1.a.y, s2.a.y, s1.b.y - s1.a.y, s2.b.y - s2.a.y);
+  }
+
 
   const bool operator<(const PT & a, const PT & b) {
     return a.x < b.x && a.y < b.y && a.z < b.z;

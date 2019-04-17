@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include <mst.hpp>
 
 using namespace std;
 using namespace std::chrono;
@@ -19,6 +20,23 @@ int main(int argc, char ** argv) {
   vector<Shape> shapes = get_routed_shapes(i);
 
   cout << shapes.size() << '\n';
+
+
+  MST mst;
+
+  auto res = mst.run(shapes);
+
+  int total = 0;
+
+  for(auto & [a, b] : res) {
+    total += distance(a, b);
+  }
+
+  cout << "total distance in tree: " << total << '\n';
+
+
+
+
 
   return 0;
 }
