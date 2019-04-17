@@ -24,6 +24,10 @@ namespace iccad {
       map<Shape, int> rank;
 
       Shape Find(const Shape & x) {
+        if(parent.find(x) == parent.end()) {
+          parent[x] = x;
+        }
+
         if(parent[x] == x) {
           return x;
         }
