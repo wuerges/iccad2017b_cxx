@@ -42,7 +42,7 @@ namespace iccad {
      */
 
     struct Shape {
-      Shape(const PT _a, const PT _b): a(_a), b(_b) {}
+      Shape(const PT _a, const PT _b);      
       Shape() {}
       PT a, b;
       friend const bool collides(const Shape & a, const Shape & b);
@@ -53,6 +53,8 @@ namespace iccad {
       friend const bool operator==(const Shape & a, const Shape & b);
 
       friend const int distance(const Shape & a, const Shape & b);
+
+      Shape expand(int spacing);
 
       // void operator=(const Shape & s) {
       //   a = s.a;

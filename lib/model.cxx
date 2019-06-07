@@ -88,7 +88,7 @@ std::vector<Shape> iccad::get_obstacles(const Input & inp) {
 	for (int i = 0; i < inp.obstacles.size(); i++) {
 		int layer = i*inp.viaCost;
 			for(auto & v : inp.shapes[i]) {
-				shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
+				shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)).expand(inp.spacing));
 			}
 	}
 
