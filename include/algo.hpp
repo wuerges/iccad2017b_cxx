@@ -46,14 +46,14 @@ namespace iccad {
         }
       }
 
-      int query(const PT l, const PT r) {
+      int query(const PT l, const PT r) const {
         if(root) {
           return root->query(l, r);
         }
         return 0;
       }
 
-      std::vector<Shape> collect(const PT l, const PT r) {
+      std::vector<Shape> collect(const PT l, const PT r) const {
 
 
         std::vector<Shape> results;
@@ -63,7 +63,7 @@ namespace iccad {
         return results;
       }
 
-      std::vector<Shape> neighboors(const Shape & u, size_t number) {
+      std::vector<Shape> neighboors(const Shape & u, size_t number) const {
         int w = 1;
         PT l = u.a;
         PT r = u.b;

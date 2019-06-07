@@ -2,6 +2,7 @@
 
 #include <base.hpp>
 #include <algo.hpp>
+#include <mst.hpp>
 #include <memory>
 #include <iostream>
 #include <vector>
@@ -10,6 +11,7 @@
 namespace iccad {
 
     using Route = std::vector<PT>;
+    using std::vector;
 
     ostream & print2D(ostream &out, const PT & p) {
         return out << "(" << p.x << "," << p.y << ")";        
@@ -24,34 +26,47 @@ namespace iccad {
                 print2D(out, a);
                 out << " ";
                 print2D(out, b);
+                out << '\n';
             }
             else if(a.x == b.x && a.z == b.z) {
                 out << "V-line M" << layer << " ";
                 print2D(out, a);
                 out << " ";
                 print2D(out, b);
+                out << '\n';
             }
             else if(a.x == b.x && a.y == b.y) {
                 out << "Via V" << layer  << " ";
                 print2D(out, a);
+                out << '\n';
             }
             else {
                 throw "Route not rectangular";
             }
-            return out;
         }
+        return out;
     }
 
 
     struct Router {
-        const Treap & t;
-
-        Router(const Treap & t):t(t) {}
-
+        
         Route calculate_route(const Shape & s1, const Shape & s2) {
-            return Route();
+            return Route({s1.a, s2.b});
         }
 
+
+        void perform_global_routing(const vector<Shape> & shapes) {
+            Treap  treap;
+            treap.populate(shapes);
+
+            MST mst;
+            auto res = mst.run(treap, shapes);
+
+            for(auto [a, b] : res) {
+                auto r = calculate_route(a, b);
+                std::cout << r ;
+            }
+        }
 
     };
 }

@@ -13,7 +13,6 @@ using namespace std::chrono;
 using namespace iccad;
 
 int main(int argc, char ** argv) {
-  Treap treap;
 
   Input i;
   parser::parse_file(i, argv[1]);
@@ -23,8 +22,9 @@ int main(int argc, char ** argv) {
 
 
   MST mst;
-
-  auto res = mst.run(shapes);
+  Treap treap;
+  treap.populate(shapes);
+  auto res = mst.run(treap, shapes);
 
   int total = 0;
 
