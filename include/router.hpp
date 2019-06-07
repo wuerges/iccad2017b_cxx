@@ -41,7 +41,8 @@ namespace iccad {
                 out << '\n';
             }
             else {
-                throw "Route not rectangular";
+                std::cerr << "Route not rectangular\n";
+                std::cerr << a << " " << b << '\n';
             }
         }
         return out;
@@ -50,7 +51,8 @@ namespace iccad {
 
     struct Router {
         
-        Route calculate_route(const Shape & s1, const Shape & s2) {
+        Route calculate_route(const Treap & treap, 
+            const Shape & s1, const Shape & s2) {
             return Route({s1.a, s2.b});
         }
 
@@ -63,7 +65,7 @@ namespace iccad {
             auto res = mst.run(treap, shapes);
 
             for(auto [a, b] : res) {
-                auto r = calculate_route(a, b);
+                auto r = calculate_route(treap, a, b);
                 std::cout << r ;
             }
         }
