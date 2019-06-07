@@ -77,9 +77,28 @@ namespace iccad {
 
         vector<index> neighboors(index i) {
             vector<index> result;
-            // TODO
-            return result;
 
+            auto [x, y, z] = i;
+            if(x > 0)           result.push_back({x-1, y, z});
+            if(x < xs.size()-1) result.push_back({x+1, y, z});
+
+            if(y > 0)           result.push_back({x, y-1, z});
+            if(y < ys.size()-1) result.push_back({x, y+1, z});
+
+            if(z > 0)           result.push_back({x, y, z-1});
+            if(z < zs.size()-1) result.push_back({x, y, z+1});
+            
+            return result;
+        }
+
+        vector<index> run(index s) {
+            vector<index> path;
+            map<index, int> distance;
+            using ii = pair<int, index>;
+
+            set<ii> queue;
+
+            return path;
         }
     };
 
