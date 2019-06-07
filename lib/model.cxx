@@ -71,8 +71,16 @@ std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
         shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
       }
 
+
       // TODO add vias
   }
+	for (int i = 0; i < inp.vias.size(); ++i) {
+		int layer1 = i*inp.viaCost;
+		int layer2 = (i+1)*inp.viaCost;
+		for(auto & v : inp.vias[i]) {
+        shapes.push_back(Shape(PT(v[0], v[1], layer1), PT(v[0], v[1], layer2)));
+		}
+	}
 
   return shapes;
 }
