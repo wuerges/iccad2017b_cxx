@@ -69,5 +69,6 @@ void convert(const Input & i, Grid & g);
 void generate_hannan(Grid & g);
 
 std::vector<Shape> get_routed_shapes(const Input & i);
+std::vector<Shape> get_obstacles(const Input & i);
 
 }

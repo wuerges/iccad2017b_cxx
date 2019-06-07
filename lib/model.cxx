@@ -70,9 +70,6 @@ std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
       for(auto & v : inp.shapes[i]) {
         shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
       }
-
-
-      // TODO add vias
   }
 	for (int i = 0; i < inp.vias.size(); ++i) {
 		int layer1 = i*inp.viaCost;
@@ -83,4 +80,17 @@ std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
 	}
 
   return shapes;
+}
+
+std::vector<Shape> iccad::get_obstacles(const Input & inp) {
+	std::vector<Shape> shapes;
+
+	for (int i = 0; i < inp.obstacles.size(); i++) {
+		int layer = i*inp.viaCost;
+			for(auto & v : inp.shapes[i]) {
+				shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
+			}
+	}
+
+	return shapes;
 }
