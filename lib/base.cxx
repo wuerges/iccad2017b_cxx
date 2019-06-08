@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cassert>
 #include <array>
+#include <cmath>
 // #include <string>
 // #include <vector>
 // #include <map>
@@ -35,6 +36,14 @@ namespace iccad {
     assert(0 && "point index out of bounds");
     return -1;
   }
+
+  constexpr double sq(double a) { return a*a; }
+
+  const double euclid(const PT & a, const PT & b) {
+    double aux = sq(a.x - b.x) + sq(a.y - b.y) + sq(a.z - b.z);
+    return sqrt(aux);
+  }
+
 
   const bool operator<(const Shape & a, const Shape & b) {
     std::array<int, 6> va = {a.a.x, a.a.y, a.a.z, a.b.x, a.b.y, a.b.z };

@@ -28,6 +28,8 @@ namespace iccad {
       friend const PT min(const PT & a, const PT & b);
       friend const PT max(const PT & a, const PT & b);
 
+      friend const double euclid(const PT & a, const PT & b);
+
       // void operator=(const PT & p) {
       //   x = p.x;
       //   y = p.y;

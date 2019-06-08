@@ -91,13 +91,50 @@ namespace iccad {
             return result;
         }
 
-        vector<index> run(index s) {
-            vector<index> path;
-            map<index, int> distance;
-            using ii = pair<int, index>;
+        const PT make_pt(index i) {
+            auto [x, y, z] = i;
+            return PT(xs[x], ys[y], zs[z]);
+        }
 
+        vector<PT> run(index s, index t) {
+            using ii = pair<double, index>;           
+            const double INF = 1e20;
+            
+            map<index, double> dst;
+            map<index, index> pred;
             set<ii> queue;
+            
+            dst[s] = 0;
+            queue.insert({0, s});
+            while(!queue.empty()) {
+                auto [_, u] = *queue.begin();
+                if(u == t) break;
+                queue.erase(queue.begin());
+                for(auto v : neighboors(u)) {
+                    double w = euclid(make_pt(u), make_pt(v));                
+                    auto it = dst.find(v);
+                    double old_w = it != dst.end() ? it->second : INF;
+                    if(old_w > dst[u] + w) {
+                        dst[v] = dst[u] + w;
+                        pred[v] = u;
+                        queue.insert({dst[v]+euclid(make_pt(v), make_pt(t)), v});
+                    }
+                }
 
+            }
+
+            vector<PT> path;
+            auto x = t;
+            while(true) {
+                path.push_back(make_pt(x));
+                auto it = pred.find(x);
+                if(it != pred.end()) {
+                    x = it->second;
+                }
+                else {
+                    break;
+                }
+            }
             return path;
         }
     };
@@ -107,10 +144,8 @@ namespace iccad {
         
         Route calculate_route(const Treap & treap, const Shape & s1, const Shape & s2) 
         {
-                // TODO
-
-
-            return Route({s1.a, s2.b});
+            AStar st(treap, treap, s1, s2);
+            return Route(st.run(s1.a, s2.a));
         }
 
 
