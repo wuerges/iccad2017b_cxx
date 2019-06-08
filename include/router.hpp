@@ -71,8 +71,8 @@ namespace iccad {
             xs.push_back(s.b.x);
             ys.push_back(s.a.y);
             ys.push_back(s.b.y);
-            zs.push_back(s.a.y);
-            zs.push_back(s.b.y);
+            zs.push_back(s.a.z);
+            zs.push_back(s.b.z);
         }
 
         vector<index> neighboors(index i) {
@@ -96,6 +96,36 @@ namespace iccad {
             return PT(xs[x], ys[y], zs[z]);
         }
 
+        int find(int c, const vector<int> & v) const {
+            for(int i = 0; i<v.size(); ++i) {
+                if(v[i] == c) return i;
+            }
+            using std::cerr;
+            cerr << "Coordinate not found\n";
+            cerr << "Searching for `" << c << "' in {";
+            for(int i = 0; i < v.size(); ++i) {
+                cerr << v[i] << ' ';
+            }
+            cerr << "}\n";
+            throw -100;
+        }
+
+        index find(const PT p) const {
+            try {
+                return {find(p.x, xs), find(p.y, ys), find(p.z, zs)};
+            }
+            catch (int e) {
+                using std::cerr;
+                cerr << "Point not found: " << p << '\n';
+                throw e;
+            }
+        }
+
+        vector<PT> run(const PT s, const PT t) {
+            return run(find(s), find(t));
+        }
+
+        
         vector<PT> run(index s, index t) {
             using ii = pair<double, index>;           
             const double INF = 1e20;
