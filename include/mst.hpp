@@ -57,7 +57,14 @@ namespace iccad {
         vector<pair<Shape, Shape>> result;
 
         vector<pair<Shape, Shape>> edges;
-        
+
+        for(const Shape & u : shapes) {
+          vector<Shape> vs = treap.collect(u.a, u.b);
+          for(auto v : vs) {
+            Union(u,v);
+          }
+        }
+
         for(const Shape & u : shapes) {
           vector<Shape> vs = treap.neighboors(u, 100);
           for(Shape & v : vs) {
@@ -71,6 +78,24 @@ namespace iccad {
             Union(u, v);
             result.push_back({u, v});
           }
+        }
+        return result;
+      }
+
+      vector<pair<Shape, Shape>> bad_run(const Treap & treap, 
+        const vector<Shape> & shapes) {
+
+        vector<pair<Shape, Shape>> result;
+        
+        for(const Shape & u : shapes) {
+          vector<Shape> vs = treap.collect(u.a, u.b);
+          for(auto v : vs) {
+            result.push_back({u,v});
+
+            std::cout << "Distance: " << distance(u, v) << " -> " << u << v << "\n";
+          }
+
+
         }
         return result;
       }

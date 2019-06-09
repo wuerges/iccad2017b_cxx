@@ -136,7 +136,7 @@ namespace iccad {
             vector<PT> result;
 
             result.push_back(s);
-
+            
             PT art1 = s;
             art1.x = t.x;
             if(s.x != t.x)
@@ -148,6 +148,7 @@ namespace iccad {
                 result.push_back(art2);
 
             result.push_back(t);
+
             return result;
         }
         
