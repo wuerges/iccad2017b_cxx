@@ -21,6 +21,15 @@ target_link_libraries(TestMST
   ${Boost_SYSTEM_LIBRARY}
   )
 
+add_executable(TestBase test_base.cxx)
+target_link_libraries(TestBase
+  Model
+  Parser
+  rapidcheck
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  )
+
 add_executable(TestGlobalRouter test_router.cxx)
 target_link_libraries(TestGlobalRouter
   Model
