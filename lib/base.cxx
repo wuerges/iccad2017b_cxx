@@ -71,8 +71,8 @@ namespace iccad {
   }
 
   const int distance(const Shape & s1, const Shape & s2) {
-    return dist(s1.a.x, s2.a.x, s1.b.x - s1.a.x, s2.b.x - s2.a.x)
-          + dist(s1.a.y, s2.a.y, s1.b.y - s1.a.y, s2.b.y - s2.a.y)
+    return dist(s1.a.x, s2.a.x, abs(s1.b.x - s1.a.x),  abs(s2.b.x - s2.a.x))
+          + dist(s1.a.y, s2.a.y, abs(s1.b.y - s1.a.y), abs(s2.b.y - s2.a.y))
           + abs(s1.a.z - s2.b.z);
   }
 
