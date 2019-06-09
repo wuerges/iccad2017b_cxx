@@ -69,7 +69,8 @@ namespace iccad {
           vector<Shape> vs = treap.neighboors(u, 100);
 
           for(Shape & v : vs) {
-            edges.push_back({u, v});
+            if(distance(u, v) > 0)
+              edges.emplace_back(u, v);
           }
         }
         sort_by_distance(edges);

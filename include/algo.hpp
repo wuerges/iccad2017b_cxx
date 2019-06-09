@@ -69,7 +69,7 @@ namespace iccad {
         PT r = u.b;
         int q = query(PT(l.x-w, l.y-w, l.z-w), PT(r.x+w, r.y+w, r.z+w));
         // std::cout << " w =" << w << "\n";
-        while(q <= 10 && w < 1e8) {
+        while(q <= number && w < 1e8) {
           w = w * 2;
           q = query(PT(l.x-w, l.y-w, l.z-w), PT(r.x+w, r.y+w, r.z+w));
           // std::cout << "Query=" << q << " w=" << w
