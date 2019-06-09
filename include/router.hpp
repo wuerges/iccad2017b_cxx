@@ -174,11 +174,11 @@ namespace iccad {
                 auto [_, u] = *queue.begin();
                 if(u == t) break;
                 queue.erase(queue.begin());
-                std::cout << "N of " << make_pt(u) << '\n';
-                for(auto v : neighboors(u)) {
-                    std::cout << ":-> " << make_pt(v) << '\n';
-                }
-                std::cout << '\n';
+                // std::cout << "N of " << make_pt(u) << '\n';
+                // for(auto v : neighboors(u)) {
+                //     std::cout << ":-> " << make_pt(v) << '\n';
+                // }
+                // std::cout << '\n';
                 
                 for(auto v : neighboors(u)) {
 
@@ -235,7 +235,7 @@ namespace iccad {
             Treap  treap;
             treap.populate(shapes);
 
-            for(auto s : shapes) std::cout << s << '\n';
+            // for(auto s : shapes) std::cout << s << '\n';
 
             MST mst;
             auto res = mst.run(treap, shapes);
