@@ -76,6 +76,13 @@ namespace iccad {
           + abs(s1.a.z - s2.b.z);
   }
 
+  const int distance(const PT & pt, const Shape & s2) {
+    return dist(pt.x, s2.a.x, 0, s2.b.x - s2.a.x)
+          + dist(pt.y, s2.a.y, 0, s2.b.y - s2.a.y)
+          + abs(pt.z - s2.b.z);
+  }
+
+
 
   const bool operator<(const PT & a, const PT & b) {
     return a.x < b.x && a.y < b.y && a.z < b.z;
