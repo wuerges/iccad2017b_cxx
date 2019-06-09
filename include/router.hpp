@@ -191,9 +191,12 @@ namespace iccad {
                 
                 for(auto v : neighboors(u)) {
 
-                    int w = manhatan(make_pt(u), make_pt(v));                    
+                    int w = manhatan(make_pt(u), make_pt(v));
+                    if(distance(make_pt(u), shape_s) == 0) w = 0;
+
                     auto it = dst.find(v);
                     int64_t old_w = it != dst.end() ? it->second : INF;
+
                     
                     if(old_w > dst[u] + w) {
                         dst[v] = dst[u] + w;
@@ -218,7 +221,7 @@ namespace iccad {
 
                 auto it = pred.find(x);
                 if(it != pred.end()) {
-                    x = it->second;                    
+                    x = it->second;
                 }
                 else {
                     break;
