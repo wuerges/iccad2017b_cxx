@@ -131,17 +131,19 @@ namespace iccad {
             v.erase(std::unique(v.begin(), v.end()), v.end());
         }
 
-        vector<PT> run(const PT s, const PT t) {
+        vector<PT> run(const Shape & s, const Shape & t) {
             remove_duplicates(xs);
             remove_duplicates(ys);
             remove_duplicates(zs);
-            return run(find(s), find(t));
+            return run1(s, t);
             // return bad_run(s, t);
         }
 
-        vector<PT> bad_run(const PT s, const PT t) {
+        vector<PT> bad_run(const PT s, const Shape & ts) {
             using std::min, std::max;
             vector<PT> result;
+
+            PT t = ts.a;
 
             result.push_back(s);
             
@@ -160,9 +162,11 @@ namespace iccad {
             return result;
         }
         
-        vector<PT> run(index s, index t) {
+        vector<PT> run1(const Shape & shape_s, const Shape & shape_t) {
             using ii = pair<int64_t, index>;
             const int64_t INF = 1e9;
+            index s = find(shape_s.a);
+            index t = find(shape_t.a);
             
             map<index, int64_t> dst;
             map<index, index> pred;
@@ -170,9 +174,14 @@ namespace iccad {
             
             dst[s] = 0;
             queue.insert({0, s});
+            index x = t;
             while(!queue.empty()) {
                 auto [_, u] = *queue.begin();
                 if(u == t) break;
+                // if(distance(make_pt(u), t) == 0) {
+                //     x = u;
+                //     break;
+                // }
                 queue.erase(queue.begin());
                 // std::cout << "N of " << make_pt(u) << '\n';
                 // for(auto v : neighboors(u)) {
@@ -189,19 +198,23 @@ namespace iccad {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
                         // queue.insert({dst[v], v});
-                        queue.insert({dst[v]+manhatan(make_pt(v), make_pt(t)), v});
+
+                        int a_star = manhatan(make_pt(v), make_pt(t));
+
+                        queue.insert({dst[v]+a_star, v});
                     }
                 }
 
             }
 
             vector<PT> path;
-            auto x = t;
+
             while(true) {
                 path.push_back(make_pt(x));
+                // if(distance(make_pt(x), shape_s) == 0) break;
                 auto it = pred.find(x);
                 if(it != pred.end()) {
-                    x = it->second;
+                    x = it->second;                    
                 }
                 else {
                     break;
@@ -221,7 +234,7 @@ namespace iccad {
         Route calculate_route(const Treap & treap, const Shape & s1, const Shape & s2) 
         {
             AStar st(treap, treap, s1, s2);
-            auto pts = st.run(s1.a, s2.a);
+            auto pts = st.run(s1, s2);
             for(auto & pt : pts) {
                 pt.z = z_to_layer(pt.z, viaCost);
             }
