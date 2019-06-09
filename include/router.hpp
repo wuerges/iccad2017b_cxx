@@ -127,9 +127,29 @@ namespace iccad {
         }
 
         vector<PT> run(const PT s, const PT t) {
-            return run(find(s), find(t));
+            // return run(find(s), find(t));
+            return bad_run(s, t);
         }
 
+        vector<PT> bad_run(const PT s, const PT t) {
+            using std::min, std::max;
+            vector<PT> result;
+
+            result.push_back(s);
+
+            PT art1 = s;
+            art1.x = t.x;
+            if(s.x != t.x)
+                result.push_back(art1);
+
+            PT art2 = art1;
+            art2.z = t.z;
+            if(s.z != t.z) 
+                result.push_back(art2);
+
+            result.push_back(t);
+            return result;
+        }
         
         vector<PT> run(index s, index t) {
             using ii = pair<double, index>;
