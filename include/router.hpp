@@ -178,10 +178,10 @@ namespace iccad {
             while(!queue.empty()) {
                 auto [_, u] = *queue.begin();
                 if(u == t) break;
-                // if(distance(make_pt(u), t) == 0) {
-                //     x = u;
-                //     break;
-                // }
+                if(distance(make_pt(u), shape_t) == 0) {
+                    x = u;
+                    break;
+                }
                 queue.erase(queue.begin());
                 // std::cout << "N of " << make_pt(u) << '\n';
                 // for(auto v : neighboors(u)) {
@@ -191,15 +191,17 @@ namespace iccad {
                 
                 for(auto v : neighboors(u)) {
 
-                    int w = manhatan(make_pt(u), make_pt(v));
+                    int w = manhatan(make_pt(u), make_pt(v));                    
                     auto it = dst.find(v);
                     int64_t old_w = it != dst.end() ? it->second : INF;
+                    
                     if(old_w > dst[u] + w) {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
                         // queue.insert({dst[v], v});
 
-                        int a_star = manhatan(make_pt(v), make_pt(t));
+                        // int a_star = manhatan(make_pt(v), make_pt(t));
+                        int a_star = distance(make_pt(v), shape_t);
 
                         queue.insert({dst[v]+a_star, v});
                     }
@@ -212,7 +214,7 @@ namespace iccad {
             while(true) {
                 path.push_back(make_pt(x));
                 
-                // if(distance(make_pt(x), shape_s) <= 0) break;
+                if(distance(make_pt(x), shape_s) <= 0) break;
 
                 auto it = pred.find(x);
                 if(it != pred.end()) {
