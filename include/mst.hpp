@@ -88,12 +88,12 @@ namespace iccad {
         sort_by_distance(edges);
 
         for(auto & [u,v] : edges) {
-          // if(distance(u, v) == 0) {
-          //   Union(u, v);
-          // }
+          if(distance(u, v) == 0) {
+            Union(u, v);
+          }
           if(Find(u) != Find(v)) {
             Union(u, v);
-            if(distance(u, v) > 0)
+            // if(distance(u, v) > 0)
               result.push_back({u, v});
           }
         }
