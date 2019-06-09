@@ -127,8 +127,8 @@ namespace iccad {
         }
 
         vector<PT> run(const PT s, const PT t) {
-            // return run(find(s), find(t));
-            return bad_run(s, t);
+            return run(find(s), find(t));
+            // return bad_run(s, t);
         }
 
         vector<PT> bad_run(const PT s, const PT t) {
@@ -153,10 +153,10 @@ namespace iccad {
         }
         
         vector<PT> run(index s, index t) {
-            using ii = pair<double, index>;
-            const double INF = 1e20;
+            using ii = pair<int64_t, index>;
+            const int64_t INF = 1e9;
             
-            map<index, double> dst;
+            map<index, int64_t> dst;
             map<index, index> pred;
             set<ii> queue;
             
@@ -167,13 +167,14 @@ namespace iccad {
                 if(u == t) break;
                 queue.erase(queue.begin());
                 for(auto v : neighboors(u)) {
-                    double w = euclid(make_pt(u), make_pt(v));
+                    int w = manhatan(make_pt(u), make_pt(v));
                     auto it = dst.find(v);
-                    double old_w = it != dst.end() ? it->second : INF;
+                    int64_t old_w = it != dst.end() ? it->second : INF;
                     if(old_w > dst[u] + w) {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
-                        queue.insert({dst[v]+euclid(make_pt(v), make_pt(t)), v});
+                        queue.insert({dst[v], v});
+                        // queue.insert({dst[v]+manhatan(make_pt(v), make_pt(t)), v});
                     }
                 }
 

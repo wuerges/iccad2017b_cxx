@@ -39,9 +39,8 @@ namespace iccad {
 
   constexpr double sq(double a) { return a*a; }
 
-  const double euclid(const PT & a, const PT & b) {
-    double aux = sq(a.x - b.x) + sq(a.y - b.y) + sq(a.z - b.z);
-    return sqrt(aux);
+  const int64_t manhatan(const PT & a, const PT & b) {
+    return abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z);;
   }
 
 
