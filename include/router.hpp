@@ -38,9 +38,13 @@ namespace iccad {
                 out << '\n';
             }
             else if(a.x == b.x && a.y == b.y) {
-                out << "Via V" << layer  << " ";
-                print2D(out, a);
-                out << '\n';
+                int beg = std::min(a.z, b.z);
+                int end = std::max(a.z, b.z);
+                for(int zi = beg; zi < end; ++zi) {
+                    out << "Via V" << zi  << " ";
+                    print2D(out, a);
+                    out << '\n';
+                }
             }
             else {
                 std::cerr << "Route not rectangular\n";

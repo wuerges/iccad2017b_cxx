@@ -59,7 +59,7 @@ namespace iccad {
         vector<pair<Shape, Shape>> edges;
         
         for(const Shape & u : shapes) {
-          vector<Shape> vs = treap.neighboors(u, 10);
+          vector<Shape> vs = treap.neighboors(u, 100);
           for(Shape & v : vs) {
             edges.push_back({u, v});
           }
