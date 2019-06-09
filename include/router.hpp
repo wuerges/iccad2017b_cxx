@@ -201,12 +201,13 @@ namespace iccad {
                     if(old_w > dst[u] + w) {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
-                        // queue.insert({dst[v], v});
+                        queue.erase({old_w, v});
+                        queue.insert({dst[v], v});
 
                         // int a_star = manhatan(make_pt(v), make_pt(t));
-                        int a_star = distance(make_pt(v), shape_t);
+                        // int a_star = distance(make_pt(v), shape_t);
 
-                        queue.insert({dst[v]+a_star, v});
+                        // queue.insert({dst[v]+a_star, v});
                     }
                 }
 
@@ -217,7 +218,7 @@ namespace iccad {
             while(true) {
                 path.push_back(make_pt(x));
                 
-                if(distance(make_pt(x), shape_s) <= 0) break;
+                if(distance(make_pt(x), shape_s) == 0) break;
 
                 auto it = pred.find(x);
                 if(it != pred.end()) {
