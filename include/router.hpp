@@ -126,7 +126,15 @@ namespace iccad {
             }
         }
 
+        void remove_duplicates(vector<int> & v) {
+            sort(v.begin(), v.end());
+            v.erase(std::unique(v.begin(), v.end()), v.end());
+        }
+
         vector<PT> run(const PT s, const PT t) {
+            remove_duplicates(xs);
+            remove_duplicates(ys);
+            remove_duplicates(zs);
             return run(find(s), find(t));
             // return bad_run(s, t);
         }
@@ -166,15 +174,22 @@ namespace iccad {
                 auto [_, u] = *queue.begin();
                 if(u == t) break;
                 queue.erase(queue.begin());
+                std::cout << "N of " << make_pt(u) << '\n';
                 for(auto v : neighboors(u)) {
+                    std::cout << ":-> " << make_pt(v) << '\n';
+                }
+                std::cout << '\n';
+                
+                for(auto v : neighboors(u)) {
+
                     int w = manhatan(make_pt(u), make_pt(v));
                     auto it = dst.find(v);
                     int64_t old_w = it != dst.end() ? it->second : INF;
                     if(old_w > dst[u] + w) {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
-                        queue.insert({dst[v], v});
-                        // queue.insert({dst[v]+manhatan(make_pt(v), make_pt(t)), v});
+                        // queue.insert({dst[v], v});
+                        queue.insert({dst[v]+manhatan(make_pt(v), make_pt(t)), v});
                     }
                 }
 
