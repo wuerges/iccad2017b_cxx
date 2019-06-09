@@ -58,43 +58,30 @@ namespace iccad {
 
         vector<pair<Shape, Shape>> edges;
 
-        // for(const Shape & u : shapes) {
-        //   vector<Shape> vs = treap.collect(u.a, u.b);
-        //   for(auto v : vs) {
-        //     Union(u,v);
-        //   }
-        // }
+        for(const Shape & u : shapes) {
+          vector<Shape> vs = treap.collect(u.a, u.b);
+          for(auto v : vs) {
+            Union(u,v);
+          }
+        }
 
         for(const Shape & u : shapes) {
           vector<Shape> vs = treap.neighboors(u, 100);
 
-          // vector<pair<Shape, Shape>> n_edges;
-  
           for(Shape & v : vs) {
-            // n_edges.emplace_back(u, v);
-            // sort_by_distance(n_edges);
-
-            // using std::cout;
-            // cout << "\n\n\nDistances: \n";
-
-            // for(auto [ue, ve] : n_edges) {
-            //   cout << ue << ve << " -> " << distance(ue, ve) << '\n';
-            // }
-
-
             edges.push_back({u, v});
           }
         }
         sort_by_distance(edges);
 
         for(auto & [u,v] : edges) {
-          if(distance(u, v) == 0) {
-            Union(u, v);
-          }
+          // if(distance(u, v) == 0) {
+          //   Union(u, v);
+          // }
           if(Find(u) != Find(v)) {
             Union(u, v);
             // if(distance(u, v) > 0)
-              result.push_back({u, v});
+            result.push_back({u, v});
           }
         }
         return result;
