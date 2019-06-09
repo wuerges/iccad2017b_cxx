@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <chrono>
 #include <mst.hpp>
+#include <fstream>
 
 using namespace std;
 using namespace std::chrono;
@@ -17,12 +18,14 @@ int main(int argc, char ** argv) {
 
     Input i;
     parser::parse_file(i, argv[1]);
+    ofstream fout(argv[2]);
     vector<Shape> shapes = get_routed_shapes(i);
+    vector<Shape> obstacles = get_obstacles(i);
 
     cout << shapes.size() << '\n';
 
     Router router;
-    router.perform_global_routing(shapes);
+    router.perform_global_routing(shapes, obstacles, i.spacing, fout);
 
     return 0;
 }

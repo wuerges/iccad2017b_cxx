@@ -179,7 +179,10 @@ namespace iccad {
         }
 
 
-        void perform_global_routing(const vector<Shape> & shapes) {
+        void perform_global_routing(const vector<Shape> & shapes, 
+            const vector<Shape> & obstacles, 
+            int spacing, 
+            ostream & out) {
             Treap  treap;
             treap.populate(shapes);
 
@@ -188,7 +191,7 @@ namespace iccad {
 
             for(auto [a, b] : res) {
                 auto r = calculate_route(treap, a, b);
-                std::cout << r ;
+                out << r ;
             }
         }
 
