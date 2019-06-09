@@ -211,7 +211,9 @@ namespace iccad {
 
             while(true) {
                 path.push_back(make_pt(x));
-                // if(distance(make_pt(x), shape_s) == 0) break;
+                
+                // if(distance(make_pt(x), shape_s) <= 0) break;
+
                 auto it = pred.find(x);
                 if(it != pred.end()) {
                     x = it->second;                    
