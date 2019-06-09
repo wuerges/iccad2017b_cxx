@@ -178,7 +178,8 @@ namespace iccad {
             while(!queue.empty()) {
                 auto [_, u] = *queue.begin();
                 if(u == t) break;
-                if(distance(make_pt(u), shape_t) == 0) {
+                // if(distance(make_pt(u), shape_t) == 0) {
+                if(collides(Shape(make_pt(u), make_pt(u)), shape_t)) {
                     x = u;
                     break;
                 }
@@ -192,7 +193,10 @@ namespace iccad {
                 for(auto v : neighboors(u)) {
 
                     int w = manhatan(make_pt(u), make_pt(v));
-                    if(distance(make_pt(u), shape_s) == 0) w = 0;
+                    if(collides(Shape(make_pt(u), make_pt(u)), shape_s)) {
+                        w = 0;
+                    }
+                    // if(distance(make_pt(u), shape_s) == 0) w = 0;
 
                     auto it = dst.find(v);
                     int64_t old_w = it != dst.end() ? it->second : INF;
@@ -216,8 +220,11 @@ namespace iccad {
             vector<PT> path;
 
             while(true) {
-                path.push_back(make_pt(x));
+                PT pt_x = make_pt(x);
+                path.push_back(pt_x);
                 
+               
+                if(collides(Shape(pt_x, pt_x), shape_s)) break;
                 if(distance(make_pt(x), shape_s) == 0) break;
 
                 auto it = pred.find(x);
