@@ -65,6 +65,9 @@ struct Shapes {
 };
 
 
+int layer_to_z(int i, int viaCost);
+int z_to_layer(int y, int viaCost);
+
 void convert(const Input & i, Grid & g);
 void generate_hannan(Grid & g);
 

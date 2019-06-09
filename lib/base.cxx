@@ -14,13 +14,13 @@
 
 namespace iccad {
   std::ostream & operator<<(std::ostream & out, const Shape & s) {
-    // out << "Shape{"<<s.a<<", "<<s.b<<"}";
-    out << "Polygon(";
-    out << "(" << s.a.x << "," << s.a.y << "),";
-    out << "(" << s.b.x << "," << s.a.y << "),";
-    out << "(" << s.b.x << "," << s.b.y << "),";
-    out << "(" << s.a.x << "," << s.b.y << ")";
-    out << ")";
+    out << "Shape{"<<s.a<<", "<<s.b<<"}";
+    // out << "Polygon(";
+    // out << "(" << s.a.x << "," << s.a.y << "),";
+    // out << "(" << s.b.x << "," << s.a.y << "),";
+    // out << "(" << s.b.x << "," << s.b.y << "),";
+    // out << "(" << s.a.x << "," << s.b.y << ")";
+    // out << ")";
     return out;
   }
   std::ostream & operator<<(std::ostream & out, const PT & s) {

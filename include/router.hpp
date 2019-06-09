@@ -2,6 +2,7 @@
 
 #include <base.hpp>
 #include <algo.hpp>
+#include <model.hpp>
 #include <mst.hpp>
 #include <memory>
 #include <iostream>
@@ -21,7 +22,7 @@ namespace iccad {
     ostream & operator<<(ostream &out, const Route & r) {
         for(int i = 1; i < r.size(); ++i) {
             const PT & a = r[i-1], & b = r[i];
-            int layer = 0;
+            int layer = std::min(a.z, b.z);
             if(a.y == b.y && a.z == b.z) {
                 out << "H-line M" << layer << " ";
                 print2D(out, a);
@@ -127,7 +128,7 @@ namespace iccad {
 
         
         vector<PT> run(index s, index t) {
-            using ii = pair<double, index>;           
+            using ii = pair<double, index>;
             const double INF = 1e20;
             
             map<index, double> dst;
@@ -141,7 +142,7 @@ namespace iccad {
                 if(u == t) break;
                 queue.erase(queue.begin());
                 for(auto v : neighboors(u)) {
-                    double w = euclid(make_pt(u), make_pt(v));                
+                    double w = euclid(make_pt(u), make_pt(v));
                     auto it = dst.find(v);
                     double old_w = it != dst.end() ? it->second : INF;
                     if(old_w > dst[u] + w) {
@@ -171,20 +172,29 @@ namespace iccad {
 
 
     struct Router {
+
+        int spacing, viaCost;
+
+        Router(int sp, int vc):spacing(sp), viaCost(vc) {}
         
         Route calculate_route(const Treap & treap, const Shape & s1, const Shape & s2) 
         {
             AStar st(treap, treap, s1, s2);
-            return Route(st.run(s1.a, s2.a));
+            auto pts = st.run(s1.a, s2.a);
+            for(auto & pt : pts) {
+                pt.z = z_to_layer(pt.z, viaCost);
+            }
+            return Route(pts);
         }
 
 
         void perform_global_routing(const vector<Shape> & shapes, 
             const vector<Shape> & obstacles, 
-            int spacing, 
             ostream & out) {
             Treap  treap;
             treap.populate(shapes);
+
+            for(auto s : shapes) std::cout << s << '\n';
 
             MST mst;
             auto res = mst.run(treap, shapes);

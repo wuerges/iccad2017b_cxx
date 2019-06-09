@@ -62,18 +62,27 @@ void iccad::convert(const Input & inp, Grid & g) {
 	}
 }
 
-std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
-  std::vector<Shape> shapes;
 
-  for (int i = 0; i < inp.shapes.size(); i++) {
-    int layer = i*inp.viaCost;
-      for(auto & v : inp.shapes[i]) {
-        shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
-      }
-  }
+int iccad::layer_to_z(int i, int viaCost) {
+	return i * viaCost;
+}
+int iccad::z_to_layer(int y, int viaCost) {
+	return y / viaCost + 1;
+}
+
+
+std::vector<Shape> iccad::get_routed_shapes(const Input & inp) {
+	std::vector<Shape> shapes;
+
+	for (int i = 0; i < inp.shapes.size(); i++) {
+		int layer = layer_to_z(i, inp.viaCost);
+		for(auto & v : inp.shapes[i]) {
+			shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)));
+		}
+	}
 	for (int i = 0; i < inp.vias.size(); ++i) {
-		int layer1 = i*inp.viaCost;
-		int layer2 = (i+1)*inp.viaCost;
+		int layer1 = layer_to_z(i, inp.viaCost);
+		int layer2 = layer_to_z(i+1, inp.viaCost);
 		for(auto & v : inp.vias[i]) {
         shapes.push_back(Shape(PT(v[0], v[1], layer1), PT(v[0], v[1], layer2)));
 		}
@@ -86,7 +95,7 @@ std::vector<Shape> iccad::get_obstacles(const Input & inp) {
 	std::vector<Shape> shapes;
 
 	for (int i = 0; i < inp.obstacles.size(); i++) {
-		int layer = i*inp.viaCost;
+		int layer = layer_to_z(i, inp.viaCost);
 			for(auto & v : inp.shapes[i]) {
 				shapes.push_back(Shape(PT(v[0], v[1], layer), PT(v[2], v[3], layer)).expand(inp.spacing));
 			}
