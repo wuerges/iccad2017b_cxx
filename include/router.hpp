@@ -68,6 +68,12 @@ namespace iccad {
             add_shape(s1);
             add_shape(s2);
 
+            // Shape wind
+
+            for (auto sx : obstacles.collect(Shape(min(s1, s2), max(s1, s2))) {
+
+            };
+
             // TODO search for obstacles             
         }
 
