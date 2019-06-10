@@ -58,12 +58,12 @@ namespace iccad {
 
         using index = tuple<int, int, int>;
 
-        const Treap & shapes, & obstacles;
+        Treap & shapes, & obstacles;
         vector<int> xs;
         vector<int> ys;
         vector<int> zs;
 
-        AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2)
+        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2)
         :shapes(sh), obstacles(obs) {
             add_shape(s1);
             add_shape(s2);
@@ -243,12 +243,13 @@ namespace iccad {
     struct Router {
 
         int spacing, viaCost;
+        Treap  treap, obstacles;
 
         Router(int sp, int vc):spacing(sp), viaCost(vc) {}
         
-        Route calculate_route(const Treap & treap, const Shape & s1, const Shape & s2) 
+        Route calculate_route(const Shape & s1, const Shape & s2) 
         {
-            AStar st(treap, treap, s1, s2);
+            AStar st(treap, obstacles, s1, s2);
             auto pts = st.run(s1, s2);
             for(auto & pt : pts) {
                 pt.z = z_to_layer(pt.z, viaCost);
@@ -258,10 +259,10 @@ namespace iccad {
 
 
         void perform_global_routing(const vector<Shape> & shapes, 
-            const vector<Shape> & obstacles, 
+            const vector<Shape> & obs, 
             ostream & out) {
-            Treap  treap;
             treap.populate(shapes);
+            obstacles.populate(obs);
 
             // for(auto s : shapes) std::cout << s << '\n';
 
@@ -269,7 +270,7 @@ namespace iccad {
             auto res = mst.run(treap, shapes);
 
             for(auto [a, b] : res) {
-                auto r = calculate_route(treap, a, b);
+                auto r = calculate_route(a, b);
                 out << r ;
             }
         }
