@@ -207,12 +207,11 @@ namespace iccad {
                         dst[v] = dst[u] + w;
                         pred[v] = u;
                         queue.erase({old_w, v});
-                        queue.insert({dst[v], v});
+                        queue.insert({dst[v], v}); // Dijkstra
 
-                        // int a_star = manhatan(make_pt(v), make_pt(t));
+                        // A* heuristic
                         // int a_star = distance(make_pt(v), shape_t);
-
-                        // queue.insert({dst[v]+a_star, v});
+                        // queue.insert({dst[v]+a_star, v}); 
                     }
                 }
 
