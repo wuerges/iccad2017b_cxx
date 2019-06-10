@@ -68,13 +68,10 @@ namespace iccad {
             add_shape(s1);
             add_shape(s2);
 
-            // Shape wind
-
-            for (auto sx : obstacles.collect(Shape(min(s1, s2), max(s1, s2))) {
-
+            for (auto sx : obstacles.collect(min(s1.a, s2.a), max(s1.b, s2.b))) {
+                // TODO include coordinates of expanded obstacles
             };
 
-            // TODO search for obstacles             
         }
 
         void add_shape(const Shape & s) {
