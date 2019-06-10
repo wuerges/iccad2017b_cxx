@@ -67,14 +67,30 @@ namespace iccad {
   }
 
   int dist(int a, int b, int aw, int bw) {
-    return std::max(abs(a - b) - (aw + bw), 0);
+    if(a < b) {
+      if(a + aw < b) {
+        return b - a - aw;
+      }
+      return 0;
+    }
+    else {
+      if(b + bw < a) {
+        return a - b - bw;
+      }
+      return 0;
+    }
+
+    // return std::max(abs(a - b) - (aw + bw), 0);
   }
   
 
   const int distance(const Shape & s1, const Shape & s2) {
-    return dist((s1.a.x+s1.b.x) / 2, (s2.a.x+s2.b.x) / 2, abs(s1.b.x - s1.a.x)/2,  abs(s2.b.x - s2.a.x)/2)
-          + dist((s1.a.y+s1.b.y) / 2, (s2.a.y+s2.b.y) / 2, abs(s1.b.y - s1.a.y)/2, abs(s2.b.y - s2.a.y)/2)
+    return dist(s1.a.x, s2.a.x, abs(s1.b.x - s1.a.x),  abs(s2.b.x - s2.a.x))
+          + dist(s1.a.y, s2.a.y, abs(s1.b.y - s1.a.y),  abs(s2.b.y - s2.a.y))
           + abs(s1.a.z - s2.b.z);
+    // return dist((s1.a.x+s1.b.x) / 2, (s2.a.x+s2.b.x) / 2, abs(s1.b.x - s1.a.x)/2,  abs(s2.b.x - s2.a.x)/2)
+    //       + dist((s1.a.y+s1.b.y) / 2, (s2.a.y+s2.b.y) / 2, abs(s1.b.y - s1.a.y)/2, abs(s2.b.y - s2.a.y)/2)
+    //       + abs(s1.a.z - s2.b.z);
   }
 
   const int distance(const PT & pt, const Shape & s2) {
