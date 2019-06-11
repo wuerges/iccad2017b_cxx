@@ -74,6 +74,8 @@ int main(int argc, char ** argv) {
     // RC_ASSERT(distance(e, Shape(a, b)) == 21);
 
 
+    cout << "Expand " << Shape(a, b) << " by 3 = " << Shape(a, b).expand(3) << "\n";
+
 
     rc::check("Check that shapes collide iff their distance is 0",
     test_distance);

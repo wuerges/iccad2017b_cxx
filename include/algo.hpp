@@ -48,7 +48,7 @@ namespace iccad {
 
       int query(const PT l, const PT r) const {
         if(root) {
-          return root->query(l, r);
+          return root->query(min(l, r), max(l, r));
         }
         return 0;
       }
