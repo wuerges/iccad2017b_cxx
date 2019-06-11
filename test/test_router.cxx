@@ -24,7 +24,7 @@ int main(int argc, char ** argv) {
 
     cout << shapes.size() << '\n';
 
-    Router router(i.spacing, i.viaCost);
+    Router router(i.spacing, i.viaCost, i.boundary[0], i.boundary[1]);
     router.perform_global_routing(shapes, obstacles, fout);
 
     return 0;
