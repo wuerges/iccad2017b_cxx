@@ -44,7 +44,7 @@ int main(int argc, char ** argv) {
         int r2 = account_route(i, n, ss, shapes, vector<Shape>());
         auto t3 = high_resolution_clock::now();
         auto dur2 = chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count();
-        cout << argv[1] << ", "<<n<<", O, " << r2 << ", "<< dur2<< '\n';
+        cout << argv[1] << ", "<<n<<", E, " << r2 << ", "<< dur2<< '\n';
     }
 
     
