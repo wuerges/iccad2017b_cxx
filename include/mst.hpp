@@ -52,11 +52,12 @@ namespace iccad {
       }
 
 
-      vector<pair<Shape, Shape>> run(const Treap & treap, 
+      vector<pair<Shape, Shape>> run(const Treap & treap, const Treap & obstacles,
         const vector<Shape> & shapes) {
         vector<pair<Shape, Shape>> result;
+        using std::set, std::tuple;
 
-        vector<pair<Shape, Shape>> edges;
+        set<tuple<int, Shape, Shape>> edges;
 
         for(const Shape & u : shapes) {
           vector<Shape> vs = treap.collect(u.a, u.b);
@@ -69,13 +70,23 @@ namespace iccad {
           vector<Shape> vs = treap.neighboors(u, 100);
 
           for(Shape & v : vs) {
-            if(distance(u, v) > 0)
-              edges.emplace_back(u, v);
+            if(distance(u, v) > 0) {
+
+              auto a = min(u.a, v.a);
+              auto b = min(u.b, v.b);
+
+              if(obstacles.query(a, b) > 0) {
+                edges.insert({distance(u, v)*1.1, u, v});
+              }
+              else {
+                edges.insert({distance(u, v), u, v});
+              }
+            }
           }
         }
-        sort_by_distance(edges);
+        // sort_by_distance(edges);
 
-        for(auto & [u,v] : edges) {
+        for(auto & [w, u, v] : edges) {
           // if(distance(u, v) == 0) {
           //   Union(u, v);
           // }

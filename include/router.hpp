@@ -318,7 +318,7 @@ namespace iccad {
             // for(auto s : shapes) std::cout << s << '\n';
 
             MST mst;
-            auto res = mst.run(treap, shapes);
+            auto res = mst.run(treap, obstacles, shapes);
 
             for(auto [a, b] : res) {
                 auto r = calculate_route(a, b);

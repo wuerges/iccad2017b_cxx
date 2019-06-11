@@ -22,9 +22,9 @@ int main(int argc, char ** argv) {
 
 
   MST mst;
-  Treap treap;
+  Treap treap, obstacles;
   treap.populate(shapes);
-  auto res = mst.run(treap, shapes);
+  auto res = mst.run(treap, obstacles, shapes);
 
   int total = 0;
 
