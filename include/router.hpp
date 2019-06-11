@@ -204,10 +204,10 @@ namespace iccad {
                     // Avoid a point if it is inside an obstacle
                     auto v_pt = make_pt(v);
                     if(obstacles.query(v_pt, v_pt) > 0) {
-                        std::cout << "Point " << v_pt << " is in an obstacle\n";
-                        for(auto ob : obstacles.collect(v_pt, v_pt)) {
-                            std::cout << "Obstacle: " << ob << '\n';
-                        }
+                        // std::cout << "Point " << v_pt << " is in an obstacle\n";
+                        // for(auto ob : obstacles.collect(v_pt, v_pt)) {
+                        //     std::cout << "Obstacle: " << ob << '\n';
+                        // }
                         continue;
                     }
 
