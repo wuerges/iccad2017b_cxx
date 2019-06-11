@@ -15,6 +15,23 @@ namespace iccad {
     using Route = std::vector<PT>;
     using std::vector, std::tuple, std::set;
 
+    void simplify(Route & r) {
+        for(int i = 2; i < r.size(); ++i) {
+            PT & a = r[i-2], & b = r[i-1], & c = r[i];
+            
+            if(a.x == b.x && b.x == c.x && a.z == b.z && b.z == c.z) {
+                b.y = a.y;
+            }
+            if(a.y == b.y && b.y == c.y && a.z == b.z && b.z == c.z) {
+                b.x = a.x;
+            }
+            if(a.x == b.x && b.x == c.x && a.y == b.y && b.y == c.y) {
+                b.z = a.z;
+            }
+        }
+        r.erase(unique(r.begin(), r.end()), r.end());
+    }
+
     ostream & print2D(ostream &out, const PT & p) {
         return out << "(" << p.x << "," << p.y << ")";        
     }
@@ -281,7 +298,9 @@ namespace iccad {
             for(auto & pt : pts) {
                 pt.z = z_to_layer(pt.z, viaCost);
             }
-            return Route(pts);
+            Route res(pts);
+            simplify(res);
+            return res;
         }
 
 

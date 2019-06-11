@@ -58,10 +58,16 @@ namespace iccad {
   }
 
   const bool operator==(const Shape & a, const Shape & b) {
-    std::array<int, 6> va = {a.a.x, a.a.y, a.a.z, a.b.x, a.b.y, a.b.z };
-    std::array<int, 6> vb = {b.a.x, b.a.y, b.a.z, b.b.x, b.b.y, b.b.z };
-    return va == vb;
+    return a.a == b.a && a.b == b.b;
+    // std::array<int, 6> va = {a.a.x, a.a.y, a.a.z, a.b.x, a.b.y, a.b.z };
+    // std::array<int, 6> vb = {b.a.x, b.a.y, b.a.z, b.b.x, b.b.y, b.b.z };
+    // return va == vb;
   }
+  const bool operator==(const PT & a, const PT & b) {
+    return a.x == b.x && a.y == b.y && a.z == b.z;
+  }
+
+
   const bool operator!=(const Shape & a, const Shape & b) {
     return ! (a == b);
   }

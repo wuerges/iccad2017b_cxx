@@ -25,6 +25,7 @@ namespace iccad {
       friend const bool operator<=(const PT & a, const PT & b);
       friend const bool operator>(const PT & a, const PT & b);
       friend const bool operator>=(const PT & a, const PT & b);
+      friend const bool operator==(const PT & a, const PT & b);
       friend const PT min(const PT & a, const PT & b);
       friend const PT max(const PT & a, const PT & b);
 
