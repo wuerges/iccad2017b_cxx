@@ -22,7 +22,8 @@ int main(int argc, char ** argv) {
     vector<Shape> shapes = get_routed_shapes(i);
     vector<Shape> obstacles = get_obstacles(i);
 
-    cout << shapes.size() << '\n';
+    // cout << shapes.size() << '\n';
+    // for(auto obs: obstacles) cout << "OBS: " << obs << '\n';
 
     Router router(i.spacing, i.viaCost, i.boundary[0], i.boundary[1]);
     router.perform_global_routing(shapes, obstacles, fout);

@@ -147,6 +147,6 @@ namespace iccad {
   Shape::Shape(const PT a_, const PT b_): a(min(a_,b_)), b(max(a_,b_))  {}
 
   Shape Shape::expand(int spacing) {
-    return Shape(PT(a.x - spacing, a.y - spacing, a.z), PT(b.x - spacing, b.y - spacing, b.z));
+    return Shape(PT(a.x - spacing, a.y - spacing, a.z), PT(b.x + spacing, b.y + spacing, b.z));
   }
 }
