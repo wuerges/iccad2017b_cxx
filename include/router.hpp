@@ -151,7 +151,7 @@ namespace iccad {
         }
         void fix_boundaries(vector<int> & v, int bound) {
             v.erase(std::remove_if(v.begin(), v.end(), 
-                [bound](int c) { return c < 0; }
+                [bound](int c) { return c < 0 || c > bound; }
             ),v.end());
         }
 
