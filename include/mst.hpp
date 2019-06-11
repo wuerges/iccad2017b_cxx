@@ -66,7 +66,7 @@ namespace iccad {
         }
 
         for(const Shape & u : shapes) {
-          vector<Shape> vs = treap.neighboors(u, 100);
+          vector<Shape> vs = treap.neighboors(u, 10);
 
           for(Shape & v : vs) {
             if(distance(u, v) > 0)

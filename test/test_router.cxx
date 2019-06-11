@@ -25,7 +25,7 @@ int main(int argc, char ** argv) {
     // cout << shapes.size() << '\n';
     // for(auto obs: obstacles) cout << "OBS: " << obs << '\n';
 
-    Router router(i.spacing, i.viaCost, i.boundary[2], i.boundary[3]);
+    Router router(i.spacing, i.viaCost, i.boundary);
     router.perform_global_routing(shapes, obstacles, fout);
 
     return 0;

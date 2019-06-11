@@ -76,11 +76,11 @@ namespace iccad {
         using index = tuple<int, int, int>;
 
         Treap & shapes, & obstacles;
-        int boundary_x, boundary_y;
+        V1D boundary;
         vector<int> xs, ys, zs;
 
-        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, int x, int y)
-        :shapes(sh), obstacles(obs), boundary_x(x), boundary_y(y) {
+        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b)
+        :shapes(sh), obstacles(obs), boundary(b) {
             add_shape(s1);
             add_shape(s2);
 
@@ -149,17 +149,17 @@ namespace iccad {
             sort(v.begin(), v.end());
             v.erase(std::unique(v.begin(), v.end()), v.end());
         }
-        void fix_boundaries(vector<int> & v, int bound) {
+        void fix_boundaries(vector<int> & v, int min_bound, int max_bound) {
             v.erase(std::remove_if(v.begin(), v.end(), 
-                [bound](int c) { return c < 0 || c > bound; }
+                [min_bound, max_bound](int c) { return c < min_bound || c > max_bound; }
             ),v.end());
         }
 
         vector<PT> run(const Shape & s, const Shape & t) {
             remove_duplicates(xs);
-            fix_boundaries(xs, boundary_x);
+            fix_boundaries(xs, boundary[0], boundary[2]);
             remove_duplicates(ys);
-            fix_boundaries(ys, boundary_y);
+            fix_boundaries(ys, boundary[1], boundary[3]);
             remove_duplicates(zs);
             return run1(s, t);
             // return bad_run(s, t);
@@ -285,15 +285,20 @@ namespace iccad {
     struct Router {
 
         int spacing, viaCost;
-        int boundary_x, boundary_y;
+        V1D boundary;
         Treap  treap, obstacles;
 
-        Router(int sp, int vc, int x, int y):spacing(sp), viaCost(vc)
-            , boundary_x(x), boundary_y(y) {}
+        Router(int sp, int vc, V1D b):spacing(sp), viaCost(vc)
+            , boundary(b) {
+                boundary[0] += spacing;
+                boundary[1] += spacing;
+                boundary[2] -= spacing;
+                boundary[3] -= spacing;
+            }
         
         Route calculate_route(const Shape & s1, const Shape & s2) 
         {
-            AStar st(treap, obstacles, s1, s2, boundary_x, boundary_y);
+            AStar st(treap, obstacles, s1, s2, boundary);
             auto pts = st.run(s1, s2);
             for(auto & pt : pts) {
                 pt.z = z_to_layer(pt.z, viaCost);
