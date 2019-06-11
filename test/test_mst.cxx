@@ -21,7 +21,7 @@ int main(int argc, char ** argv) {
   cout << shapes.size() << '\n';
 
 
-  MST mst;
+  MST mst(1000);
   Treap treap, obstacles;
   treap.populate(shapes);
   auto res = mst.run(treap, obstacles, shapes);

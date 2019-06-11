@@ -21,6 +21,10 @@ namespace iccad {
 
     struct MST {
 
+      int num_neighboors;
+
+      MST(int n) : num_neighboors(n) {}
+
       map<Shape, Shape> parent;
       map<Shape, int> rank;
 
@@ -67,7 +71,7 @@ namespace iccad {
         }
 
         for(const Shape & u : shapes) {
-          vector<Shape> vs = treap.neighboors(u, 100);
+          vector<Shape> vs = treap.neighboors(u, num_neighboors);
 
           for(Shape & v : vs) {
             if(distance(u, v) > 0) {
@@ -76,7 +80,7 @@ namespace iccad {
               auto b = min(u.b, v.b);
 
               if(obstacles.query(a, b) > 0) {
-                edges.insert({distance(u, v)*1.1, u, v});
+                edges.insert({distance(u, v), u, v});
               }
               else {
                 edges.insert({distance(u, v), u, v});

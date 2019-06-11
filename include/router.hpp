@@ -286,44 +286,58 @@ namespace iccad {
 
         int spacing, viaCost;
         V1D boundary;
+        int num_neighboors;
         Treap  treap, obstacles;
 
-        Router(int sp, int vc, V1D b):spacing(sp), viaCost(vc)
-            , boundary(b) {
+        Router(int sp, int vc, V1D b, int n):spacing(sp), viaCost(vc)
+            , boundary(b), num_neighboors(n) {
                 boundary[0] += spacing;
                 boundary[1] += spacing;
                 boundary[2] -= spacing;
                 boundary[3] -= spacing;
             }
         
+
+        void map_z_to_layer(Route & pts) {
+            for(auto & pt : pts) {
+                pt.z = z_to_layer(pt.z, viaCost);
+            }            
+        }
+
         Route calculate_route(const Shape & s1, const Shape & s2) 
         {
             AStar st(treap, obstacles, s1, s2, boundary);
             auto pts = st.run(s1, s2);
-            for(auto & pt : pts) {
-                pt.z = z_to_layer(pt.z, viaCost);
-            }
             Route res(pts);
             simplify(res);
             return res;
         }
 
 
-        void perform_global_routing(const vector<Shape> & shapes, 
+        int perform_global_routing(const vector<Shape> & shapes, 
             const vector<Shape> & obs, 
             ostream & out) {
             treap.populate(shapes);
             obstacles.populate(obs);
 
+            int result = 0;
+
             // for(auto s : shapes) std::cout << s << '\n';
 
-            MST mst;
+            MST mst(num_neighboors);
             auto res = mst.run(treap, obstacles, shapes);
 
             for(auto [a, b] : res) {
                 auto r = calculate_route(a, b);
+
+                for(int i = 1; i < r.size();++i) {
+                    result += manhatan(r[i], r[i-1]);
+                }
+                
+                map_z_to_layer(r);
                 out << r ;
             }
+            return result;
         }
 
     };
