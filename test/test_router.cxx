@@ -33,14 +33,20 @@ int main(int argc, char ** argv) {
     // cout << shapes.size() << '\n';
     // for(auto obs: obstacles) cout << "OBS: " << obs << '\n';
 
-    stringstream ss;
 
-    cout << argv[1] << ", 10, O, " << account_route(i, 10, ss, shapes, obstacles) << '\n';
-    cout << argv[1] << ", 100, O, "  << account_route(i, 100, ss, shapes, obstacles) << '\n';
-    cout << argv[1] << ", 1000, O, "  << account_route(i, 1000, ss, shapes, obstacles) << '\n';
-    cout << argv[1] << ", 10, E, "  << account_route(i, 10, ss, shapes, vector<Shape>()) << '\n';
-    cout << argv[1] << ", 100, E, "  << account_route(i, 100, ss, shapes, vector<Shape>()) << '\n';
-    cout << argv[1] << ", 1000, E, "  << account_route(i, 1000, ss, shapes, vector<Shape>()) << '\n';
+    for(int n = 10; n <= 200; n = n * 2) {
+        auto t1 = high_resolution_clock::now();
+        stringstream ss;
+        int r1 = account_route(i, n, ss, shapes, obstacles);
+        auto t2 = high_resolution_clock::now();
+        auto dur1 = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        cout << argv[1] << ", "<<n<<", O, " << r1 <<", " << dur1 <<'\n';
+        int r2 = account_route(i, n, ss, shapes, vector<Shape>());
+        auto t3 = high_resolution_clock::now();
+        auto dur2 = chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count();
+        cout << argv[1] << ", "<<n<<", O, " << r2 << ", "<< dur2<< '\n';
+    }
+
     
     return 0;
 }
