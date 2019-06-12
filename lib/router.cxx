@@ -1,14 +1,6 @@
-// #include <base.hpp>
-// #include <algo.hpp>
-// #include <model.hpp>
-// #include <mst.hpp>
-// #include <memory>
-// #include <iostream>
-// #include <vector>
-// #include <map>
-// #include <set>
-
 #include <router.hpp>
+
+#include <algorithm>
 
 namespace iccad {
 
