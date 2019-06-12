@@ -33,22 +33,22 @@ namespace {
   // };
 }
 
-void iccad::generate_hannan(Grid & g) {
-  using std::cout;
-  V1D xs, ys, zs;
-  for(auto p : g.grid) {
-    xs.push_back(p.x);
-    ys.push_back(p.y);
-    zs.push_back(p.z);
-  }
+// void iccad::generate_hannan(Grid & g) {
+//   using std::cout;
+//   V1D xs, ys, zs;
+//   for(auto p : g.grid) {
+//     xs.push_back(p.x);
+//     ys.push_back(p.y);
+//     zs.push_back(p.z);
+//   }
 
-  // HGrid h(xs, ys, zs);
+//   // HGrid h(xs, ys, zs);
 
-  //
-  // cout << "x coordinates: " << xs.size() << " binsize: " << binsize(xs) << '\n';
-  // cout << "y coordinates :" << ys.size() << '\n';
-  // cout << "z coordinates :" << zs.size() << '\n';
+//   //
+//   // cout << "x coordinates: " << xs.size() << " binsize: " << binsize(xs) << '\n';
+//   // cout << "y coordinates :" << ys.size() << '\n';
+//   // cout << "z coordinates :" << zs.size() << '\n';
 
-  cout << "hannan grid generated\n";
+//   cout << "hannan grid generated\n";
 
-}
+// }
