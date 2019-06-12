@@ -35,7 +35,7 @@ int main(int argc, char ** argv) {
     const vector<Shape> shapes = get_routed_shapes(i);
     const vector<Shape> obstacles = get_obstacles(i);
 
-    int r1 = account_route(i, 50, fout, shapes, obstacles);
+    int r1 = account_route(i, 80, fout, shapes, obstacles);
     cout << argv[1] << ": " << r1 << '\n';    
     
     return 0;
