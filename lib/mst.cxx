@@ -42,7 +42,7 @@ const vector<Shape> & shapes, const V1D & boundary) {
     vector<pair<Shape, Shape>> result;
     using std::set, std::tuple;
 
-    set<tuple<int, Shape, Shape>> edges;
+    set<tuple<int, Shape, Shape, bool>> edges;
 
     for(const Shape & u : shapes) {
         vector<Shape> vs = treap.collect(u.a, u.b);
@@ -56,29 +56,31 @@ const vector<Shape> & shapes, const V1D & boundary) {
 
         for(Shape & v : vs) {
             if(distance(u, v) > 0) {
-                edges.insert({distance(u, v), u, v});
+                edges.insert({distance(u, v), u, v, false});
             }
         }
     }
     // sort_by_distance(edges);
 
     while(!edges.empty()) {
-        auto [w, u, v] = *edges.begin();
+        auto [w, u, v, calc] = *edges.begin();
         edges.erase(edges.begin());
+
 
         if(Find(u) != Find(v)) {
             auto a = min(u.a, v.a);
             auto b = min(u.b, v.b);        
-            int new_d = AStar(treap, obstacles, u, v, boundary).run().length();    
 
-            if(obstacles.query(a, b) > 0) {
-
-
+            if(!calc && obstacles.query(a, b) > 0)  {
+                int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+                edges.insert({new_d, u, v, true});
+            }
+            else {
+                Union(u, v);
+                // if(distance(u, v) > 0)
+                result.push_back({u, v});
             }
 
-            Union(u, v);
-            // if(distance(u, v) > 0)
-            result.push_back({u, v});
         }
     }
 
