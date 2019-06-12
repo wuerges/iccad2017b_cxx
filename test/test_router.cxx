@@ -27,6 +27,11 @@ int main(int argc, char ** argv) {
     Input i;
     parser::parse_file(i, argv[1]);
     ofstream fout(argv[2]);
+
+    if (argc != 3) {
+        cout << "usage: " << argv[0] << " <testcase> <output_file_for_solution>\n";
+        return -1;
+    }
     const vector<Shape> shapes = get_routed_shapes(i);
     const vector<Shape> obstacles = get_obstacles(i);
 
