@@ -10,7 +10,7 @@ namespace iccad {
 
 
     AStar::AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b)
-    :shapes(sh), obstacles(obs), boundary(b) {
+    :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
         add_shape(s1);
         add_shape(s2);
 
@@ -85,14 +85,14 @@ namespace iccad {
         ),v.end());
     }
 
-    vector<PT> AStar::run(const Shape & s, const Shape & t) {
+    vector<PT> AStar::run() {
+
         remove_duplicates(xs);
         fix_boundaries(xs, boundary[0], boundary[2]);
         remove_duplicates(ys);
         fix_boundaries(ys, boundary[1], boundary[3]);
         remove_duplicates(zs);
-        return run1(s, t);
-        // return bad_run(s, t);
+        return run1(source, target);
     }
 
     vector<PT> AStar::bad_run(const PT s, const Shape & ts) {

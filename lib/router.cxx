@@ -61,9 +61,6 @@ namespace iccad {
         return out;
     }
 
-
-
-
     Router::Router(int sp, int vc, V1D b, int n):spacing(sp), viaCost(vc)
         , boundary(b), num_neighboors(n) {
             boundary[0] += spacing;
@@ -81,8 +78,7 @@ namespace iccad {
 
     Route Router::calculate_route(const Shape & s1, const Shape & s2) 
     {
-        AStar st(treap, obstacles, s1, s2, boundary);
-        auto pts = st.run(s1, s2);
+        auto pts = AStar(treap, obstacles, s1, s2, boundary).run();
         Route res(pts);
         simplify(res);
         return res;

@@ -18,12 +18,14 @@ struct AStar {
         Treap & shapes, & obstacles;
         V1D boundary;
         vector<int> xs, ys, zs;
+        const Shape & source;
+        const Shape & target;
 
         AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b);
 
 
 
-        vector<PT> run(const Shape & s, const Shape & t) ;
+        vector<PT> run() ;
 
 
 private:
