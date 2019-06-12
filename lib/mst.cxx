@@ -54,18 +54,9 @@ const vector<Shape> & shapes) {
         vector<Shape> vs = treap.neighboors(u, num_neighboors);
 
         for(Shape & v : vs) {
-        if(distance(u, v) > 0) {
-
-            auto a = min(u.a, v.a);
-            auto b = min(u.b, v.b);
-
-            if(obstacles.query(a, b) > 0) {
-            edges.insert({distance(u, v), u, v});
+            if(distance(u, v) > 0) {
+                edges.insert({distance(u, v), u, v});
             }
-            else {
-            edges.insert({distance(u, v), u, v});
-            }
-        }
         }
     }
     // sort_by_distance(edges);
@@ -75,11 +66,17 @@ const vector<Shape> & shapes) {
         //   Union(u, v);
         // }
         if(Find(u) != Find(v)) {
-        Union(u, v);
-        // if(distance(u, v) > 0)
-        result.push_back({u, v});
+            Union(u, v);
+            // if(distance(u, v) > 0)
+            result.push_back({u, v});
         }
     }
+
+    //
+    // auto a = min(u.a, v.a);
+    // auto b = min(u.b, v.b);
+    // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+                
     return result;
 }
 
