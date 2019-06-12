@@ -2,6 +2,7 @@
 
 #include <base.hpp>
 #include <algo.hpp>
+#include <model.hpp>
 #include <vector>
 #include <map>
 
@@ -22,7 +23,7 @@ namespace iccad {
       \param obstacles A Treap containing the obstacles.
      */
     vector<pair<Shape, Shape>> run(const Treap & treap, const Treap & obstacles,
-      const vector<Shape> & shapes) ;
+      const vector<Shape> & shapes, const V1D & boundary) ;
 
     /*!
      */

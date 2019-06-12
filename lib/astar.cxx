@@ -80,7 +80,7 @@ namespace iccad {
     }
 
 
-    AStar::AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b)
+    AStar::AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
     :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
         add_shape(s1);
         add_shape(s2);

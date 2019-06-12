@@ -27,13 +27,14 @@ namespace iccad {
 
         using index = tuple<int, int, int>;
 
-        Treap & shapes, & obstacles;
+        const Treap & shapes;
+        const Treap & obstacles;
         V1D boundary;
         vector<int> xs, ys, zs;
         const Shape & source;
         const Shape & target;
 
-        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b);
+        AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b);
 
 
 

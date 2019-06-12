@@ -1,4 +1,5 @@
 #include <mst.hpp>
+#include <astar.hpp>
 
 #include <set>
 
@@ -37,7 +38,7 @@ void MST::Union(const Shape & x, const Shape & y) {
 
 
 vector<pair<Shape, Shape>> MST::run(const Treap & treap, const Treap & obstacles,
-const vector<Shape> & shapes) {
+const vector<Shape> & shapes, const V1D & boundary) {
     vector<pair<Shape, Shape>> result;
     using std::set, std::tuple;
 
@@ -61,11 +62,20 @@ const vector<Shape> & shapes) {
     }
     // sort_by_distance(edges);
 
-    for(auto & [w, u, v] : edges) {
-        // if(distance(u, v) == 0) {
-        //   Union(u, v);
-        // }
+    while(!edges.empty()) {
+        auto [w, u, v] = *edges.begin();
+        edges.erase(edges.begin());
+
         if(Find(u) != Find(v)) {
+            auto a = min(u.a, v.a);
+            auto b = min(u.b, v.b);        
+            int new_d = AStar(treap, obstacles, u, v, boundary).run().length();    
+
+            if(obstacles.query(a, b) > 0) {
+
+
+            }
+
             Union(u, v);
             // if(distance(u, v) > 0)
             result.push_back({u, v});
@@ -73,9 +83,7 @@ const vector<Shape> & shapes) {
     }
 
     //
-    // auto a = min(u.a, v.a);
-    // auto b = min(u.b, v.b);
-    // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+    
                 
     return result;
 }

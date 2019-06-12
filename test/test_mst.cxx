@@ -24,7 +24,7 @@ int main(int argc, char ** argv) {
   MST mst(1000);
   Treap treap, obstacles;
   treap.populate(shapes);
-  auto res = mst.run(treap, obstacles, shapes);
+  auto res = mst.run(treap, obstacles, shapes, i.boundary);
 
   int total = 0;
 
