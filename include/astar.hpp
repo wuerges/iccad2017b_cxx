@@ -11,7 +11,19 @@ namespace iccad {
 
     using std::tuple, std::vector;
 
-struct AStar {
+
+    struct Route {
+        vector<PT> route;
+        void simplify();
+        void add_point(PT p);
+        friend ostream & print2D(ostream &out, const PT & p);
+        friend ostream & operator<<(ostream &out, const Route & r);    
+        int length() const ;
+    };
+
+
+
+    struct AStar {
 
         using index = tuple<int, int, int>;
 
@@ -25,7 +37,7 @@ struct AStar {
 
 
 
-        vector<PT> run() ;
+        Route run() ;
 
 
 private:
@@ -37,8 +49,8 @@ private:
         void remove_duplicates(vector<int> & v) ;
         void fix_boundaries(vector<int> & v, int min_bound, int max_bound);
         void add_shape(const Shape & s) ;
-        vector<PT> bad_run(const PT s, const Shape & ts) ;
-        vector<PT> run1(const Shape & shape_s, const Shape & shape_t) ;
+        // Route bad_run(const PT s, const Shape & ts) ;
+        Route run1(const Shape & shape_s, const Shape & shape_t) ;
     };
 
 }

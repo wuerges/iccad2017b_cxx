@@ -1,5 +1,6 @@
 #pragma once
 
+#include <astar.hpp>
 #include <base.hpp>
 #include <algo.hpp>
 #include <model.hpp>
@@ -11,13 +12,6 @@
 #include <set>
 
 namespace iccad {
-
-    using Route = std::vector<PT>;
-    using std::vector, std::tuple, std::set;
-    void simplify(Route & r);
-    ostream & print2D(ostream &out, const PT & p);
-    ostream & operator<<(ostream &out, const Route & r);    
-
 
     struct Router {
 

@@ -8,6 +8,77 @@ namespace iccad {
 
     using std::sort, std::pair, std::map, std::set;
 
+    void Route::add_point(PT p) {
+        route.push_back(p);
+    }
+
+    int Route::length() const {
+        int result = 0;
+
+        for(int i = 1; i < route.size();++i) {
+            result += manhatan(route[i], route[i-1]);
+        }
+
+        return result;
+    }
+
+    void Route::simplify() {
+        for(int i = 2; i < route.size(); ++i) {
+            PT & a = route[i-2], & b = route[i-1], & c = route[i];
+            
+            if(a.x == b.x && b.x == c.x && a.z == b.z && b.z == c.z) {
+                b.y = a.y;
+            }
+            if(a.y == b.y && b.y == c.y && a.z == b.z && b.z == c.z) {
+                b.x = a.x;
+            }
+            if(a.x == b.x && b.x == c.x && a.y == b.y && b.y == c.y) {
+                b.z = a.z;
+            }
+        }
+        route.erase(unique(route.begin(), route.end()), route.end());
+    }
+
+    ostream & print2D(ostream &out, const PT & p) {
+        return out << "(" << p.x << "," << p.y << ")";        
+    }
+
+    ostream & operator<<(ostream &out, const Route & r_) {
+        const auto & r = r_.route;
+        for(int i = 1; i < r.size(); ++i) {
+            const PT & a = r[i-1], & b = r[i];
+            int layer = std::min(a.z, b.z);
+            if(a.y == b.y && a.z == b.z) {
+                out << "H-line M" << layer << " ";
+                print2D(out, a);
+                out << " ";
+                print2D(out, b);
+                out << '\n';
+            }
+            else if(a.x == b.x && a.z == b.z) {
+                out << "V-line M" << layer << " ";
+                print2D(out, a);
+                out << " ";
+                print2D(out, b);
+                out << '\n';
+            }
+            else if(a.x == b.x && a.y == b.y) {
+                int beg = std::min(a.z, b.z);
+                int end = std::max(a.z, b.z);
+                for(int zi = beg; zi < end; ++zi) {
+                    out << "Via V" << zi  << " ";
+                    print2D(out, a);
+                    out << '\n';
+                }
+            }
+            else {
+                std::cerr << "Route not rectangular\n";
+                std::cerr << a << " " << b << '\n';
+            }
+        }
+        return out;
+    }
+
 
     AStar::AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b)
     :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
@@ -85,7 +156,7 @@ namespace iccad {
         ),v.end());
     }
 
-    vector<PT> AStar::run() {
+    Route AStar::run() {
 
         remove_duplicates(xs);
         fix_boundaries(xs, boundary[0], boundary[2]);
@@ -95,30 +166,30 @@ namespace iccad {
         return run1(source, target);
     }
 
-    vector<PT> AStar::bad_run(const PT s, const Shape & ts) {
-        using std::min, std::max;
-        vector<PT> result;
+    // vector<PT> AStar::bad_run(const PT s, const Shape & ts) {
+    //     using std::min, std::max;
+    //     vector<PT> result;
 
-        PT t = ts.a;
+    //     PT t = ts.a;
 
-        result.push_back(s);
+    //     result.push_back(s);
         
-        PT art1 = s;
-        art1.x = t.x;
-        if(s.x != t.x)
-            result.push_back(art1);
+    //     PT art1 = s;
+    //     art1.x = t.x;
+    //     if(s.x != t.x)
+    //         result.push_back(art1);
 
-        PT art2 = art1;
-        art2.z = t.z;
-        if(s.z != t.z) 
-            result.push_back(art2);
+    //     PT art2 = art1;
+    //     art2.z = t.z;
+    //     if(s.z != t.z) 
+    //         result.push_back(art2);
 
-        result.push_back(t);
+    //     result.push_back(t);
 
-        return result;
-    }
+    //     return result;
+    // }
     
-    vector<PT> AStar::run1(const Shape & shape_s, const Shape & shape_t) {
+    Route AStar::run1(const Shape & shape_s, const Shape & shape_t) {
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
         index s = find(shape_s.a);
@@ -189,11 +260,11 @@ namespace iccad {
 
         }
 
-        vector<PT> path;
+        Route path;
 
         while(true) {
             PT pt_x = make_pt(x);
-            path.push_back(pt_x);
+            path.add_point(pt_x);
             
             
             if(collides(Shape(pt_x, pt_x), shape_s)) break;
