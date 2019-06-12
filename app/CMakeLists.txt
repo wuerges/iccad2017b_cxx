@@ -1,5 +1,5 @@
 
-add_executable(RoutingReport test_router.cxx)
+add_executable(RoutingReport routing_report.cxx)
 target_link_libraries(RoutingReport
   Model
   Parser
