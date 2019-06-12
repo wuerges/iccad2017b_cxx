@@ -15,61 +15,11 @@ namespace iccad {
     using Route = std::vector<PT>;
     using std::vector, std::tuple, std::set;
 
-    void simplify(Route & r) {
-        for(int i = 2; i < r.size(); ++i) {
-            PT & a = r[i-2], & b = r[i-1], & c = r[i];
-            
-            if(a.x == b.x && b.x == c.x && a.z == b.z && b.z == c.z) {
-                b.y = a.y;
-            }
-            if(a.y == b.y && b.y == c.y && a.z == b.z && b.z == c.z) {
-                b.x = a.x;
-            }
-            if(a.x == b.x && b.x == c.x && a.y == b.y && b.y == c.y) {
-                b.z = a.z;
-            }
-        }
-        r.erase(unique(r.begin(), r.end()), r.end());
-    }
+    void simplify(Route & r);
 
-    ostream & print2D(ostream &out, const PT & p) {
-        return out << "(" << p.x << "," << p.y << ")";        
-    }
+    ostream & print2D(ostream &out, const PT & p);
 
-    ostream & operator<<(ostream &out, const Route & r) {
-        for(int i = 1; i < r.size(); ++i) {
-            const PT & a = r[i-1], & b = r[i];
-            int layer = std::min(a.z, b.z);
-            if(a.y == b.y && a.z == b.z) {
-                out << "H-line M" << layer << " ";
-                print2D(out, a);
-                out << " ";
-                print2D(out, b);
-                out << '\n';
-            }
-            else if(a.x == b.x && a.z == b.z) {
-                out << "V-line M" << layer << " ";
-                print2D(out, a);
-                out << " ";
-                print2D(out, b);
-                out << '\n';
-            }
-            else if(a.x == b.x && a.y == b.y) {
-                int beg = std::min(a.z, b.z);
-                int end = std::max(a.z, b.z);
-                for(int zi = beg; zi < end; ++zi) {
-                    out << "Via V" << zi  << " ";
-                    print2D(out, a);
-                    out << '\n';
-                }
-            }
-            else {
-                std::cerr << "Route not rectangular\n";
-                std::cerr << a << " " << b << '\n';
-            }
-        }
-        return out;
-    }
+    ostream & operator<<(ostream &out, const Route & r);
 
     struct AStar {
 
@@ -79,206 +29,27 @@ namespace iccad {
         V1D boundary;
         vector<int> xs, ys, zs;
 
-        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b)
-        :shapes(sh), obstacles(obs), boundary(b) {
-            add_shape(s1);
-            add_shape(s2);
+        AStar(Treap & sh, Treap & obs, const Shape & s1, const Shape & s2, V1D b);
 
-            for (auto sx : obstacles.collect(min(s1.a, s2.a), max(s1.b, s2.b))) {
-                add_shape(sx.expand(1));
-            };
+        void add_shape(const Shape & s) ;
 
-        }
+        vector<index> neighboors(index i);
 
-        void add_shape(const Shape & s) {
-            xs.push_back(s.a.x);
-            xs.push_back(s.b.x);
-            ys.push_back(s.a.y);
-            ys.push_back(s.b.y);
-            zs.push_back(s.a.z);
-            zs.push_back(s.b.z);
-        }
+        const PT make_pt(index i);
 
-        vector<index> neighboors(index i) {
-            vector<index> result;
+        int find(int c, const vector<int> & v) const ;
 
-            auto [x, y, z] = i;
-            if(x > 0)           result.push_back({x-1, y, z});
-            if(x < xs.size()-1) result.push_back({x+1, y, z});
+        index find(const PT p) const;
 
-            if(y > 0)           result.push_back({x, y-1, z});
-            if(y < ys.size()-1) result.push_back({x, y+1, z});
+        void remove_duplicates(vector<int> & v) ;
 
-            if(z > 0)           result.push_back({x, y, z-1});
-            if(z < zs.size()-1) result.push_back({x, y, z+1});
-            
-            return result;
-        }
+        void fix_boundaries(vector<int> & v, int min_bound, int max_bound);
 
-        const PT make_pt(index i) {
-            auto [x, y, z] = i;
-            return PT(xs[x], ys[y], zs[z]);
-        }
+        vector<PT> run(const Shape & s, const Shape & t) ;
 
-        int find(int c, const vector<int> & v) const {
-            for(int i = 0; i<v.size(); ++i) {
-                if(v[i] == c) return i;
-            }
-            using std::cerr;
-            cerr << "Coordinate not found\n";
-            cerr << "Searching for `" << c << "' in {";
-            for(int i = 0; i < v.size(); ++i) {
-                cerr << v[i] << ' ';
-            }
-            cerr << "}\n";
-            throw -100;
-        }
-
-        index find(const PT p) const {
-            try {
-                return {find(p.x, xs), find(p.y, ys), find(p.z, zs)};
-            }
-            catch (int e) {
-                using std::cerr;
-                cerr << "Point not found: " << p << '\n';
-                throw e;
-            }
-        }
-
-        void remove_duplicates(vector<int> & v) {
-            sort(v.begin(), v.end());
-            v.erase(std::unique(v.begin(), v.end()), v.end());
-        }
-        void fix_boundaries(vector<int> & v, int min_bound, int max_bound) {
-            v.erase(std::remove_if(v.begin(), v.end(), 
-                [min_bound, max_bound](int c) { return c < min_bound || c > max_bound; }
-            ),v.end());
-        }
-
-        vector<PT> run(const Shape & s, const Shape & t) {
-            remove_duplicates(xs);
-            fix_boundaries(xs, boundary[0], boundary[2]);
-            remove_duplicates(ys);
-            fix_boundaries(ys, boundary[1], boundary[3]);
-            remove_duplicates(zs);
-            return run1(s, t);
-            // return bad_run(s, t);
-        }
-
-        vector<PT> bad_run(const PT s, const Shape & ts) {
-            using std::min, std::max;
-            vector<PT> result;
-
-            PT t = ts.a;
-
-            result.push_back(s);
-            
-            PT art1 = s;
-            art1.x = t.x;
-            if(s.x != t.x)
-                result.push_back(art1);
-
-            PT art2 = art1;
-            art2.z = t.z;
-            if(s.z != t.z) 
-                result.push_back(art2);
-
-            result.push_back(t);
-
-            return result;
-        }
+        vector<PT> bad_run(const PT s, const Shape & ts) ;
         
-        vector<PT> run1(const Shape & shape_s, const Shape & shape_t) {
-            using ii = pair<int64_t, index>;
-            const int64_t INF = 1e9;
-            index s = find(shape_s.a);
-            index t = find(shape_t.a);
-            
-            map<index, int64_t> dst;
-            map<index, index> pred;
-            set<ii> queue;
-            
-            dst[s] = 0;
-            queue.insert({0, s});
-            index x = t;
-            while(!queue.empty()) {
-                auto [_, u] = *queue.begin();
-                if(u == t) break;
-                if(distance(make_pt(u), shape_t) == 0) {
-                // if(collides(Shape(make_pt(u), make_pt(u)), shape_t)) {
-                    x = u;
-                    break;
-                }
-                queue.erase(queue.begin());
-                // std::cout << "N of " << make_pt(u) << '\n';
-                // for(auto v : neighboors(u)) {
-                //     std::cout << ":-> " << make_pt(v) << '\n';
-                // }
-                // std::cout << '\n';
-                
-                for(auto v : neighboors(u)) {
-
-                    // Avoid a point if it is inside an obstacle
-                    auto u_pt = make_pt(u);
-                    auto v_pt = make_pt(v);
-
-                    // std::cout << "Query = " << Shape(u_pt, v_pt) << " = " << obstacles.query(v_pt, u_pt)  <<'\n';
-                    // for(auto ob : obstacles.collect(v_pt, v_pt)) {
-                    //     std::cout << "Obstacle: " << ob << '\n';
-                    // }
-                    if(obstacles.query(v_pt, u_pt) > 0) {
-                        // std::cout << "Point " << v_pt << " is in an obstacle\n";
-                        // for(auto ob : obstacles.collect(v_pt, v_pt)) {
-                        //     std::cout << "Obstacle: " << ob << '\n';
-                        // }
-                        continue;
-                    }
-
-                    int w = manhatan(make_pt(u), make_pt(v));
-                    // if(collides(Shape(make_pt(u), make_pt(u)), shape_s)) {
-                    if(distance(make_pt(u), shape_s) == 0) {
-                        w = 0;
-                    }
-                    // if(distance(make_pt(u), shape_s) == 0) w = 0;
-
-                    auto it = dst.find(v);
-                    int64_t old_w = it != dst.end() ? it->second : INF;
-
-                    
-                    if(old_w > dst[u] + w) {
-                        dst[v] = dst[u] + w;
-                        pred[v] = u;
-                        queue.erase({old_w, v});
-                        queue.insert({dst[v], v}); // Dijkstra
-
-                        // A* heuristic
-                        // int a_star = distance(make_pt(v), shape_t);
-                        // queue.insert({dst[v]+a_star, v}); 
-                    }
-                }
-
-            }
-
-            vector<PT> path;
-
-            while(true) {
-                PT pt_x = make_pt(x);
-                path.push_back(pt_x);
-                
-               
-                if(collides(Shape(pt_x, pt_x), shape_s)) break;
-                if(distance(make_pt(x), shape_s) == 0) break;
-
-                auto it = pred.find(x);
-                if(it != pred.end()) {
-                    x = it->second;
-                }
-                else {
-                    break;
-                }
-            }
-            return path;
-        }
+        vector<PT> run1(const Shape & shape_s, const Shape & shape_t) ;
     };
 
 
@@ -289,56 +60,15 @@ namespace iccad {
         int num_neighboors;
         Treap  treap, obstacles;
 
-        Router(int sp, int vc, V1D b, int n):spacing(sp), viaCost(vc)
-            , boundary(b), num_neighboors(n) {
-                boundary[0] += spacing;
-                boundary[1] += spacing;
-                boundary[2] -= spacing;
-                boundary[3] -= spacing;
-            }
-        
+        Router(int sp, int vc, V1D b, int n);
 
-        void map_z_to_layer(Route & pts) {
-            for(auto & pt : pts) {
-                pt.z = z_to_layer(pt.z, viaCost);
-            }            
-        }
+        void map_z_to_layer(Route & pts);
 
-        Route calculate_route(const Shape & s1, const Shape & s2) 
-        {
-            AStar st(treap, obstacles, s1, s2, boundary);
-            auto pts = st.run(s1, s2);
-            Route res(pts);
-            simplify(res);
-            return res;
-        }
+        Route calculate_route(const Shape & s1, const Shape & s2) ;
 
 
         int perform_global_routing(const vector<Shape> & shapes, 
             const vector<Shape> & obs, 
-            ostream & out) {
-            treap.populate(shapes);
-            obstacles.populate(obs);
-
-            int result = 0;
-
-            // for(auto s : shapes) std::cout << s << '\n';
-
-            MST mst(num_neighboors);
-            auto res = mst.run(treap, obstacles, shapes);
-
-            for(auto [a, b] : res) {
-                auto r = calculate_route(a, b);
-
-                for(int i = 1; i < r.size();++i) {
-                    result += manhatan(r[i], r[i-1]);
-                }
-                
-                map_z_to_layer(r);
-                out << r ;
-            }
-            return result;
-        }
-
+            ostream & out) ;
     };
 }

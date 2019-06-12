@@ -13,11 +13,11 @@
 
 namespace iccad {
   using std::vector, std::pair, std::map, std::sort;
-  void sort_by_distance(vector<pair<Shape, Shape>> & edges) {
-    sort(edges.begin(), edges.end(), [&](auto & p1, auto & p2) {
-      return distance(p1.first, p1.second) < distance(p2.first, p2.second);
-    });
-  }
+  // void sort_by_distance(vector<pair<Shape, Shape>> & edges) {
+  //   sort(edges.begin(), edges.end(), [&](auto & p1, auto & p2) {
+  //     return distance(p1.first, p1.second) < distance(p2.first, p2.second);
+  //   });
+  // }
 
     struct MST {
 
