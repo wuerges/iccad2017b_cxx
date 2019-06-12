@@ -9,11 +9,11 @@
 
 using namespace iccad;
 
-bool iccad::operator<(const P3D & p1, const P3D & p2) {
- if(p1.x != p2.x) return p1.x < p2.x;
- if(p1.y != p2.y) return p1.y < p2.y;
- return p1.z < p2.z;
-}
+// bool iccad::operator<(const P3D & p1, const P3D & p2) {
+//  if(p1.x != p2.x) return p1.x < p2.x;
+//  if(p1.y != p2.y) return p1.y < p2.y;
+//  return p1.z < p2.z;
+// }
 
 // void Grid::add_edge(const P3D p1, const P3D p2) {
 // 	grid.insert(p1);
