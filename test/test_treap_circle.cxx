@@ -169,16 +169,23 @@ int main(int n, char**argv) {
     vector<Shape> shapes;
   
     shapes.push_back(Shape{PT{10, 10, 0}, PT{20, 20, 0}});
-    shapes.push_back(Shape{PT{30, 30, 0}, PT{40, 40, 0}});
-    shapes.push_back(Shape{PT{10, 10, 0}, PT{40, 40, 0}});
-    shapes.push_back(Shape{PT{0, 0, 0}, PT{20, 20, 0}});
-    shapes.push_back(Shape{PT{10, 10, 0}, PT{50, 50, 0}});
+    // shapes.push_back(Shape{PT{30, 30, 0}, PT{40, 40, 0}});
+    // shapes.push_back(Shape{PT{10, 10, 0}, PT{40, 40, 0}});
+    // shapes.push_back(Shape{PT{0, 0, 0}, PT{20, 20, 0}});
+    // shapes.push_back(Shape{PT{10, 10, 0}, PT{50, 50, 0}});
 
     Treap tree;
     tree.populate(shapes);
 
+    cout << "all shapes:\n";
+    for(auto s : shapes) {
+        cout << s << '\n';
+    }
     cout << "testing radius search\n";
-    cout << tree.query(PT{0, 0, 0}, 100) << "\n";
+    // cout << tree.query(PT{40, 10, 0}, 10) << "\n";
+    for(auto s : tree.collect(PT{5, 22, 0}, 5)) {
+        cout << s << '\n';
+    }
 
 
   // test_treap(shapes);

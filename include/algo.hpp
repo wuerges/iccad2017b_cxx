@@ -103,5 +103,20 @@ namespace iccad {
         }
         return collect(PT(l.x-w, l.y-w, l.z-w), PT(l.x+w, l.y+w, l.z+w));
       }
+
+      std::vector<Shape> neighboors_sphere(const Shape & u, size_t number) const {
+        int w = 1;
+        PT center = PT{(u.a.x + u.b.x) / 2, (u.a.y + u.b.y) / 2, (u.a.z + u.b.z) /2 };
+        int q = query(center, w);
+        // std::cout << " w =" << w << "\n";
+        while(q <= number && w < 1e8) {
+          w = w * 2;
+          q = query(center, w);
+          // std::cout << "Query=" << q << " w=" << w
+          //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
+          //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
+        }
+        return collect(center, w);
+      }
     };
 }
