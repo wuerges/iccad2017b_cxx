@@ -188,6 +188,12 @@ int main(int n, char**argv) {
     }
 
 
+    cout << "contains?\n";
+    cout << sphere_contains(PT{15,15,0}, 8, PT{10, 10, 0}, PT{20, 20, 0}) << '\n';
+    cout << sphere_contains(PT{15,15,0}, 7, PT{10, 10, 0}, PT{20, 20, 0}) << '\n';
+    cout << sphere_contains(PT{16,14,0}, 8, PT{10, 10, 0}, PT{20, 20, 0}) << '\n';
+  
+
   // test_treap(shapes);
 
 
