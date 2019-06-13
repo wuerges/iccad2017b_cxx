@@ -6,6 +6,10 @@
 #include <vector>
 
 namespace iccad {
+
+  const bool sphere_contains(const PT center, int radius, const PT a, const PT b);
+  const bool sphere_collides(const PT center, int radius, const PT a, const PT b);
+        
     struct Node {
         Node(const Shape _x):
           x(_x), low(_x.a), high(_x.b), count(1)
@@ -20,10 +24,12 @@ namespace iccad {
 
         void add(const Shape & shape, int level=0);
         int query(const PT l, const PT r, int level = 0);
-        int query(const PT center, int radius, int level = 0);
+        int query_sphere(const PT center, int radius, int level = 0);
+        // bool sphere_collides(const PT center, int radius) const ;
+        // bool sphere_contains(const PT center, int radius) const ;
         int collect(std::vector<Shape> & results,
           const PT l, const PT r, int level = 0);
-        int collect(std::vector<Shape> & results,
+        int collect_sphere(std::vector<Shape> & results,
           const PT center, int radius, int level = 0);
         void print(int h=0, int level=0);
     };
@@ -56,12 +62,28 @@ namespace iccad {
         return 0;
       }
 
+      int query(const PT center, int radius) const {
+        if(root) {
+          return root->query_sphere(center, radius);
+        }
+        return 0;
+      }
+
       std::vector<Shape> collect(const PT l, const PT r) const {
 
 
         std::vector<Shape> results;
         if(root) {
           root->collect(results, l, r);
+        }
+        return results;
+      }
+
+      std::vector<Shape> collect(const PT center, int radius) const {
+
+        std::vector<Shape> results;
+        if(root) {
+          root ->collect_sphere(results, center, radius);
         }
         return results;
       }

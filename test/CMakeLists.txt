@@ -41,3 +41,7 @@ target_link_libraries(TestGlobalRouter
 add_executable(TestTreap test_treap.cxx)
 target_link_libraries(TestTreap
   Model rapidcheck)
+
+add_executable(TestTreapCircle test_treap_circle.cxx)
+target_link_libraries(TestTreapCircle
+  Model rapidcheck)

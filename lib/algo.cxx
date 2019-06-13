@@ -42,9 +42,56 @@ namespace iccad {
       count = 1 + (left?left->count:0) + (right?right->count:0);
   }
 
+    const bool sphere_collides(const PT center, int radius, const PT low, const PT high) {
 
-  int Node::query(const PT center, int radius, int level) {
-      return 0;
+        int s_radius = radius * radius;
+        for(int x : {high.x, low.x}) {
+            for(int y : {high.y, low.y}) {                
+                for(int z : {high.z, low.z}) {    
+                    int dx = (x - center.x);      
+                    int dy = (y - center.y);      
+                    int dz = (z - center.z);      
+                    int p_radius = dx*dx + dy*dy + dz*dz;
+                    if(p_radius <= s_radius) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    const bool sphere_contains(const PT center, int radius, const PT low, const PT high) {
+        int s_radius = radius * radius;
+        for(int x : {high.x, low.x}) {
+            for(int y : {high.y, low.y}) {                
+                for(int z : {high.z, low.z}) {    
+                    int dx = (x - center.x);      
+                    int dy = (y - center.y);      
+                    int dz = (z - center.z);      
+                    int p_radius = dx*dx + dy*dy + dz*dz;
+                    if(p_radius > s_radius) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+  int Node::query_sphere(const PT center, int radius, int level) {
+
+      if(sphere_contains(center, radius, low, high)) {
+          return count;
+      }
+      if(!sphere_collides(center, radius, low, high)) {
+          return 0;
+      }
+      bool hits = sphere_collides(center, radius, x.a, x.b);
+
+      return (hits?1:0) 
+        + (left?left->query_sphere(center, radius, level+1):0)
+        + (right?right->query_sphere(center, radius, level+1):0);
   }
         
 
@@ -84,8 +131,16 @@ namespace iccad {
           + (right?right->collect(results, l, r, level+1):0);
   }
 
-    int Node::collect(std::vector<Shape> & results, const PT center, int radius, int level) {
-        return 0;
+    int Node::collect_sphere(std::vector<Shape> & results, const PT center, int radius, int level) {
+        if(!sphere_collides(center, radius, low, high)) {
+            return 0;
+        }
+        bool hits = sphere_collides(center, radius, x.a, x.b);
+        if(hits) results.push_back(x);
+
+        return (hits?1:0) 
+            + (left?left->collect_sphere(results, center, radius, level+1):0)
+            + (right?right->collect_sphere(results, center, radius, level+1):0);
     }
 
   void Node::print(int h, int level) {
