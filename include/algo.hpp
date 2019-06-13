@@ -20,8 +20,11 @@ namespace iccad {
 
         void add(const Shape & shape, int level=0);
         int query(const PT l, const PT r, int level = 0);
+        int query(const PT center, int radius, int level = 0);
         int collect(std::vector<Shape> & results,
           const PT l, const PT r, int level = 0);
+        int collect(std::vector<Shape> & results,
+          const PT center, int radius, int level = 0);
         void print(int h=0, int level=0);
     };
 

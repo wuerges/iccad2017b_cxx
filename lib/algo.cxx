@@ -42,6 +42,12 @@ namespace iccad {
       count = 1 + (left?left->count:0) + (right?right->count:0);
   }
 
+
+  int Node::query(const PT center, int radius, int level) {
+      return 0;
+  }
+        
+
   int Node::query(const PT l, const PT r, int level) {
 
       if(l <= low && r >= high) {
@@ -78,7 +84,9 @@ namespace iccad {
           + (right?right->collect(results, l, r, level+1):0);
   }
 
-
+    int Node::collect(std::vector<Shape> & results, const PT center, int radius, int level) {
+        return 0;
+    }
 
   void Node::print(int h, int level) {
       int a = x.a[level % 3];
