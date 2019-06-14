@@ -81,22 +81,24 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
 
 int Node::query_sphere(const PT center, int radius, int level) {
 
-  if ((center[level % 3] - radius) > high[level % 3] || r[level % 3] < low[level % 3]) {
+  if ((center[level % 3] + radius) > high[level % 3] || (center[level % 3] - radius) < low[level % 3]) {
     return 0;
   }
 
   if (sphere_contains(center, radius, low, high)) {
     return count;
   }
-  if (!sphere_collides(center, radius, low, high)) {
-    return 0;
-  }
+  // if (!sphere_collides(center, radius, low, high)) {
+  //   return 0;
+  // }
   bool hits = sphere_collides(center, radius, x.a, x.b);
 
   return (hits ? 1 : 0) +
          (left ? left->query_sphere(center, radius, level + 1) : 0) +
          (right ? right->query_sphere(center, radius, level + 1) : 0);
 }
+
+
 
 int Node::query(const PT l, const PT r, int level) {
 
@@ -114,6 +116,24 @@ int Node::query(const PT l, const PT r, int level) {
 
   return (hits ? 1 : 0) + (left ? left->query(l, r, level + 1) : 0) +
          (right ? right->query(l, r, level + 1) : 0);
+}
+
+bool Node::hits(const PT l, const PT r, int level) {
+
+  if (l <= low && r >= high) {
+    return count > 0;
+  }
+  if (l > high || r < low) {
+    return false;
+  }
+  if (l[level % 3] > high[level % 3] || r[level % 3] < low[level % 3]) {
+    return false;
+  }
+
+  bool hits = collides(x, Shape{l, r});
+
+  return hits || + (left ? left->hits(l, r, level + 1) : false) ||
+         (right ? right->hits(l, r, level + 1) : false);
 }
 
 int Node::collect(std::vector<Shape> &results, const PT l, const PT r,

@@ -20,6 +20,7 @@ struct Node {
   std::unique_ptr<Node> left, right;
 
   void add(const Shape &shape, int level = 0);
+  bool hits(const PT l, const PT r, int level = 0);
   int query(const PT l, const PT r, int level = 0);
   int query_sphere(const PT center, int radius, int level = 0);
   // bool sphere_collides(const PT center, int radius) const ;
@@ -65,6 +66,14 @@ struct Treap {
     return 0;
   }
 
+  int hits(const PT l, const PT r) const {
+    if (root) {
+      return root->hits(l, r);
+    }
+    return 0;
+  }
+
+
   std::vector<Shape> collect(const PT l, const PT r) const {
 
     std::vector<Shape> results;
@@ -84,7 +93,7 @@ struct Treap {
   }
 
   std::vector<Shape> neighboors(const Shape &u, size_t number) const {
-    int w = 100;
+    int w = 1;
     PT l = u.a;
     PT r = u.b;
     int q = query(PT(l.x - w, l.y - w, l.z - w), PT(r.x + w, r.y + w, r.z + w));
@@ -101,7 +110,7 @@ struct Treap {
   }
 
   std::vector<Shape> neighboors_sphere(const Shape &u, size_t number) const {
-    int w = 1;
+    int w = 10;
     PT center =
         PT{(u.a.x + u.b.x) / 2, (u.a.y + u.b.y) / 2, (u.a.z + u.b.z) / 2};
     int q = query(center, w);
