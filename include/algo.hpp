@@ -84,7 +84,7 @@ struct Treap {
   }
 
   std::vector<Shape> neighboors(const Shape &u, size_t number) const {
-    int w = 1;
+    int w = 100;
     PT l = u.a;
     PT r = u.b;
     int q = query(PT(l.x - w, l.y - w, l.z - w), PT(r.x + w, r.y + w, r.z + w));
