@@ -81,6 +81,10 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
 
 int Node::query_sphere(const PT center, int radius, int level) {
 
+  if ((center[level % 3] - radius) > high[level % 3] || r[level % 3] < low[level % 3]) {
+    return 0;
+  }
+
   if (sphere_contains(center, radius, low, high)) {
     return count;
   }
