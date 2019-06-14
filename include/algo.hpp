@@ -109,10 +109,12 @@ struct Treap {
     while (q <= number && w < 1e8) {
       w = w * 2;
       q = query(center, w);
+      // std::cout << "Query=" << q << " w=" << w << '\n';
       // std::cout << "Query=" << q << " w=" << w
       //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
       //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
     }
+    auto temp = collect(center, w);
     return collect(center, w);
   }
 };

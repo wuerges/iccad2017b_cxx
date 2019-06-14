@@ -187,7 +187,11 @@ int main(int n, char **argv) {
   cout << sphere_contains(PT{16, 14, 0}, 8, PT{10, 10, 0}, PT{20, 20, 0})
        << '\n';
 
-  // test_treap(shapes);
+  cout << "neighboor search:\n";
+  for (auto s : tree.neighboors_sphere(Shape{PT{10, 10, 0}, PT{20, 20, 0}}, 10)) {
+    cout << s << '\n';
+  } 
+      // test_treap(shapes);
 
-  return 0;
+      return 0;
 }

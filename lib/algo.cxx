@@ -37,17 +37,19 @@ void Node::add(const Shape &shape, int level) {
   count = 1 + (left ? left->count : 0) + (right ? right->count : 0);
 }
 
-const bool sphere_collides(const PT center, int radius, const PT low,
+const bool sphere_collides(const PT center, int radius32, const PT low,
                            const PT high) {
 
-  int s_radius = radius * radius;
+  int64_t radius = radius32;
+  int64_t s_radius = radius * radius;
+
   for (int x : {high.x, low.x}) {
     for (int y : {high.y, low.y}) {
       for (int z : {high.z, low.z}) {
-        int dx = (x - center.x);
-        int dy = (y - center.y);
-        int dz = (z - center.z);
-        int p_radius = dx * dx + dy * dy + dz * dz;
+        int64_t dx = (x - center.x);
+        int64_t dy = (y - center.y);
+        int64_t dz = (z - center.z);
+        int64_t p_radius = dx * dx + dy * dy + dz * dz;
         if (p_radius <= s_radius) {
           return true;
         }
@@ -57,16 +59,17 @@ const bool sphere_collides(const PT center, int radius, const PT low,
   return false;
 }
 
-const bool sphere_contains(const PT center, int radius, const PT low,
+const bool sphere_contains(const PT center, int radius32, const PT low,
                            const PT high) {
-  int s_radius = radius * radius;
+  int64_t radius = radius32;
+  int64_t s_radius = radius * radius;
   for (int x : {high.x, low.x}) {
     for (int y : {high.y, low.y}) {
       for (int z : {high.z, low.z}) {
-        int dx = (x - center.x);
-        int dy = (y - center.y);
-        int dz = (z - center.z);
-        int p_radius = dx * dx + dy * dy + dz * dz;
+        int64_t dx = (x - center.x);
+        int64_t dy = (y - center.y);
+        int64_t dz = (z - center.z);
+        int64_t p_radius = dx * dx + dy * dy + dz * dz;
         if (p_radius > s_radius) {
           return false;
         }
@@ -129,12 +132,17 @@ int Node::collect(std::vector<Shape> &results, const PT l, const PT r,
 
 int Node::collect_sphere(std::vector<Shape> &results, const PT center,
                          int radius, int level) {
+  // std::cout << "collect_sphere\n";
+  bool hits = sphere_collides(center, radius, x.a, x.b);
+  // std::cout << "center: " << center << " radius = " << radius << " (" << x << ")\n";
+  if (hits) {
+    // std::cout << "HIT! " << x <<'\n';
+    results.push_back(x);
+  }
+
   if (!sphere_collides(center, radius, low, high)) {
     return 0;
   }
-  bool hits = sphere_collides(center, radius, x.a, x.b);
-  if (hits)
-    results.push_back(x);
 
   return (hits ? 1 : 0) +
          (left ? left->collect_sphere(results, center, radius, level + 1) : 0) +
