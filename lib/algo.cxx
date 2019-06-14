@@ -132,8 +132,9 @@ bool Node::hits(const PT l, const PT r, int level) {
 
   bool hits = collides(x, Shape{l, r});
 
-  return hits || + (left ? left->hits(l, r, level + 1) : false) ||
-         (right ? right->hits(l, r, level + 1) : false);
+  return hits || 
+    (left ? left->hits(l, r, level + 1) : false) ||
+    (right ? right->hits(l, r, level + 1) : false);
 }
 
 int Node::collect(std::vector<Shape> &results, const PT l, const PT r,
