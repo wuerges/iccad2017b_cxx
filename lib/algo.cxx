@@ -162,6 +162,9 @@ int Node::collect(std::vector<Shape> &results, const PT l, const PT r,
 
 int Node::collect_sphere(std::vector<Shape> &results, const PT center,
                          int radius, int level) {
+  if ((center[level % 3] - radius) > high[level % 3] || (center[level % 3] + radius) < low[level % 3]) {
+    return 0;
+  }
   // std::cout << "collect_sphere\n";
   bool hits = sphere_collides(center, radius, x.a, x.b);
   // std::cout << "center: " << center << " radius = " << radius << " (" << x << ")\n";
@@ -169,6 +172,7 @@ int Node::collect_sphere(std::vector<Shape> &results, const PT center,
     // std::cout << "HIT! " << x <<'\n';
     results.push_back(x);
   }
+
 
   if (!sphere_collides(center, radius, low, high)) {
     return 0;

@@ -123,7 +123,6 @@ struct Treap {
       //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
       //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
     }
-    auto temp = collect(center, w);
     return collect(center, w);
   }
 };
