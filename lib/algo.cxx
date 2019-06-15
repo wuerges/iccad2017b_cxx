@@ -119,18 +119,23 @@ int Node::query(const PT l, const PT r, int level) {
 }
 
 bool Node::hits(const PT l, const PT r, int level) {
+  // std::cout << "hits: "<< level<<"\n";
 
   if (l <= low && r >= high) {
+    // std::cout << "case1\n";
     return count > 0;
   }
   if (l > high || r < low) {
+    // std::cout << "case2\n";
     return false;
   }
   if (l[level % 3] > high[level % 3] || r[level % 3] < low[level % 3]) {
+    // std::cout << "case3\n";
     return false;
   }
 
   bool hits = collides(x, Shape{l, r});
+  // std::cout << "collides?"<<hits<<"\n";
 
   return hits || 
     (left ? left->hits(l, r, level + 1) : false) ||
