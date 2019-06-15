@@ -228,6 +228,7 @@ namespace iccad {
                 //     std::cout << "Obstacle: " << ob << '\n';
                 // }
                 if(obstacles.query(v_pt, u_pt) > 0) {
+                // if(obstacles.hits(v_pt, u_pt)) {
                     // std::cout << "Point " << v_pt << " is in an obstacle\n";
                     // for(auto ob : obstacles.collect(v_pt, v_pt)) {
                     //     std::cout << "Obstacle: " << ob << '\n';

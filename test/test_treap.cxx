@@ -47,6 +47,7 @@ void test_treap_hits(const Shape s, const vector<Shape> &shapes) {
   Treap treap;
   treap.populate(shapes);
   RC_ASSERT(treap.hits(s.a, s.b) == treap.query(s.a, s.b) > 0);
+  // RC_ASSERT(true == false);
 }
 
 int test_treap_collect(const vector<Shape> &shapes) {
@@ -64,6 +65,7 @@ int test_treap_collect(const vector<Shape> &shapes) {
 
     for (const Shape &rs : res) {
       RC_ASSERT(collides(rs, s));
+      RC_ASSERT(root->hits(s.a, s.b));
     }
   }
 
