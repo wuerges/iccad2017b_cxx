@@ -68,7 +68,7 @@ struct Treap {
 
   int hits(const PT l, const PT r) const {
     if (root) {
-      return root->hits(l, r);
+      return root->hits(min(l, r), max(l, r));
     }
     return 0;
   }
