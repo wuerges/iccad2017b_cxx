@@ -70,7 +70,7 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
         int64_t dy = (y - center.y);
         int64_t dz = (z - center.z);
         int64_t p_radius = dx * dx + dy * dy + dz * dz;
-        if (p_radius > s_radius) {
+        if (p_radius >= s_radius) {
           return false;
         }
       }
@@ -81,7 +81,8 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
 
 int Node::query_sphere(const PT center, int radius, int level) {
 
-  if ((center[level % 3] + radius) > high[level % 3] || (center[level % 3] - radius) < low[level % 3]) {
+  if (  ((center[level % 3] - radius) > high[level % 3])
+     || ((center[level % 3] + radius) < low[level % 3])   ) {
     return 0;
   }
 
@@ -162,9 +163,13 @@ int Node::collect(std::vector<Shape> &results, const PT l, const PT r,
 
 int Node::collect_sphere(std::vector<Shape> &results, const PT center,
                          int radius, int level) {
-  if ((center[level % 3] - radius) > high[level % 3] || (center[level % 3] + radius) < low[level % 3]) {
+  if (  ((center[level % 3] - radius) > high[level % 3])
+     || ((center[level % 3] + radius) < low[level % 3])   ) {
     return 0;
   }
+
+
+
   // std::cout << "collect_sphere\n";
   bool hits = sphere_collides(center, radius, x.a, x.b);
   // std::cout << "center: " << center << " radius = " << radius << " (" << x << ")\n";

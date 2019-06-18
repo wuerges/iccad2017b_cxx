@@ -26,7 +26,7 @@ int test_treap(const PT center, int radius, const vector<Shape> &shapes) {
   Treap treap;
   treap.populate(shapes);
 
-  unsigned count_treap = treap.query(center, radius+1);
+  unsigned count_treap = treap.query(center, radius);
   RC_LOG() << "number of shapes in query: " << count_treap << '\n';
 
   unsigned count = 0;
