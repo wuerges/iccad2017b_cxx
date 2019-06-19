@@ -53,16 +53,16 @@ const bool sphere_collides(const PT center, int radius32, const int64_t y, const
 
   // has solution if b^2 - 4ac >= 0
 
-  std::printf("y=%d z=%d x1=%d x2=%d\n", y, z, x1, x2);
+  //std::printf("y=%d z=%d x1=%d x2=%d\n", y, z, x1, x2);
   if (b*b - 4*a*c < 0) {
-    std::cout << "infeasible\n";
+    //std::cout << "infeasible\n";
     return false;
   }
 
   double delta = b*b - 4*a*c;
   double root1 = (-b+sqrt(delta))/(2*a);
   double root2 = (-b-sqrt(delta))/(2*a);
-  std::cout << "roots: " << root1 << ", " << root2 << '\n';
+  // std::cout << "roots: " << root1 << ", " << root2 << '\n';
   return (x1 >= root1 && root1 >= x2) || (x1 >= root2 && root2 >= x2);
 }
 
