@@ -224,9 +224,9 @@ int Node::collect_sphere(std::vector<Shape> &results, const PT center,
   }
 
 
-  if (!sphere_collides(center, radius, low, high)) {
-    return 0;
-  }
+  // if (!sphere_collides(center, radius, low, high)) {
+  //   return 0;
+  // }
 
   return (hits ? 1 : 0) +
          (left ? left->collect_sphere(results, center, radius, level + 1) : 0) +
