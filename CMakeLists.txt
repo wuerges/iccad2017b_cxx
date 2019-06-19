@@ -8,3 +8,19 @@ add_subdirectory("lib")
 add_subdirectory("test")
 add_subdirectory("app")
 # subdirs(app)
+
+find_package(Doxygen
+             REQUIRED dot
+             OPTIONAL_COMPONENTS mscgen dia)
+
+
+# set(DOXYGEN_GENERATE_HTML YES)
+# set(DOXYGEN_GENERATE_MAN YES)
+#
+# doxygen_add_docs(
+#   doxygen
+#    ${PROJECT_SOURCE_DIR}/include
+#    ${PROJECT_SOURCE_DIR}/lib
+#    ${PROJECT_SOURCE_DIR}/test
+#    COMMENT "Generate Doxygen docs"
+#)
