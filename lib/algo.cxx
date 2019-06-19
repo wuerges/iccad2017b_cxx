@@ -76,7 +76,8 @@ const bool sphere_collides(const PT center, int radius32, const PT low,
   return sphere_collides(center, radius32, low.y, low.z, high.x, low.x)
     ||  sphere_collides(center, radius32, high.y, low.z, high.x, low.x)
     || sphere_collides(transposed, radius32, low.x, low.z, high.y, low.y)
-    || sphere_collides(transposed, radius32, high.x, low.z, high.y, low.y);
+    || sphere_collides(transposed, radius32, high.x, low.z, high.y, low.y)
+    || sphere_contains(center, radius32, low, high);
 
   // int64_t radius = radius32;
   // int64_t s_radius = radius * radius;
@@ -108,7 +109,7 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
         int64_t dy = (y - center.y);
         int64_t dz = (z - center.z);
         int64_t p_radius = dx * dx + dy * dy + dz * dz;
-        if (p_radius >= s_radius) {
+        if (p_radius > s_radius) {
           return false;
         }
       }
@@ -118,13 +119,19 @@ const bool sphere_contains(const PT center, int radius32, const PT low,
 }
 
 int Node::query_sphere(const PT center, int radius, int level) {
+  // std::cout << "query_sphere("<<center<<","<<radius<<","<<level<<")\n";
 
+  // Passes for 100.000 tests
   if (  ((center[level % 3] - radius) > high[level % 3])
      || ((center[level % 3] + radius) < low[level % 3])   ) {
     return 0;
   }
 
+  // Passes for 100.000 tests
   if (sphere_contains(center, radius, low, high)) {
+    // std::cout << "sphere " << center << " " << radius << '\n';
+    // std::cout << "case contains " << low << " " << high << '\n';
+    // std::cout << "count = " << count << '\n';
     return count;
   }
   // if (!sphere_collides(center, radius, low, high)) {

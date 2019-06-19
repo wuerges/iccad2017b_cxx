@@ -13,35 +13,36 @@ using namespace iccad;
 
 #include "generators.hpp"
 
-int test_treap(const PT center, int radius, const vector<Shape> &shapes) {
+void test_treap(const PT center, int radius, const vector<Shape> &shapes) {
   if (radius <= 0) {
     RC_DISCARD("radius must be > 0");
-    return 0;
+    return;
   }
   if (shapes.size() == 0) {
     RC_DISCARD("discarding empty testcase");
-    return 0;
+    return;
   }
 
   Treap treap;
   treap.populate(shapes);
 
-  unsigned count_treap = treap.query(center, radius);
+  int count_treap = treap.query(center, radius);
   RC_LOG() << "number of shapes in query: " << count_treap << '\n';
 
-  unsigned count = 0;
+  int count = 0;
   for(const Shape &s : shapes) {
     if(sphere_collides(center, radius, s.a, s.b)) count++;
   }
   RC_LOG() << "number of shapes counted manually: " << count << '\n';
   RC_ASSERT(count == count_treap);
-  return true;
 }
 
 
 
 
 int main(int n, char **argv) {
+
+  // test_treap(PT{0,0,0}, 2, {Shape{PT{0,0,0,}, {1, 1, 0}}});
 
      rc::check("Check that added shapes can be queried", test_treap);
                
