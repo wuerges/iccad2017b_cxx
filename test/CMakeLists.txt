@@ -45,3 +45,8 @@ target_link_libraries(TestTreap
 add_executable(TestTreapCircle test_treap_circle.cxx)
 target_link_libraries(TestTreapCircle
   Model rapidcheck)
+
+
+add_executable(TestGeometry test_geometry.cxx)
+target_link_libraries(TestGeometry
+  Model rapidcheck)

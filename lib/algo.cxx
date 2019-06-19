@@ -1,8 +1,9 @@
 #include <algo.hpp>
 #include <base.hpp>
-#include <vector>
 
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 namespace iccad {
 
@@ -37,26 +38,63 @@ void Node::add(const Shape &shape, int level) {
   count = 1 + (left ? left->count : 0) + (right ? right->count : 0);
 }
 
+const bool sphere_collides(const PT center, int radius32, const int64_t y, const int z, const int64_t x1, const int64_t x2) {
+  // (x - h)^2 + (y - k)^2 + (z - l)^2 == r^2
+  
+  int64_t h = center.x;
+  int64_t k = center.y;
+  int64_t l = center.z;
+  int64_t r = radius32;
+
+  int64_t a = 1;  
+  int64_t b = - 2 * h;
+
+  int64_t c = h*h + (y-k)*(y-k) + (z-l)*(z-l) - r*r;
+
+  // has solution if b^2 - 4ac >= 0
+
+  std::printf("y=%d z=%d x1=%d x2=%d\n", y, z, x1, x2);
+  if (b*b - 4*a*c < 0) {
+    std::cout << "infeasible\n";
+    return false;
+  }
+
+  double delta = b*b - 4*a*c;
+  double root1 = (-b+sqrt(delta))/(2*a);
+  double root2 = (-b-sqrt(delta))/(2*a);
+  std::cout << "roots: " << root1 << ", " << root2 << '\n';
+  return (x1 >= root1 && root1 >= x2) || (x1 >= root2 && root2 >= x2);
+}
+
+
+
 const bool sphere_collides(const PT center, int radius32, const PT low,
                            const PT high) {
+  
+  const PT transposed{center.y, center.x, center.z};
 
-  int64_t radius = radius32;
-  int64_t s_radius = radius * radius;
+  return sphere_collides(center, radius32, low.y, low.z, high.x, low.x)
+    ||  sphere_collides(center, radius32, high.y, low.z, high.x, low.x)
+    || sphere_collides(transposed, radius32, low.x, low.z, high.y, low.y)
+    || sphere_collides(transposed, radius32, high.x, low.z, high.y, low.y);
 
-  for (int x : {high.x, low.x}) {
-    for (int y : {high.y, low.y}) {
-      for (int z : {high.z, low.z}) {
-        int64_t dx = (x - center.x);
-        int64_t dy = (y - center.y);
-        int64_t dz = (z - center.z);
-        int64_t p_radius = dx * dx + dy * dy + dz * dz;
-        if (p_radius <= s_radius) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
+  // int64_t radius = radius32;
+  // int64_t s_radius = radius * radius;
+
+  // for (int x : {high.x, low.x}) {
+  //   for (int y : {high.y, low.y}) {
+  //     for (int z : {high.z, low.z}) {
+  //       int64_t dx = (x - center.x);
+  //       int64_t dy = (y - center.y);
+  //       int64_t dz = (z - center.z);
+  //       int64_t p_radius = dx * dx + dy * dy + dz * dz;
+  //       if (p_radius <= s_radius) {
+  //         return true;
+  //       }
+  //     }
+  //   }
+  // }
+  // return false;
 }
 
 const bool sphere_contains(const PT center, int radius32, const PT low,
