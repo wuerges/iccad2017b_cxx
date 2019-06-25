@@ -98,6 +98,19 @@ const bool sphere_collides(const PT center, int radius32, const PT low,
   // return false;
 }
 
+const bool diamond_collides(const Shape & center, int radius32, const PT low, const PT high) {
+  return distance(center, Shape{low, high}) <= radius32;
+}
+const bool diamond_contains(const Shape & center, int radius32, const PT low, const PT high) {
+  PT a{low.x, high.y, low.z};
+  PT b{high.x, low.y, low.z};
+  return distance(low, center) <= radius32 
+    && distance(high, center) <= radius32
+    && distance(a, center) <= radius32
+    && distance(b, center) <= radius32;
+}
+
+
 const bool sphere_contains(const PT center, int radius32, const PT low,
                            const PT high) {
   int64_t radius = radius32;
@@ -142,6 +155,32 @@ int Node::query_sphere(const PT center, int radius, int level) {
   return (hits ? 1 : 0) +
          (left ? left->query_sphere(center, radius, level + 1) : 0) +
          (right ? right->query_sphere(center, radius, level + 1) : 0);
+}
+
+int Node::query_diamond(const Shape & center, int radius, int level) {
+  // std::cout << "query_sphere("<<center<<","<<radius<<","<<level<<")\n";
+
+  // Passes for 100.000 tests
+  if (  ((center.a[level % 3] - radius) > high[level % 3])
+     || ((center.b[level % 3] + radius) < low[level % 3])   ) {
+    return 0;
+  }
+
+  // Passes for 100.000 tests
+  if (diamond_contains(center, radius, low, high)) {
+    // std::cout << "sphere " << center << " " << radius << '\n';
+    // std::cout << "case contains " << low << " " << high << '\n';
+    // std::cout << "count = " << count << '\n';
+    return count;
+  }
+  // if (!sphere_collides(center, radius, low, high)) {
+  //   return 0;
+  // }
+  bool hits = diamond_collides(center, radius, x.a, x.b);
+
+  return (hits ? 1 : 0) +
+         (left ? left->query_diamond(center, radius, level + 1) : 0) +
+         (right ? right->query_diamond(center, radius, level + 1) : 0);
 }
 
 
@@ -231,6 +270,34 @@ int Node::collect_sphere(std::vector<Shape> &results, const PT center,
   return (hits ? 1 : 0) +
          (left ? left->collect_sphere(results, center, radius, level + 1) : 0) +
          (right ? right->collect_sphere(results, center, radius, level + 1)
+                : 0);
+}
+
+int Node::collect_diamond(std::vector<Shape> &results, const Shape & center,
+                         int radius, int level) {
+  if (  ((center.a[level % 3] - radius) > high[level % 3])
+     || ((center.b[level % 3] + radius) < low[level % 3])   ) {
+    return 0;
+  }
+
+
+
+  // std::cout << "collect_sphere\n";
+  bool hits = diamond_collides(center, radius, x.a, x.b);
+  // std::cout << "center: " << center << " radius = " << radius << " (" << x << ")\n";
+  if (hits) {
+    // std::cout << "HIT! " << x <<'\n';
+    results.push_back(x);
+  }
+
+
+  // if (!sphere_collides(center, radius, low, high)) {
+  //   return 0;
+  // }
+
+  return (hits ? 1 : 0) +
+         (left ? left->collect_diamond(results, center, radius, level + 1) : 0) +
+         (right ? right->collect_diamond(results, center, radius, level + 1)
                 : 0);
 }
 

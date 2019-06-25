@@ -1,6 +1,7 @@
 #include <base.hpp>
 #include <rapidcheck.h>
-
+#include <algo.hpp>
+#include <astar.hpp>
 
 #include <iostream>
 // #include <cassert>
@@ -44,6 +45,20 @@ void test_distance(const Shape & s1, const Shape & s2) {
     RC_ASSERT((distance(s1, s2) == 0) == collides(s1, s2));
 }
 
+void test_distance_dijkstra(const Shape & u, const Shape & v) {
+
+    
+  Treap t, obs;
+  t.populate({u, v});
+  V1D boundary = {0, 0, max(u.b, v.b).x + 10, max(u.b,v.b).y + 10};
+
+  int d1 = AStar(t, obs, u, v, boundary).run().length();
+  int d2 = distance(u, v);
+
+
+  RC_ASSERT(d1 == d2);
+
+}
 
 int main(int argc, char ** argv) {
 
@@ -80,6 +95,7 @@ int main(int argc, char ** argv) {
     rc::check("Check that shapes collide iff their distance is 0",
     test_distance);
 
+    rc::check("Check that distance == astar", test_distance_dijkstra);
 
     return 0;
 }

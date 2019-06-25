@@ -11,7 +11,12 @@ const bool sphere_collides(const PT center, int radius32, const int64_t y, const
 const bool sphere_collides(const PT center, int radius32, const PT low,
                            const PT high);
 const bool sphere_contains(const PT center, int radius, const PT a, const PT b);
-const bool sphere_collides(const PT center, int radius, const PT a, const PT b);
+
+// const bool diamond_collides(const Shape & center, int radius32, const PT low,
+//                            const PT high);
+// const bool diamond_contains(const Shape & center, int radius32, const PT low,
+//                            const PT high);
+
 
 struct Node {
   Node(const Shape _x) : x(_x), low(_x.a), high(_x.b), count(1) {}
@@ -26,11 +31,14 @@ struct Node {
   bool hits(const PT l, const PT r, int level = 0);
   int query(const PT l, const PT r, int level = 0);
   int query_sphere(const PT center, int radius, int level = 0);
+  int query_diamond(const Shape & center, int radius, int level = 0);
   // bool sphere_collides(const PT center, int radius) const ;
   // bool sphere_contains(const PT center, int radius) const ;
   int collect(std::vector<Shape> &results, const PT l, const PT r,
               int level = 0);
   int collect_sphere(std::vector<Shape> &results, const PT center, int radius,
+                     int level = 0);
+  int collect_diamond(std::vector<Shape> &results, const Shape & center, int radius,
                      int level = 0);
   void print(int h = 0, int level = 0);
 };
@@ -69,6 +77,13 @@ struct Treap {
     return 0;
   }
 
+  int query_diamond(const Shape & center, int radius) const {
+    if (root) {
+      return root->query_diamond(center, radius);
+    }
+    return 0;
+  }
+
   int hits(const PT l, const PT r) const {
     if (root) {
       return root->hits(min(l, r), max(l, r));
@@ -91,6 +106,15 @@ struct Treap {
     std::vector<Shape> results;
     if (root) {
       root->collect_sphere(results, center, radius);
+    }
+    return results;
+  }
+
+  std::vector<Shape> collect_diamond(const Shape & center, int radius) const {
+
+    std::vector<Shape> results;
+    if (root) {
+      root->collect_diamond(results, center, radius);
     }
     return results;
   }
@@ -129,6 +153,23 @@ struct Treap {
       //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
     }
     return collect(center, t+w);
+  }
+
+  std::vector<Shape> neighboors_diamond(const Shape &u, size_t number) const {
+    int w = 1;
+    int q = query_diamond(u, w);
+    // std::cout << " w =" << w << "\n";
+    // return collect_diamond(center, t+8000);
+
+    while (q <= number && w < 1e8) {
+      w = w * 2;
+      q = query_diamond(u, w);
+      // std::cout << "Query=" << q << " w=" << w << '\n';
+      // std::cout << "Query=" << q << " w=" << w
+      //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
+      //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
+    }
+    return collect_diamond(u, w);
   }
 };
 } // namespace iccad

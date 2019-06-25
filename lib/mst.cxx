@@ -50,7 +50,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 
   for (const Shape &u : shapes) {
     // vector<Shape> vs = treap.neighboors(u, num_neighboors);
-    vector<Shape> vs = treap.neighboors_sphere(u, num_neighboors);
+    // vector<Shape> vs = treap.neighboors_sphere(u, num_neighboors);
+    vector<Shape> vs = treap.neighboors_diamond(u, num_neighboors);
 
     for (Shape &v : vs) {
       if (distance(u, v) > 0) {
@@ -65,8 +66,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
     edges.erase(edges.begin());
 
     if (Find(u) != Find(v)) {
-      auto a = min(u.a, v.a);
-      auto b = min(u.b, v.b);
+      auto a = min(min(u.a, v.a), min(u.b, v.b));
+      auto b = max(max(u.a, v.a), max(u.b, v.b));
 
       if (!calc && obstacles.query(a, b) > 0) {
         int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
