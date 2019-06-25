@@ -66,8 +66,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
     edges.erase(edges.begin());
 
     if (Find(u) != Find(v)) {
-      auto a = min(u.a, v.a);
-      auto b = min(u.b, v.b);
+      auto a = min(min(u.a, v.a), min(u.b, v.b));
+      auto b = max(max(u.a, v.a), max(u.b, v.b));
 
       if (!calc && obstacles.query(a, b) > 0) {
         int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
