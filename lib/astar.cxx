@@ -85,7 +85,10 @@ namespace iccad {
         add_shape(s1);
         add_shape(s2);
 
-        for (auto sx : obstacles.collect(min(s1.a, s2.a), max(s1.b, s2.b))) {
+        auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
+        auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
+
+        for (auto sx : obstacles.collect(pa, pb)) {
             add_shape(sx.expand(1));
         };
 
