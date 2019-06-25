@@ -98,16 +98,16 @@ const bool sphere_collides(const PT center, int radius32, const PT low,
   // return false;
 }
 
-const bool diamond_collides(const PT center, int radius32, const PT low, const PT high) {
+const bool diamond_collides(const Shape & center, int radius32, const PT low, const PT high) {
   return distance(center, Shape{low, high}) <= radius32;
 }
-const bool diamond_contains(const PT center, int radius32, const PT low, const PT high) {
+const bool diamond_contains(const Shape & center, int radius32, const PT low, const PT high) {
   PT a{low.x, high.y, low.z};
   PT b{high.x, low.y, low.z};
-  return manhatan(center, low) <= radius32 
-    && manhatan(center, high) <= radius32
-    && manhatan(center, a) <= radius32
-    && manhatan(center, b) <= radius32;
+  return distance(low, center) <= radius32 
+    && distance(high, center) <= radius32
+    && distance(a, center) <= radius32
+    && distance(b, center) <= radius32;
 }
 
 
@@ -157,12 +157,12 @@ int Node::query_sphere(const PT center, int radius, int level) {
          (right ? right->query_sphere(center, radius, level + 1) : 0);
 }
 
-int Node::query_diamond(const PT center, int radius, int level) {
+int Node::query_diamond(const Shape & center, int radius, int level) {
   // std::cout << "query_sphere("<<center<<","<<radius<<","<<level<<")\n";
 
   // Passes for 100.000 tests
-  if (  ((center[level % 3] - radius) > high[level % 3])
-     || ((center[level % 3] + radius) < low[level % 3])   ) {
+  if (  ((center.a[level % 3] - radius) > high[level % 3])
+     || ((center.b[level % 3] + radius) < low[level % 3])   ) {
     return 0;
   }
 
@@ -273,10 +273,10 @@ int Node::collect_sphere(std::vector<Shape> &results, const PT center,
                 : 0);
 }
 
-int Node::collect_diamond(std::vector<Shape> &results, const PT center,
+int Node::collect_diamond(std::vector<Shape> &results, const Shape & center,
                          int radius, int level) {
-  if (  ((center[level % 3] - radius) > high[level % 3])
-     || ((center[level % 3] + radius) < low[level % 3])   ) {
+  if (  ((center.a[level % 3] - radius) > high[level % 3])
+     || ((center.b[level % 3] + radius) < low[level % 3])   ) {
     return 0;
   }
 
