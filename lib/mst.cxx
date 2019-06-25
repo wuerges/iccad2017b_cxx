@@ -50,7 +50,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 
   for (const Shape &u : shapes) {
     // vector<Shape> vs = treap.neighboors(u, num_neighboors);
-    vector<Shape> vs = treap.neighboors_sphere(u, num_neighboors);
+    // vector<Shape> vs = treap.neighboors_sphere(u, num_neighboors);
+    vector<Shape> vs = treap.neighboors_diamond(u, num_neighboors);
 
     for (Shape &v : vs) {
       if (distance(u, v) > 0) {
