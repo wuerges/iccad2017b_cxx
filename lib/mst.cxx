@@ -41,10 +41,15 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 
   set<tuple<int, Shape, Shape, bool>> edges;
 
+  int connected = 0;
+
   for (const Shape &u : shapes) {
     vector<Shape> vs = treap.collect(u.a, u.b);
     for (auto v : vs) {
-      Union(u, v);
+      if (Find(u) != Find(v)) {
+        Union(u, v);
+        connected++;
+      }
     }
   }
 
@@ -62,6 +67,10 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
   // sort_by_distance(edges);
 
   while (!edges.empty()) {
+    // std::cout << "early break?: "<< connected << " " << result.size() << " <= " << shapes.size() << "\n";
+    if(connected == shapes.size() - 1) {
+      break;
+    }
     auto [w, u, v, calc] = *edges.begin();
     edges.erase(edges.begin());
 
@@ -75,6 +84,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
       } else {
         Union(u, v);
         // if(distance(u, v) > 0)
+        // std::cout << "added to result\n";
+        connected++;
         result.push_back({u, v});
       }
     }
