@@ -4,7 +4,7 @@
 #include <set>
 
 namespace iccad {
-using std::vector, std::pair, std::map;
+using std::vector, std::pair, std::unordered_map;
 
 MST::MST(int n) : num_neighboors(n) {}
 

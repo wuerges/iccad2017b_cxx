@@ -72,3 +72,26 @@ namespace iccad {
 
 
 }
+
+namespace std {
+  using iccad::Shape;
+
+  template <>
+  struct hash<Shape>
+  {
+    std::size_t operator()(const Shape& k) const
+    {
+      using std::size_t;
+      using std::hash;
+      using std::string;
+
+      // Compute individual hash values for first,
+      // second and third and combine them using XOR
+      // and bit shifting:
+
+      return hash<int>()(k.a.x) ^ hash<int>()(k.a.y) ^ hash<int>()(k.a.z) 
+           ^ hash<int>()(k.b.x) ^ hash<int>()(k.b.y) ^ hash<int>()(k.b.z) ;
+    }
+  };
+
+}

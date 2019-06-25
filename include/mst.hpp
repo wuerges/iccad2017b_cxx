@@ -4,10 +4,10 @@
 #include <algo.hpp>
 #include <model.hpp>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 namespace iccad {
-  using std::vector, std::pair, std::map;
+  using std::vector, std::pair, std::unordered_map;
 
   struct MST {
 
@@ -33,8 +33,8 @@ namespace iccad {
 private:
     int num_neighboors;
 
-    map<Shape, Shape> parent;
-    map<Shape, int> rank;
+    unordered_map<Shape, Shape> parent;
+    unordered_map<Shape, int> rank;
 
     Shape Find(const Shape & x) ;
     void Union(const Shape & x, const Shape & y);
