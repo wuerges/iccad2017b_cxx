@@ -163,15 +163,17 @@ struct Treap {
     int t = abs(u.a.x - u.b.x) + abs(u.a.y-u.b.y) + abs(u.a.z-u.b.z);
     int q = query(center, t+w);
     // std::cout << " w =" << w << "\n";
-    while (q <= number && w < 1e8) {
-      w = w * 2;
-      q = query_diamond(center, t+w);
-      // std::cout << "Query=" << q << " w=" << w << '\n';
-      // std::cout << "Query=" << q << " w=" << w
-      //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
-      //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
-    }
-    return collect_diamond(center, t+w);
+    return collect_diamond(center, t+8000);
+
+    // while (q <= number && w < 1e8) {
+    //   w = w * 2;
+    //   q = query_diamond(center, t+w);
+    //   // std::cout << "Query=" << q << " w=" << w << '\n';
+    //   // std::cout << "Query=" << q << " w=" << w
+    //   //   << " pts=" << PT(l.x-w, l.y-w, l.z-w)
+    //   //   << " <-> "<<  PT(r.x+w, r.y+w, r.z+w) <<  '\n';
+    // }
+    // return collect_diamond(center, t+w);
   }
 };
 } // namespace iccad
