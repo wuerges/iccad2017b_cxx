@@ -1,6 +1,15 @@
 cmake_minimum_required (VERSION 2.6)
 set (CMAKE_CXX_STANDARD 17)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+
 project(ICCAD_2017_B)
 include_directories(include)
 add_subdirectory("ext-libs/rapidcheck")
@@ -24,3 +33,4 @@ find_package(Doxygen
 #    ${PROJECT_SOURCE_DIR}/test
 #    COMMENT "Generate Doxygen docs"
 #)
+

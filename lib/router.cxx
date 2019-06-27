@@ -43,9 +43,9 @@ namespace iccad {
         // for(auto s : shapes) std::cout << s << '\n';
 
         MST mst(num_neighboors);
-        // auto res = mst.run(treap, obstacles, shapes, boundary);
+        auto res = mst.run(treap, obstacles, shapes, boundary);
 
-        auto res = KMST(treap, obstacles, shapes, boundary).run();
+        // auto res = KMST(treap, obstacles, shapes, boundary).run();
 
         for(auto [a, b] : res) {
             auto r = calculate_route(a, b);
