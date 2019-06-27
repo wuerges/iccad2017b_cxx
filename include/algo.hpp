@@ -171,5 +171,6 @@ struct Treap {
     }
     return collect_diamond(u, w);
   }
+
 };
 } // namespace iccad
