@@ -8,30 +8,6 @@ using std::vector, std::pair, std::unordered_map;
 
 MST::MST(int n) : num_neighboors(n) {}
 
-Shape MST::Find(const Shape &x) {
-  if (parent.find(x) == parent.end()) {
-    parent[x] = x;
-  }
-
-  if (parent[x] == x) {
-    return x;
-  }
-  return parent[x] = Find(parent[x]);
-}
-
-void MST::Union(const Shape &x, const Shape &y) {
-  Shape xr = Find(x);
-  Shape yr = Find(y);
-
-  if (rank[xr] > rank[yr]) {
-    parent[yr] = xr;
-  } else if (rank[xr] < rank[yr]) {
-    parent[xr] = yr;
-  } else {
-    rank[xr]++;
-    parent[yr] = xr;
-  }
-}
 
 vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes,
@@ -46,8 +22,8 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
   for (const Shape &u : shapes) {
     vector<Shape> vs = treap.collect(u.a, u.b);
     for (auto v : vs) {
-      if (Find(u) != Find(v)) {
-        Union(u, v);
+      if (muf.Find(u) != muf.Find(v)) {
+        muf.Union(u, v);
         connected++;
       }
     }
@@ -74,7 +50,7 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
     auto [w, u, v, calc] = *edges.begin();
     edges.erase(edges.begin());
 
-    if (Find(u) != Find(v)) {
+    if (muf.Find(u) != muf.Find(v)) {
       auto a = min(min(u.a, v.a), min(u.b, v.b));
       auto b = max(max(u.a, v.a), max(u.b, v.b));
 
@@ -82,7 +58,7 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
         int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         edges.insert({new_d, u, v, true});
       } else {
-        Union(u, v);
+        muf.Union(u, v);
         // if(distance(u, v) > 0)
         // std::cout << "added to result\n";
         connected++;
