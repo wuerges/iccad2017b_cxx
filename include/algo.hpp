@@ -156,13 +156,16 @@ struct Treap {
   }
 
   std::vector<Shape> neighboors_diamond(const Shape &u, size_t number) const {
+    int base_number = query(u.a, u.b);
+    int mh = manhatan(u.a, u.b);
     int w = 1;
     int q = query_diamond(u, w);
     // std::cout << " w =" << w << "\n";
     // return collect_diamond(center, t+8000);
 
-    while (q <= number && w < 1e8) {
-      w = w * 2;
+    // while (q <= number && w < 1e8) {
+    while (q <= number+base_number && w < 1e8) {
+      w *= 2;
       q = query_diamond(u, w);
       // std::cout << "Query=" << q << " w=" << w << '\n';
       // std::cout << "Query=" << q << " w=" << w

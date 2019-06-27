@@ -37,7 +37,7 @@ int main(int argc, char ** argv) {
     random_shuffle(shapes.begin(), shapes.end());
     random_shuffle(obstacles.begin(), obstacles.end());
 
-    int r1 = account_route(i, 20, fout, shapes, obstacles);
+    int r1 = account_route(i, 6, fout, shapes, obstacles);
     cout << argv[1] << ": " << r1 << '\n';    
     
     return 0;

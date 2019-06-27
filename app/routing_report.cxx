@@ -34,7 +34,9 @@ int main(int argc, char ** argv) {
     // for(auto obs: obstacles) cout << "OBS: " << obs << '\n';
 
 
-    for(int n = 10; n <= 200; n = n * 2) {
+    // for(int n = 10; n <= 200; n = n * 2) {
+
+    int n = 6;
         auto t1 = high_resolution_clock::now();
         stringstream ss;
         int r1 = account_route(i, n, ss, shapes, obstacles);
@@ -45,7 +47,7 @@ int main(int argc, char ** argv) {
         auto t3 = high_resolution_clock::now();
         auto dur2 = chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count();
         cout << argv[1] << ", "<<n<<", E, " << r2 << ", "<< dur2<< '\n';
-    }
+    // }
 
     
     return 0;
