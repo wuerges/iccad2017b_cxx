@@ -136,6 +136,17 @@ namespace iccad {
           max(a.z, b.z));
   }
 
+  const bool collides(const PT & p, const Shape & s2) {
+    // return
+    //   RectA.X1 < RectB.X2 && RectA.X2 > RectB.X1 &&
+    //   RectA.Y1 < RectB.Y2 && RectA.Y2 > RectB.Y1;
+
+    return collides(Shape{p,p}, s2);
+
+
+    // return inside(s1, s2.a) || inside(s1, s2.b) || inside(s2, s1.a) || inside(s2, s1.b);
+
+  }
   const bool collides(const Shape & s1, const Shape & s2) {
     // return
     //   RectA.X1 < RectB.X2 && RectA.X2 > RectB.X1 &&

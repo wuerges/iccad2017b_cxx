@@ -1,5 +1,6 @@
 #include <router.hpp>
 #include <astar.hpp>
+#include <kappamst.hpp>
 
 #include <algorithm>
 
@@ -43,6 +44,8 @@ namespace iccad {
 
         MST mst(num_neighboors);
         auto res = mst.run(treap, obstacles, shapes, boundary);
+
+        // auto res = KMST(treap, obstacles, shapes, boundary).run();
 
         for(auto [a, b] : res) {
             auto r = calculate_route(a, b);

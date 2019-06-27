@@ -32,10 +32,12 @@ int main(int argc, char ** argv) {
         cout << "usage: " << argv[0] << " <testcase> <output_file_for_solution>\n";
         return -1;
     }
-    const vector<Shape> shapes = get_routed_shapes(i);
-    const vector<Shape> obstacles = get_obstacles(i);
+    vector<Shape> shapes = get_routed_shapes(i);
+    vector<Shape> obstacles = get_obstacles(i);
+    random_shuffle(shapes.begin(), shapes.end());
+    random_shuffle(obstacles.begin(), obstacles.end());
 
-    int r1 = account_route(i, 80, fout, shapes, obstacles);
+    int r1 = account_route(i, 6, fout, shapes, obstacles);
     cout << argv[1] << ": " << r1 << '\n';    
     
     return 0;
