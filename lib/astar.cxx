@@ -125,9 +125,12 @@ namespace iccad {
     }
 
     int AStar::find(int c, const vector<int> & v) const {
-        for(int i = 0; i<v.size(); ++i) {
-            if(v[i] == c) return i;
-        }
+        auto it = lower_bound(v.begin(), v.end(), c);
+        if(it != v.end()) return std::distance(v.begin(), it);
+        // for(int i = 0; i<v.size(); ++i) {
+
+        //     if(v[i] == c) return i;
+        // }
         using std::cerr;
         cerr << "Coordinate not found\n";
         cerr << "Searching for `" << c << "' in {";
@@ -203,19 +206,23 @@ namespace iccad {
         set<ii> queue;
         
         dst[s] = 0;
-        for(int x :xs) {
-            for(int y : ys) {
-                for (int z : zs) {
-                    if(collides(PT{x, y, z}, shape_s)) {
-                        queue.insert({0, find(PT{x, y, z})});
-                    }
+        auto xb = std::lower_bound(xs.begin(), xs.end(), shape_s.a.x);
+        auto xe = std::upper_bound(xb, xs.end(), shape_s.b.x);
+        auto yb = std::lower_bound(ys.begin(), ys.end(), shape_s.a.y);
+        auto ye = std::upper_bound(yb, ys.end(), shape_s.b.y);
+        for(auto ix = xb; ix != xe; ++ix) {
+            for(auto iy = yb; iy != ye; ++iy)  {
+                PT cand{*ix, *iy, shape_s.a.z};
+                if(collides(cand, shape_s)) {
+                    dst[find(cand)] = 0;
+                    queue.insert({0, find(cand)});
                 }
             }
         }
-        // queue.insert({0, s});
-        // queue.insert({0, find(shape_s.b)});
-        // queue.insert({0, find(PT{shape_s.a.x, shape_s.b.y, shape_s.a.z})});
-        // queue.insert({0, find(PT{shape_s.b.x, shape_s.a.y, shape_s.a.z})});
+        queue.insert({0, s});
+        queue.insert({0, find(shape_s.b)});
+        queue.insert({0, find(PT{shape_s.a.x, shape_s.b.y, shape_s.a.z})});
+        queue.insert({0, find(PT{shape_s.b.x, shape_s.a.y, shape_s.a.z})});
         
         index x = t;
         while(!queue.empty()) {
