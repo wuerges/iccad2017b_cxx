@@ -56,10 +56,10 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 
       if (!calc && obstacles.query(a, b) > 0) {
         Treap obstacles2, treap2;
-        // obstacles2.populate(obstacles.collect(a, b));
-        // treap2.populate(treap.collect(a, b));
-        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
-        int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+        obstacles2.populate(obstacles.collect(a, b));
+        treap2.populate(treap.collect(a, b));
+        int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
+        // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         edges.insert({new_d, u, v, true});
       } else {
         muf.Union(u, v);
