@@ -203,7 +203,20 @@ namespace iccad {
         set<ii> queue;
         
         dst[s] = 0;
-        queue.insert({0, s});
+        for(int x :xs) {
+            for(int y : ys) {
+                for (int z : zs) {
+                    if(collides(PT{x, y, z}, shape_s)) {
+                        queue.insert({0, find(PT{x, y, z})});
+                    }
+                }
+            }
+        }
+        // queue.insert({0, s});
+        // queue.insert({0, find(shape_s.b)});
+        // queue.insert({0, find(PT{shape_s.a.x, shape_s.b.y, shape_s.a.z})});
+        // queue.insert({0, find(PT{shape_s.b.x, shape_s.a.y, shape_s.a.z})});
+        
         index x = t;
         while(!queue.empty()) {
             auto [_, u] = *queue.begin();
@@ -254,11 +267,11 @@ namespace iccad {
                     dst[v] = dst[u] + w;
                     pred[v] = u;
                     queue.erase({old_w, v});
-                    queue.insert({dst[v], v}); // Dijkstra
+                    // queue.insert({dst[v], v}); // Dijkstra
 
                     // A* heuristic
-                    // int a_star = distance(make_pt(v), shape_t);
-                    // queue.insert({dst[v]+a_star, v}); 
+                    int a_star = distance(make_pt(v), shape_t);
+                    queue.insert({dst[v]+a_star, v}); 
                 }
             }
 
