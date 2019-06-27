@@ -25,7 +25,7 @@ namespace iccad {
 
     Route Router::calculate_route(const Shape & s1, const Shape & s2) 
     {
-        auto pts = AStar(treap, obstacles, s1, s2, boundary).run();
+        auto pts = AStar(treap, obstacles, boundary).run1(s1, s2);
         Route res(pts);
         res.simplify();
         return res;
@@ -42,7 +42,11 @@ namespace iccad {
 
         // for(auto s : shapes) std::cout << s << '\n';
 
-        MST mst(num_neighboors);
+        AStar astar(treap, obstacles, boundary);
+        astar.add_shapes(shapes, obs);
+
+        
+        MST mst(num_neighboors, astar);
         auto res = mst.run(treap, obstacles, shapes, boundary);
 
         // auto res = KMST(treap, obstacles, shapes, boundary).run();

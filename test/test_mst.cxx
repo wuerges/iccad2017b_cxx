@@ -14,25 +14,26 @@ using namespace iccad;
 
 int main(int argc, char ** argv) {
 
-  Input i;
-  parser::parse_file(i, argv[1]);
-  vector<Shape> shapes = get_routed_shapes(i);
+  // Input i;
+  // parser::parse_file(i, argv[1]);
+  // vector<Shape> shapes = get_routed_shapes(i);
 
-  cout << shapes.size() << '\n';
+  // cout << shapes.size() << '\n';
 
+  // // AStar astar;
 
-  MST mst(1000);
-  Treap treap, obstacles;
-  treap.populate(shapes);
-  auto res = mst.run(treap, obstacles, shapes, i.boundary);
+  // MST mst(1000, );
+  // Treap treap, obstacles;
+  // treap.populate(shapes);
+  // auto res = mst.run(treap, obstacles, shapes, i.boundary);
 
-  int total = 0;
+  // int total = 0;
 
-  for(auto & [a, b] : res) {
-    total += distance(a, b);
-  }
+  // for(auto & [a, b] : res) {
+  //   total += distance(a, b);
+  // }
 
-  cout << "total distance in tree: " << total << '\n';
+  // cout << "total distance in tree: " << total << '\n';
 
 
 

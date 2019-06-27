@@ -5,9 +5,11 @@
 #include <algo.hpp>
 #include <model.hpp>
 #include <muf.hpp>
+#include <astar.hpp>
 
 #include <vector>
 #include <unordered_map>
+
 
 namespace iccad {
   using std::vector, std::pair, std::unordered_map;
@@ -19,7 +21,7 @@ namespace iccad {
       Computes the MST, using Kruskall.
       \param n the target number of neighboors to generate adjacency.
      */
-    MST(int n);
+    MST(int n, AStar & ast);
 
     /*!
       \param treap A Treap containing the routed shapes.
@@ -35,6 +37,7 @@ namespace iccad {
 
 private:
     int num_neighboors;
+    AStar & astar;
 
     MUF muf;
 

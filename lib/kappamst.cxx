@@ -81,7 +81,7 @@ vector<pair<Shape, Shape>> KMST::run()  {
             auto b = max(max(u.a, v.a), max(u.b, v.b));
 
             if (!calc && obstacles.query(a, b) > 0) {
-                int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+                int new_d = AStar(treap, obstacles, boundary).run1(u, v).length();
                 queue.insert({new_d, u, v, true});
             }
             else {

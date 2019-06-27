@@ -80,17 +80,24 @@ namespace iccad {
     }
 
 
-    AStar::AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
-    :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
-        add_shape(s1);
-        add_shape(s2);
+    // AStar::AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
+    // :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
+    //     add_shape(s1);
+    //     add_shape(s2);
 
-        auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
-        auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
+    //     auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
+    //     auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
 
-        for (auto sx : obstacles.collect(pa, pb)) {
-            add_shape(sx.expand(1));
-        };
+    //     for (auto sx : obstacles.collect(pa, pb)) {
+    //         add_shape(sx.expand(1));
+    //     };
+
+    // }
+
+
+
+    AStar::AStar(const Treap & sh, const Treap & obs, V1D b)
+    :shapes(sh), obstacles(obs), boundary(b) {
 
     }
 
@@ -103,7 +110,7 @@ namespace iccad {
         zs.push_back(s.b.z);
     }
 
-    vector<AStar::index> AStar::neighboors(AStar::index i) {
+    vector<AStar::index> AStar::neighboors(AStar::index i) const {
         vector<index> result;
 
         auto [x, y, z] = i;
@@ -119,7 +126,7 @@ namespace iccad {
         return result;
     }
 
-    const PT AStar::make_pt(index i) {
+    PT AStar::make_pt(index i) const {
         auto [x, y, z] = i;
         return PT(xs[x], ys[y], zs[z]);
     }
@@ -162,15 +169,23 @@ namespace iccad {
         ),v.end());
     }
 
-    Route AStar::run() {
-
+    void AStar::add_shapes(const vector<Shape> & shapes, const vector<Shape> & obs) {
         remove_duplicates(xs);
         fix_boundaries(xs, boundary[0], boundary[2]);
         remove_duplicates(ys);
         fix_boundaries(ys, boundary[1], boundary[3]);
         remove_duplicates(zs);
-        return run1(source, target);
     }
+
+    // Route AStar::run() {
+
+    //     remove_duplicates(xs);
+    //     fix_boundaries(xs, boundary[0], boundary[2]);
+    //     remove_duplicates(ys);
+    //     fix_boundaries(ys, boundary[1], boundary[3]);
+    //     remove_duplicates(zs);
+    //     return run1(source, target);
+    // }
 
     // vector<PT> AStar::bad_run(const PT s, const Shape & ts) {
     //     using std::min, std::max;

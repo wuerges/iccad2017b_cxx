@@ -52,7 +52,7 @@ void test_distance_dijkstra(const Shape & u, const Shape & v) {
   t.populate({u, v});
   V1D boundary = {0, 0, max(u.b, v.b).x + 10, max(u.b,v.b).y + 10};
 
-  int d1 = AStar(t, obs, u, v, boundary).run().length();
+  int d1 = AStar(t, obs, boundary).run1(u, v).length();
   int d2 = distance(u, v);
 
 

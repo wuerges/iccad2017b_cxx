@@ -6,7 +6,7 @@
 namespace iccad {
 using std::vector, std::pair, std::unordered_map;
 
-MST::MST(int n) : num_neighboors(n) {}
+MST::MST(int n, AStar & ast) : num_neighboors(n), astar(ast) {}
 
 
 vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
@@ -55,10 +55,11 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
       auto b = max(max(u.a, v.a), max(u.b, v.b));
 
       if (!calc && obstacles.query(a, b) > 0) {
-        Treap obstacles2, treap2;
-        obstacles2.populate(obstacles.collect(a, b));
-        treap2.populate(treap.collect(a, b));
-        int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
+        // Treap obstacles2, treap2;
+        // obstacles2.populate(obstacles.collect(a, b));
+        // treap2.populate(treap.collect(a, b));
+        int new_d = astar.run1(u, v).length();
+        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
         // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         edges.insert({new_d, u, v, true});
       } else {

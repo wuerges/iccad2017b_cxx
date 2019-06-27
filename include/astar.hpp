@@ -31,19 +31,22 @@ namespace iccad {
         const Treap & obstacles;
         V1D boundary;
         vector<int> xs, ys, zs;
-        const Shape & source;
-        const Shape & target;
+        // const Shape & source;
+        // const Shape & target;
 
-        AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b);
+        // AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b);
+        AStar(const Treap & sh, const Treap & obs, V1D b);
+
+        void add_shapes(const vector<Shape> & shapes, const vector<Shape> & obs);
 
 
+        // Route run() ;
 
-        Route run() ;
-
+        Route run1(const Shape & shape_s, const Shape & shape_t) ;
 
 private:
-        vector<index> neighboors(index i);
-        const PT make_pt(index i);
+        vector<index> neighboors(index i) const ;
+        PT make_pt(index i) const;
         int find(int c, const vector<int> & v) const ;
         index find(const PT p) const;
 
@@ -51,7 +54,6 @@ private:
         void fix_boundaries(vector<int> & v, int min_bound, int max_bound);
         void add_shape(const Shape & s) ;
         // Route bad_run(const PT s, const Shape & ts) ;
-        Route run1(const Shape & shape_s, const Shape & shape_t) ;
     };
 
 }
