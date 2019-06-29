@@ -105,7 +105,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
 
     while (edges.empty() && b < INF) {
       for(auto u : shapes) {
-        for(auto v : treap.collect_diamond(u, b)) {
+        for(auto v : treap.collect_diamond_2(u, a, b)) {
           edges.insert({distance(u, v), u, v});
         }
       }
