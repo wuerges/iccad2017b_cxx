@@ -133,14 +133,18 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
 
     if (muf.Find(u) != muf.Find(v)) {
       auto a = min(min(u.a, v.a), min(u.b, v.b));
+      // a.x-=100;
+      // a.y-=100;
       auto b = max(max(u.a, v.a), max(u.b, v.b));
+      // b.x+=100;
+      // b.y+=100;
 
       if (obstacles.query(a, b) > 0) {
         Treap obstacles2, treap2;
-        obstacles2.populate(obstacles.collect(a, b));
-        treap2.populate(treap.collect(a, b));
-        int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
-        // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+        // obstacles2.populate(obstacles.collect(a, b));
+        // treap2.populate(treap.collect(a, b));
+        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
+        int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         routed_edges.insert({new_d, u, v});
       } else {
         muf.Union(u, v);
