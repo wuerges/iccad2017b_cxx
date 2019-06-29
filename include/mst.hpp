@@ -27,11 +27,9 @@ namespace iccad {
      */
     vector<pair<Shape, Shape>> run(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes, const V1D & boundary) ;
+    vector<pair<Shape, Shape>> run_radius_2(const Treap & treap, const Treap & obstacles,
+      const vector<Shape> & shapes, const V1D & boundary) ;
 
-    /*!
-     */
-    vector<pair<Shape, Shape>> bad_run(const Treap & treap, 
-      const vector<Shape> & shapes);
 
 private:
     int num_neighboors;

@@ -121,6 +121,15 @@ struct Treap {
     return results;
   }
 
+  std::vector<Shape> collect_diamond_2(const Shape & center, int radius1, int radius2) const {
+
+    std::vector<Shape> results;
+    if (root) {
+      root->collect_diamond_2(results, center, radius1, radius2);
+    }
+    return results;
+  }
+
   std::vector<Shape> neighboors(const Shape &u, size_t number) const {
     int w = 1;
     PT l = u.a;

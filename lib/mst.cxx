@@ -76,19 +76,73 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-vector<pair<Shape, Shape>> MST::bad_run(const Treap &treap,
-                                        const vector<Shape> &shapes) {
-
+vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
+                                    const vector<Shape> &shapes,
+                                    const V1D &boundary) {
   vector<pair<Shape, Shape>> result;
+  using std::set, std::tuple, std::get;
 
+  set<tuple<int, Shape, Shape>> edges, routed_edges;
+  int a = 0, b = 10;
+  int connected = 0;
+
+  /*
+  Connect adjacent shapes
+   */
   for (const Shape &u : shapes) {
     vector<Shape> vs = treap.collect(u.a, u.b);
     for (auto v : vs) {
-      result.push_back({u, v});
-
-      std::cout << "Distance: " << distance(u, v) << " -> " << u << v << "\n";
+      if (muf.Find(u) != muf.Find(v)) {
+        muf.Union(u, v);
+        connected++;
+      }
     }
   }
+
+  while (connected < shapes.size() - 1) {
+    // std::cout << "connected: " << connected << "/" << shapes.size() << '\n';
+
+    if (edges.empty()) {
+      for(auto u : shapes) {
+        for(auto v : treap.collect_diamond_2(u, a, b)) {
+          edges.insert({distance(u, v), u, v});
+        }
+      }
+      a = b;
+      b *= 2;
+    }
+    auto [w, u, v] = *edges.begin();
+    edges.erase(edges.begin());
+
+    while(!routed_edges.empty() && get<0>(*routed_edges.begin()) < w) {
+      auto [_, u2, v2] = *routed_edges.begin();
+      routed_edges.erase(routed_edges.begin());
+      result.emplace_back(u2, v2);
+    }
+
+    if (muf.Find(u) != muf.Find(v)) {
+      auto a = min(min(u.a, v.a), min(u.b, v.b));
+      auto b = max(max(u.a, v.a), max(u.b, v.b));
+
+      if (obstacles.query(a, b) > 0) {
+        Treap obstacles2, treap2;
+        obstacles2.populate(obstacles.collect(a, b));
+        treap2.populate(treap.collect(a, b));
+        int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
+        // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+        routed_edges.insert({new_d, u, v});
+      } else {
+        muf.Union(u, v);
+        // if(distance(u, v) > 0)
+        // std::cout << "added to result\n";
+        connected++;
+        result.push_back({u, v});
+      }
+    }
+  }
+
+  //
+
   return result;
 }
 
