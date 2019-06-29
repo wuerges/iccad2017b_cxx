@@ -59,7 +59,7 @@ namespace iccad {
       friend const int distance(const Shape & a, const Shape & b);
       friend const int distance(const PT & pt, const Shape & s2);
 
-      Shape expand(int spacing);
+      Shape expand(int spacing) const ;
 
       // void operator=(const Shape & s) {
       //   a = s.a;
