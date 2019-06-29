@@ -309,10 +309,14 @@ int Node::collect_diamond_2(std::vector<Shape> &results, const Shape & center,
     return 0;
   }
 
-  // if (diamond_collides(center, radius2, low, high)) return 0;
-  // if (distance(center, Shape{low, high}) < radius1 ) return 0;
+  // if (!diamond_collides(center, radius2-1, low, high)) return 0;
+  // auto ll = min(low, high);
+  // auto hh = max(low, high);
+
+  // if (distance(center, Shape{ll, hh}) > radius1 ) return 0;
 
   // if ( ! diamond_collides(center, radius2+1, low, high)) return 0;
+
 
   if( diamond_contains(center,radius1-1, low, high) ) return 0;
   // if (radius1 > 0 && diamond_collides(center, radius1, x.a, x.b)) {

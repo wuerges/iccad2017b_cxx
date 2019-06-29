@@ -19,7 +19,7 @@ const bool sphere_contains(const PT center, int radius, const PT a, const PT b);
 
 
 struct Node {
-  Node(const Shape _x) : x(_x), low(_x.a), high(_x.b), count(1) {}
+  Node(const Shape _x) : x(_x), low(min(_x.a, _x.b)), high(max(_x.a, _x.b)), count(1) {}
 
   const Shape x;
   PT low, high;
