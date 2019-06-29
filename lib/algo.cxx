@@ -307,14 +307,15 @@ int Node::collect_diamond_2(std::vector<Shape> &results, const Shape & center,
      || ((center.b[level % 3] + radius2) < low[level % 3])   ) {
     return 0;
   }
-  if (diamond_collides(center, radius1, x.a, x.b)) {
-    return 0;
-  }
+  // if (radius1 > 0 && diamond_collides(center, radius1, x.a, x.b)) {
+  //   return 0;
+  // }
 
   // std::cout << "collect_sphere\n";
+  bool hits1 = radius1 > 0 && diamond_collides(center, radius1, x.a, x.b);
   bool hits = diamond_collides(center, radius2, x.a, x.b);
   // std::cout << "center: " << center << " radius = " << radius << " (" << x << ")\n";
-  if (hits) {
+  if (!hits1 && hits) {
     // std::cout << "HIT! " << x <<'\n';
     results.push_back(x);
   }

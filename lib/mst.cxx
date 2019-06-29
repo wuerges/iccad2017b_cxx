@@ -100,7 +100,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
   }
 
   while (connected < shapes.size() - 1) {
-    // std::cout << "connected: " << connected << "/" << shapes.size() << '\n';
+    std::cout << "connected: " << connected << "/" << shapes.size() << " a=" << a << " b=" << b<< '\n';
 
     if (edges.empty()) {
       for(auto u : shapes) {
@@ -117,7 +117,12 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
     while(!routed_edges.empty() && get<0>(*routed_edges.begin()) < w) {
       auto [_, u2, v2] = *routed_edges.begin();
       routed_edges.erase(routed_edges.begin());
-      result.emplace_back(u2, v2);
+      if(muf.Find(u) != muf.Find(v)) {
+        result.emplace_back(u2, v2);
+        connected++;        
+
+        if(connected == shapes.size() - 1) break;
+      }
     }
 
     if (muf.Find(u) != muf.Find(v)) {
@@ -137,6 +142,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
         // std::cout << "added to result\n";
         connected++;
         result.push_back({u, v});
+        if(connected == shapes.size() - 1) break;
       }
     }
   }
