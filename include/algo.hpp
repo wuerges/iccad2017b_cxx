@@ -32,13 +32,15 @@ struct Node {
   int query(const PT l, const PT r, int level = 0);
   int query_sphere(const PT center, int radius, int level = 0);
   int query_diamond(const Shape & center, int radius, int level = 0);
-  // bool sphere_collides(const PT center, int radius) const ;
-  // bool sphere_contains(const PT center, int radius) const ;
+  // int query_diamond_2(const Shape & center, int radius1, int radius2, int level = 0);
   int collect(std::vector<Shape> &results, const PT l, const PT r,
               int level = 0);
   int collect_sphere(std::vector<Shape> &results, const PT center, int radius,
                      int level = 0);
   int collect_diamond(std::vector<Shape> &results, const Shape & center, int radius,
+                     int level = 0);
+  int collect_diamond_2(std::vector<Shape> &results, const Shape & center, 
+                    int radius1, int radius2,
                      int level = 0);
   void print(int h = 0, int level = 0);
 };
