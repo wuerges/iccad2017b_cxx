@@ -170,6 +170,8 @@ namespace iccad {
 
     Route AStar::run() {
 
+        // std::cout << "source: " << source << " target: " << target << '\n';
+
         remove_duplicates(xs);
         fix_boundaries(xs, boundary[0], boundary[2]);
         remove_duplicates(ys);

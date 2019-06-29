@@ -112,14 +112,13 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
       a = b;
       b *= 2;
     }
-    if(edges.empty()) {
-      return result;
-    }
+    // if(edges.empty()) {
+    //   return result;
+    // }
     
-    auto [w, u, v] = *edges.begin();
-    edges.erase(edges.begin());
+    int wt = edges.empty() ? INF : get<0>(*edges.begin());
 
-    while(!routed_edges.empty() && get<0>(*routed_edges.begin()) <= w) {
+    while(!routed_edges.empty() && get<0>(*routed_edges.begin()) <= wt) {
       auto [_, u2, v2] = *routed_edges.begin();
       routed_edges.erase(routed_edges.begin());
       if(muf.Find(u2) != muf.Find(v2)) {
@@ -129,7 +128,10 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
 
         if(connected == shapes.size() - 1) return result;
       }
+    
     }
+    auto [w, u, v] = *edges.begin();
+    edges.erase(edges.begin());
 
     if (muf.Find(u) != muf.Find(v)) {
       auto a = min(min(u.a, v.a), min(u.b, v.b));
