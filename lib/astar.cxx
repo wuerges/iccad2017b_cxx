@@ -1,4 +1,5 @@
 #include <astar.hpp>
+#include <config.hpp>
 
 #include <algorithm>
 #include <map>
@@ -87,12 +88,14 @@ namespace iccad {
 
         auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
         auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
-        pa.x -= 300;
-        pa.y -= 300;
-        pa.z -= 300;
-        pb.x += 300;
-        pb.y += 300;
-        pb.z += 300;
+        if(!CONFIG_FAST_MST) {
+            pa.x -= 300;
+            pa.y -= 300;
+            pa.z -= 300;
+            pb.x += 300;
+            pb.y += 300;
+            pb.z += 300;
+        }
 
         for (auto sx : obstacles.collect(pa, pb)) {
             add_shape(sx.expand(1));

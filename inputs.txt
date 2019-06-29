@@ -1,0 +1,8 @@
+testcases/official/original/case1
+testcases/official/original/case2
+testcases/official/original/case3
+testcases/official/alpha/caseA
+testcases/official/hidden/case4
+testcases/official/hidden/case5
+testcases/official/hidden/case6
+testcases/official/hidden/caseB

@@ -1,6 +1,7 @@
 #include <router.hpp>
 #include <astar.hpp>
 #include <kappamst.hpp>
+#include <config.hpp>
 
 #include <algorithm>
 
@@ -43,8 +44,8 @@ namespace iccad {
         // for(auto s : shapes) std::cout << s << '\n';
 
         MST mst(num_neighboors);
-        auto res = mst.run(treap, obstacles, shapes, boundary);
-        // auto res = mst.run_radius_2(treap, obstacles, shapes, boundary);
+        auto res = CONFIG_FAST_MST ? mst.run(treap, obstacles, shapes, boundary): 
+                                     mst.run_radius_2(treap, obstacles, shapes, boundary);
 
         // auto res = KMST(treap, obstacles, shapes, boundary).run();
 
