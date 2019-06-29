@@ -101,6 +101,12 @@ namespace iccad {
             add_shape(sx.expand(1));
         };
 
+        remove_duplicates(xs);
+        fix_boundaries(xs, boundary[0], boundary[2]);
+        remove_duplicates(ys);
+        fix_boundaries(ys, boundary[1], boundary[3]);
+        remove_duplicates(zs);
+
     }
 
     void AStar::add_shape(const Shape & s) {
@@ -175,11 +181,6 @@ namespace iccad {
 
         // std::cout << "source: " << source << " target: " << target << '\n';
 
-        remove_duplicates(xs);
-        fix_boundaries(xs, boundary[0], boundary[2]);
-        remove_duplicates(ys);
-        fix_boundaries(ys, boundary[1], boundary[3]);
-        remove_duplicates(zs);
         return run1(source, target);
     }
 
