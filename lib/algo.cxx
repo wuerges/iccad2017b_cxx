@@ -304,9 +304,12 @@ int Node::collect_diamond(std::vector<Shape> &results, const Shape & center,
 int Node::collect_diamond_2(std::vector<Shape> &results, const Shape & center,
                          int radius1, int radius2, int level) {
   if (  ((center.a[level % 3] - radius2) > high[level % 3])
-     || ((center.b[level % 3] + radius2) < low[level % 3])   ) {
+     || ((center.b[level % 3] + radius2) < low[level % 3])   
+     ) {
     return 0;
   }
+
+  if( diamond_contains(center,radius1-1, low, high) ) return 0;
   // if (radius1 > 0 && diamond_collides(center, radius1, x.a, x.b)) {
   //   return 0;
   // }
