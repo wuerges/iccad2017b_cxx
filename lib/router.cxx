@@ -45,7 +45,7 @@ namespace iccad {
 
         MST mst(num_neighboors);
         auto res = CONFIG_FAST_MST ? mst.run(treap, obstacles, shapes, obs, boundary): 
-                                     mst.run_radius_2(treap, obstacles, shapes, boundary);
+                                     mst.run_radius_2(treap, obstacles, shapes, obs, boundary);
 
         // auto res = KMST(treap, obstacles, shapes, boundary).run();
 

@@ -86,10 +86,14 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 }
 
 vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
-                                    const vector<Shape> &shapes,
+                                    const vector<Shape> &shapes, const vector<Shape> &obs_vector,
                                     const V1D &boundary) {
+                                    
+                                      
   vector<pair<Shape, Shape>> result;
   using std::set, std::tuple, std::get;
+  auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+
 
   set<tuple<int, Shape, Shape>> edges, routed_edges;
   int64_t a = 0, b = 20;
@@ -151,11 +155,22 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
       // b.y+=100;
 
       if (obstacles.query(a, b) > 0) {
-        Treap obstacles2, treap2;
+
+        // Treap obstacles2, treap2;
         // obstacles2.populate(obstacles.collect(a, b));
         // treap2.populate(treap.collect(a, b));
-        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
-        int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
+        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
+        int new_d;
+        if(CONFIG_FAST_ASTAR) {
+          Treap obstacles2, treap2;
+          obstacles2.populate(obstacles.collect(a, b));
+          treap2.populate(treap.collect(a, b));
+          new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
+        }
+        else {
+          new_d = astar->run(u, v).length();
+        }
+        // int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
         routed_edges.insert({new_d, u, v});
       } else {
         muf.Union(u, v);
