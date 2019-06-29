@@ -83,7 +83,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
   using std::set, std::tuple, std::get;
 
   set<tuple<int, Shape, Shape>> edges, routed_edges;
-  int64_t a = 0, b = 10;
+  int64_t a = 0, b = 20;
   int connected = 0;
 
   /*
