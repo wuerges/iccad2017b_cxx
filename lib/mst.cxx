@@ -83,7 +83,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
   using std::set, std::tuple, std::get;
 
   set<tuple<int, Shape, Shape>> edges, routed_edges;
-  int a = 0, b = 10;
+  int64_t a = 0, b = 10;
   int connected = 0;
 
   /*
@@ -98,30 +98,36 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
       }
     }
   }
+  const int64_t INF = 1e8;
 
   while (connected < shapes.size() - 1) {
-    std::cout << "connected: " << connected << "/" << shapes.size() << " a=" << a << " b=" << b<< '\n';
+    // std::cout << "connected: " << connected << "/" << shapes.size() << " a=" << a << " b=" << b<< '\n';
 
-    if (edges.empty()) {
+    while (edges.empty() && b < INF) {
       for(auto u : shapes) {
-        for(auto v : treap.collect_diamond_2(u, a, b)) {
+        for(auto v : treap.collect_diamond(u, b)) {
           edges.insert({distance(u, v), u, v});
         }
       }
       a = b;
       b *= 2;
     }
+    if(edges.empty()) {
+      return result;
+    }
+    
     auto [w, u, v] = *edges.begin();
     edges.erase(edges.begin());
 
-    while(!routed_edges.empty() && get<0>(*routed_edges.begin()) < w) {
+    while(!routed_edges.empty() && get<0>(*routed_edges.begin()) <= w) {
       auto [_, u2, v2] = *routed_edges.begin();
       routed_edges.erase(routed_edges.begin());
-      if(muf.Find(u) != muf.Find(v)) {
+      if(muf.Find(u2) != muf.Find(v2)) {
+        muf.Union(u2, v2);
         result.emplace_back(u2, v2);
         connected++;        
 
-        if(connected == shapes.size() - 1) break;
+        if(connected == shapes.size() - 1) return result;
       }
     }
 
@@ -142,7 +148,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
         // std::cout << "added to result\n";
         connected++;
         result.push_back({u, v});
-        if(connected == shapes.size() - 1) break;
+        if(connected == shapes.size() - 1) return result;
       }
     }
   }
