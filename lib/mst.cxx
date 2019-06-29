@@ -10,7 +10,7 @@ MST::MST(int n) : num_neighboors(n) {}
 
 
 vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
-                                    const vector<Shape> &shapes,
+                                    const vector<Shape> &shapes, const vector<Shape> & obs_vector, 
                                     const V1D &boundary) {
   vector<pair<Shape, Shape>> result;
   using std::set, std::tuple;

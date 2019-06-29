@@ -109,6 +109,22 @@ namespace iccad {
 
     }
 
+    AStar::AStar(const Treap & sh, const Treap & obs, const vector<Shape> & sh_vector, const vector<Shape> & obs_vector, V1D b) 
+    :shapes(sh), obstacles(obs), boundary(b) {
+        for(auto &s : sh_vector) {
+            add_shape(s);
+        }
+        for(auto &o : obs_vector) {
+            add_shape(o.expand(1));
+        }
+        remove_duplicates(xs);
+        fix_boundaries(xs, boundary[0], boundary[2]);
+        remove_duplicates(ys);
+        fix_boundaries(ys, boundary[1], boundary[3]);
+        remove_duplicates(zs);
+    }
+
+
     void AStar::add_shape(const Shape & s) {
         xs.push_back(s.a.x);
         xs.push_back(s.b.x);

@@ -26,7 +26,7 @@ namespace iccad {
       \param obstacles A Treap containing the obstacles.
      */
     vector<pair<Shape, Shape>> run(const Treap & treap, const Treap & obstacles,
-      const vector<Shape> & shapes, const V1D & boundary) ;
+      const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
     vector<pair<Shape, Shape>> run_radius_2(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes, const V1D & boundary) ;
 

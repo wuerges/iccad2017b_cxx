@@ -35,6 +35,7 @@ namespace iccad {
         // const Shape & target;
 
         AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b);
+        AStar(const Treap & sh, const Treap & obs, const vector<Shape> & sh_vector, const vector<Shape> & obs_vector, V1D b);
 
 
 
