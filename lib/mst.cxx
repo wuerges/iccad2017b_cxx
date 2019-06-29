@@ -58,7 +58,7 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
         Treap obstacles2, treap2;
         obstacles2.populate(obstacles.collect(a, b));
         treap2.populate(treap.collect(a, b));
-        int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
+        int new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
         // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         edges.insert({new_d, u, v, true});
       } else {
@@ -146,7 +146,7 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
         // obstacles2.populate(obstacles.collect(a, b));
         // treap2.populate(treap.collect(a, b));
         // int new_d = AStar(treap2, obstacles2, u, v, boundary).run().length();
-        int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
+        int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
         routed_edges.insert({new_d, u, v});
       } else {
         muf.Union(u, v);

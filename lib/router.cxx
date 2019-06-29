@@ -26,7 +26,7 @@ namespace iccad {
 
     Route Router::calculate_route(const Shape & s1, const Shape & s2) 
     {
-        auto pts = AStar(treap, obstacles, s1, s2, boundary).run();
+        auto pts = AStar(treap, obstacles, s1, s2, boundary).run(s1, s2);
         Route res(pts);
         res.simplify();
         return res;

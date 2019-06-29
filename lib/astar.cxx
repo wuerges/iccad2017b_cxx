@@ -82,7 +82,7 @@ namespace iccad {
 
 
     AStar::AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
-    :shapes(sh), obstacles(obs), boundary(b), source(s1), target(s2) {
+    :shapes(sh), obstacles(obs), boundary(b) {
         add_shape(s1);
         add_shape(s2);
 
@@ -177,37 +177,7 @@ namespace iccad {
         ),v.end());
     }
 
-    Route AStar::run() {
-
-        // std::cout << "source: " << source << " target: " << target << '\n';
-
-        return run1(source, target);
-    }
-
-    // vector<PT> AStar::bad_run(const PT s, const Shape & ts) {
-    //     using std::min, std::max;
-    //     vector<PT> result;
-
-    //     PT t = ts.a;
-
-    //     result.push_back(s);
-        
-    //     PT art1 = s;
-    //     art1.x = t.x;
-    //     if(s.x != t.x)
-    //         result.push_back(art1);
-
-    //     PT art2 = art1;
-    //     art2.z = t.z;
-    //     if(s.z != t.z) 
-    //         result.push_back(art2);
-
-    //     result.push_back(t);
-
-    //     return result;
-    // }
-    
-    Route AStar::run1(const Shape & shape_s, const Shape & shape_t) {
+    Route AStar::run(const Shape & shape_s, const Shape & shape_t) {
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
         index s = find(shape_s.a);

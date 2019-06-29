@@ -31,14 +31,14 @@ namespace iccad {
         const Treap & obstacles;
         V1D boundary;
         vector<int> xs, ys, zs;
-        const Shape & source;
-        const Shape & target;
+        // const Shape & source;
+        // const Shape & target;
 
         AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b);
 
 
 
-        Route run() ;
+        Route run(const Shape & shape_s, const Shape & shape_t) ;
 
 
 private:
@@ -51,7 +51,6 @@ private:
         void fix_boundaries(vector<int> & v, int min_bound, int max_bound);
         void add_shape(const Shape & s) ;
         // Route bad_run(const PT s, const Shape & ts) ;
-        Route run1(const Shape & shape_s, const Shape & shape_t) ;
     };
 
 }
