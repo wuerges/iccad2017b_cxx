@@ -127,7 +127,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
 
   set<tuple<int, Shape, Shape>> edges;
-  set<tuple<int, Shape, Shape, Route>> routed_edges;
+  set<tuple<int, Shape, Shape, Route, bool>> routed_edges;
   int64_t a = 0, b = 20;
   int connected = 0;
 
@@ -164,14 +164,19 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
     int wt = edges.empty() ? INF : get<0>(*edges.begin());
 
     while(!routed_edges.empty() && get<0>(*routed_edges.begin()) <= wt) {
-      auto [_, u2, v2, rt] = *routed_edges.begin();
+      auto [_, u2, v2, rt, calc] = *routed_edges.begin();
       routed_edges.erase(routed_edges.begin());
       if(muf.Find(u2) != muf.Find(v2)) {
-        muf.Union(u2, v2);
-        result.push_back(rt);
-        connected++;        
-
-        if(connected == shapes.size() - 1) return result;
+        if(calc) {
+          muf.Union(u2, v2);
+          result.push_back(rt);
+          connected++;        
+          if(connected == shapes.size() - 1) return result;
+        }
+        else {
+          auto rt2 = AStar(treap, obstacles, u2, v2, boundary).run(u2, v2);
+          routed_edges.insert({rt.length(), u2, v2, rt2, true});
+        }
       }
     
     }
@@ -189,12 +194,12 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       Route rt;
 
       if(CONFIG_FAST_ASTAR) {
-        // Treap obstacles2, treap2;
+        Treap obstacles2, treap2;
         // Treap obstacles2;
-        // obstacles2.populate(obstacles.collect(a, b));
+        obstacles2.populate(obstacles.collect(a, b));
         // Treap treap2;
         // treap2.populate(treap.collect(a, b));
-        rt = AStar(treap, obstacles, u, v, boundary).run(u, v);          
+        rt = AStar(treap, obstacles2, u, v, boundary).run(u, v);          
       }
       else {
         rt = astar->run(u, v);
@@ -203,7 +208,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       // int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
 
       if (obstacles.query(a, b) > 0) {
-        routed_edges.insert({rt.length(), u, v, rt});
+        routed_edges.insert({rt.length(), u, v, Route(), false});
       } else {
         muf.Union(u, v);
         connected++;
