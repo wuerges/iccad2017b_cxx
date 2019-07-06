@@ -5,6 +5,7 @@
 #include <algo.hpp>
 #include <model.hpp>
 #include <muf.hpp>
+#include <astar.hpp>
 
 #include <vector>
 #include <unordered_map>
@@ -25,9 +26,9 @@ namespace iccad {
       \param treap A Treap containing the routed shapes.
       \param obstacles A Treap containing the obstacles.
      */
-    vector<pair<Shape, Shape>> run(const Treap & treap, const Treap & obstacles,
+    vector<Route> run(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
-    vector<pair<Shape, Shape>> run_radius_2(const Treap & treap, const Treap & obstacles,
+    vector<Route> run_radius_2(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
 
 

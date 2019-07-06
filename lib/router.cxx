@@ -49,8 +49,8 @@ namespace iccad {
 
         // auto res = KMST(treap, obstacles, shapes, boundary).run();
 
-        for(auto [a, b] : res) {
-            auto r = calculate_route(a, b);
+        for(auto r : res) {
+            // auto r = calculate_route(a, b);
 
             result += r.length();
             

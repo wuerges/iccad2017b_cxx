@@ -10,15 +10,15 @@ using std::vector, std::pair, std::unordered_map, std::make_optional;
 MST::MST(int n) : num_neighboors(n) {}
 
 
-vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
+vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes, const vector<Shape> & obs_vector, 
                                     const V1D &boundary) {
-  vector<pair<Shape, Shape>> result;
-  using std::set, std::tuple;
+  vector<Route> result;
+  using std::set, std::tuple, std::optional;
 
   auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
 
-  set<tuple<int, Shape, Shape, bool>> edges;
+  set<tuple<int, Shape, Shape, optional<Route> >> edges;
 
   int connected = 0;
 
@@ -39,7 +39,7 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
 
     for (Shape &v : vs) {
       if (distance(u, v) > 0) {
-        edges.insert({distance(u, v), u, v, false});
+        edges.insert({distance(u, v), u, v, std::nullopt});
       }
     }
   }
@@ -57,25 +57,29 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
       auto a = min(min(u.a, v.a), min(u.b, v.b));
       auto b = max(max(u.a, v.a), max(u.b, v.b));
 
+
       if (!calc && obstacles.query(a, b) > 0) {
-        int new_d;
+        // int new_d;
+        Route rt;
         if(CONFIG_FAST_ASTAR) {
           Treap obstacles2, treap2;
           obstacles2.populate(obstacles.collect(a, b));
           treap2.populate(treap.collect(a, b));
-          new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
+          rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);
+          // new_d = rt.length();
         }
         else {
-          new_d = astar->run(u, v).length();
+          rt = astar->run(u, v);
+          // new_d = rt.length();
         }
         // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
-        edges.insert({new_d, u, v, true});
+        edges.insert({rt.length(), u, v, rt});
       } else {
         muf.Union(u, v);
         // if(distance(u, v) > 0)
         // std::cout << "added to result\n";
         connected++;
-        result.push_back({u, v});
+        result.push_back(*calc);
       }
     }
   }
@@ -85,17 +89,18 @@ vector<pair<Shape, Shape>> MST::run(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
+vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes, const vector<Shape> &obs_vector,
                                     const V1D &boundary) {
                                     
                                       
-  vector<pair<Shape, Shape>> result;
+  vector<Route> result;
   using std::set, std::tuple, std::get;
   auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
 
 
-  set<tuple<int, Shape, Shape>> edges, routed_edges;
+  set<tuple<int, Shape, Shape>> edges;
+  set<tuple<int, Shape, Shape, Route>> routed_edges;
   int64_t a = 0, b = 20;
   int connected = 0;
 
@@ -132,11 +137,11 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
     int wt = edges.empty() ? INF : get<0>(*edges.begin());
 
     while(!routed_edges.empty() && get<0>(*routed_edges.begin()) <= wt) {
-      auto [_, u2, v2] = *routed_edges.begin();
+      auto [_, u2, v2, rt] = *routed_edges.begin();
       routed_edges.erase(routed_edges.begin());
       if(muf.Find(u2) != muf.Find(v2)) {
         muf.Union(u2, v2);
-        result.emplace_back(u2, v2);
+        result.push_back(rt);
         connected++;        
 
         if(connected == shapes.size() - 1) return result;
@@ -154,30 +159,26 @@ vector<pair<Shape, Shape>> MST::run_radius_2(const Treap &treap, const Treap &ob
       // b.x+=100;
       // b.y+=100;
 
-      if (obstacles.query(a, b) > 0) {
+      Route rt;
 
-        // Treap obstacles2, treap2;
-        // obstacles2.populate(obstacles.collect(a, b));
-        // treap2.populate(treap.collect(a, b));
-        // int new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
-        int new_d;
-        if(CONFIG_FAST_ASTAR) {
-          Treap obstacles2, treap2;
-          obstacles2.populate(obstacles.collect(a, b));
-          treap2.populate(treap.collect(a, b));
-          new_d = AStar(treap2, obstacles2, u, v, boundary).run(u, v).length();
-        }
-        else {
-          new_d = astar->run(u, v).length();
-        }
-        // int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
-        routed_edges.insert({new_d, u, v});
+      if(CONFIG_FAST_ASTAR) {
+        Treap obstacles2, treap2;
+        obstacles2.populate(obstacles.collect(a, b));
+        treap2.populate(treap.collect(a, b));
+        rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);          
+      }
+      else {
+        rt = astar->run(u, v);
+      }
+      rt.simplify();
+      // int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
+
+      if (obstacles.query(a, b) > 0) {
+        routed_edges.insert({rt.length(), u, v, rt});
       } else {
         muf.Union(u, v);
-        // if(distance(u, v) > 0)
-        // std::cout << "added to result\n";
         connected++;
-        result.push_back({u, v});
+        result.push_back(rt);
         if(connected == shapes.size() - 1) return result;
       }
     }

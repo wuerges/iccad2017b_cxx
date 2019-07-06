@@ -29,8 +29,8 @@ int main(int argc, char ** argv) {
 
   int total = 0;
 
-  for(auto & [a, b] : res) {
-    total += distance(a, b);
+  for(auto & r : res) {
+    total += r.length();
   }
 
   cout << "total distance in tree: " << total << '\n';

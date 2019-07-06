@@ -18,6 +18,7 @@ namespace iccad {
         void add_point(PT p);
         friend ostream & print2D(ostream &out, const PT & p);
         friend ostream & operator<<(ostream &out, const Route & r);    
+        friend bool operator<(const Route & r1, const Route & r2);    
         int length() const ;
     };
 

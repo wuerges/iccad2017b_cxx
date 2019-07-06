@@ -44,6 +44,11 @@ namespace iccad {
         return out << "(" << p.x << "," << p.y << ")";        
     }
 
+    bool operator<(const Route & r1, const Route & r2) {
+        return r1.route < r2.route;
+    }
+        
+
     ostream & operator<<(ostream &out, const Route & r_) {
         const auto & r = r_.route;
         for(int i = 1; i < r.size(); ++i) {
