@@ -203,24 +203,26 @@ namespace iccad {
         map<index, index> pred;
         set<ii> queue;
         
-        dst[s] = 0;
         // auto xb = std::lower_bound(xs.begin(), xs.end(), shape_s.a.x);
         // auto xe = std::upper_bound(xb, xs.end(), shape_s.b.x);
         // auto yb = std::lower_bound(ys.begin(), ys.end(), shape_s.a.y);
         // auto ye = std::upper_bound(yb, ys.end(), shape_s.b.y);
+
+        // vector<pair<int64_t, PT>> cands;
         // for(auto ix = xb; ix != xe; ++ix) {
         //     for(auto iy = yb; iy != ye; ++iy)  {
         //         PT cand{*ix, *iy, shape_s.a.z};
-        //         if(collides(cand, shape_s)) {
-        //             dst[find(cand)] = 0;
-        //             queue.insert({0, find(cand)});
-        //         }
+        //         cands.emplace_back(distance(cand, shape_t), cand);
         //     }
         // }
+        // sort(cands.begin(), cands.end());
+        // auto [w0,p0] = cands.front();
+        
+        // dst[find(p0)] = 0;
+        // queue.insert({0, find(p0)});
+        
+        dst[s] = 0;
         queue.insert({0, s});
-        // queue.insert({0, find(shape_s.b)});
-        // queue.insert({0, find(PT{shape_s.a.x, shape_s.b.y, shape_s.a.z})});
-        // queue.insert({0, find(PT{shape_s.b.x, shape_s.a.y, shape_s.a.z})});
         
         index x = t;
         while(!queue.empty()) {
