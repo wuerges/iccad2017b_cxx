@@ -80,6 +80,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
       if(CONFIG_FAST_ASTAR) {
         // Treap obstacles2, treap2;
         // obstacles2.populate(obstacles.collect(a, b));
+        // Treap treap2;
         // treap2.populate(treap.collect(a, b));
         rt = AStar(treap, obstacles, u, v, boundary).run(u, v);
         // new_d = rt.length();
@@ -184,7 +185,9 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
       if(CONFIG_FAST_ASTAR) {
         // Treap obstacles2, treap2;
+        // Treap obstacles2;
         // obstacles2.populate(obstacles.collect(a, b));
+        // Treap treap2;
         // treap2.populate(treap.collect(a, b));
         rt = AStar(treap, obstacles, u, v, boundary).run(u, v);          
       }
