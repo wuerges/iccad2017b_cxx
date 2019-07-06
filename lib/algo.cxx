@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <thread>
+#include <future>
 
 namespace iccad {
 
@@ -221,23 +221,9 @@ bool Node::hits(const PT l, const PT r, int level) {
   }
 
   bool hits = collides(x, Shape{l, r});
-  // std::cout << "collides?"<<hits<<"\n";
-
-  if(!hits && level < 2) {
-    bool left_res, right_res;
-    std::thread t1([&](){ left_res =  (left ? left->hits(l, r, level + 1) : false); } );
-    std::thread t2([&](){ right_res =  (right ? right->hits(l, r, level + 1) : false); } );
-    t1.join();
-    if(left_res) return true;
-    t2.join();
-
-    return hits || left_res || right_res;
-  }
-  else {
-    return hits ||
+  return hits ||
       (left ? left->hits(l, r, level + 1) : false) ||
       (right ? right->hits(l, r, level + 1) : false);
-  }
 
 }
 
