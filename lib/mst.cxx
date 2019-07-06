@@ -72,6 +72,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
           rt = astar->run(u, v);
           // new_d = rt.length();
         }
+        rt.simplify();
         // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         edges.insert({rt.length(), u, v, rt});
       } else {
