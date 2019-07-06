@@ -78,10 +78,10 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
 
       Route rt;
       if(CONFIG_FAST_ASTAR) {
-        Treap obstacles2, treap2;
-        obstacles2.populate(obstacles.collect(a, b));
-        treap2.populate(treap.collect(a, b));
-        rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);
+        // Treap obstacles2, treap2;
+        // obstacles2.populate(obstacles.collect(a, b));
+        // treap2.populate(treap.collect(a, b));
+        rt = AStar(treap, obstacles, u, v, boundary).run(u, v);
         // new_d = rt.length();
       }
       else {
@@ -183,10 +183,10 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       Route rt;
 
       if(CONFIG_FAST_ASTAR) {
-        Treap obstacles2, treap2;
-        obstacles2.populate(obstacles.collect(a, b));
-        treap2.populate(treap.collect(a, b));
-        rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);          
+        // Treap obstacles2, treap2;
+        // obstacles2.populate(obstacles.collect(a, b));
+        // treap2.populate(treap.collect(a, b));
+        rt = AStar(treap, obstacles, u, v, boundary).run(u, v);          
       }
       else {
         rt = astar->run(u, v);
