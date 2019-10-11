@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 
 project(ICCAD_2017_B)
-include_directories(include)
+include_directories(include ext-libs/cad_geometry/include)
 add_subdirectory("ext-libs/rapidcheck")
 add_subdirectory("ext-libs/cad_geometry")
 add_subdirectory("lib")

@@ -1,10 +1,11 @@
 #pragma once
 
-#include <base.hpp>
+#include <geometry.hpp>
 #include <unordered_map>
 
 namespace iccad {
   using std::unordered_map;
+  using namespace geometry;
 
   struct MUF {
 

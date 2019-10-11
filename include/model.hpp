@@ -3,10 +3,11 @@
 #include <vector>
 #include <set>
 #include <utility>
-#include <base.hpp>
+#include <geometry.hpp>
 
 namespace iccad
 {
+using namespace geometry;
 
 /**
  * Represents either a point, with size 2
