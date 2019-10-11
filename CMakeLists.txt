@@ -13,14 +13,15 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 project(ICCAD_2017_B)
 include_directories(include)
 add_subdirectory("ext-libs/rapidcheck")
+add_subdirectory("ext-libs/cad_geometry")
 add_subdirectory("lib")
 add_subdirectory("test")
 add_subdirectory("app")
 # subdirs(app)
 
-find_package(Doxygen
-             REQUIRED dot
-             OPTIONAL_COMPONENTS mscgen dia)
+#find_package(Doxygen
+#             REQUIRED dot
+#             OPTIONAL_COMPONENTS mscgen dia)
 
 
 # set(DOXYGEN_GENERATE_HTML YES)

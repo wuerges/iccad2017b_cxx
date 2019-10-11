@@ -1,3 +1,6 @@
 [submodule "ext-libs/rapidcheck"]
 	path = ext-libs/rapidcheck
 	url = https://github.com/emil-e/rapidcheck
+[submodule "ext-libs/cad_geometry"]
+	path = ext-libs/cad_geometry
+	url = git@github.com:wuerges/cad_geometry.git
