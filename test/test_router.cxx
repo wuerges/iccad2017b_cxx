@@ -23,15 +23,15 @@ int account_route(const Input & i, int n, ostream & out, const vector<Shape> & s
 
 
 int main(int argc, char ** argv) {
+    if (argc != 3) {
+        cout << "usage: " << argv[0] << " <testcase> <output_file_for_solution>\n";
+        return -1;
+    }
 
     Input i;
     parser::parse_file(i, argv[1]);
     ofstream fout(argv[2]);
 
-    if (argc != 3) {
-        cout << "usage: " << argv[0] << " <testcase> <output_file_for_solution>\n";
-        return -1;
-    }
     vector<Shape> shapes = get_routed_shapes(i);
     vector<Shape> obstacles = get_obstacles(i);
     random_shuffle(shapes.begin(), shapes.end());
