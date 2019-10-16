@@ -96,7 +96,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
       }
       rt.simplify();
 
-      if (obstacles.query(a, b) > 0) {
+      if (obstacles.hits(a, b)) {
         // int new_d;
         // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
         routed_edges.insert({rt.length(), u, v, Route(), false});
@@ -207,7 +207,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       rt.simplify();
       // int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
 
-      if (obstacles.query(a, b) > 0) {
+      if (obstacles.hits(a, b)) {
         routed_edges.insert({rt.length(), u, v, Route(), false});
       } else {
         muf.Union(u, v);

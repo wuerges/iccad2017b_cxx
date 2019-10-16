@@ -45,7 +45,9 @@ int test_treap(size_t slice, const Input & inp)
 
     int result = 0;
     for(auto s : shapes) {
-      result += root->query(s.a, s.b);
+      if(root->hits(s.a, s.b)) {
+        result++;
+      }
     }
     // cout << result << "\n";
 

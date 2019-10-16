@@ -80,7 +80,7 @@ vector<pair<Shape, Shape>> KMST::run()  {
             auto a = min(min(u.a, v.a), min(u.b, v.b));
             auto b = max(max(u.a, v.a), max(u.b, v.b));
 
-            if (!calc && obstacles.query(a, b) > 0) {
+            if (!calc && obstacles.hits(a, b)) {
                 int new_d = AStar(treap, obstacles, u, v, boundary).run(u, v).length();
                 queue.insert({new_d, u, v, true});
             }
