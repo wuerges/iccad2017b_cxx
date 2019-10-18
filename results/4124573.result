@@ -1,0 +1,44 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing local mst
+testcases/official/original/case1, 3652, 18
+testcases/official/original/case2, 64716, 136
+testcases/official/original/case3, 733397, 4199
+testcases/official/alpha/caseA, 1258779, 4168
+testcases/official/hidden/case4, 9639, 27
+testcases/official/hidden/case5, 20514, 153
+testcases/official/hidden/case6, 1535144, 4601
+testcases/official/hidden/caseB, 5311962, 4541
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing local mst
+testcases/official/original/case1, 3652, 19
+testcases/official/original/case2, 64716, 142
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing local mst
+testcases/official/original/case1, 3652, 18
+testcases/official/original/case2, 64716, 135
+testcases/official/original/case3, 733397, 4186
+testcases/official/alpha/caseA, 1258779, 4179
+testcases/official/hidden/case4, 9639, 26
+testcases/official/hidden/case5, 20514, 151
+testcases/official/hidden/case6, 1535144, 4941
+testcases/official/hidden/caseB, 5311962, 4759
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+using function for astar
+testcases/official/original/case1, 3652, 18
+testcases/official/original/case2, 64716, 116
+testcases/official/original/case3, 733397, 3882
+testcases/official/alpha/caseA, 1258779, 3932
+testcases/official/hidden/case4, 9639, 26
+testcases/official/hidden/case5, 20514, 124
+testcases/official/hidden/case6, 1535080, 4321
+testcases/official/hidden/caseB, 5311881, 4135
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+using function for astar
+testcases/official/original/case1, 3652, 17
+testcases/official/original/case2, 64716, 116
+testcases/official/original/case3, 733397, 3881
+testcases/official/alpha/caseA, 1258779, 3940
+testcases/official/hidden/case4, 9639, 26
+testcases/official/hidden/case5, 20514, 127
+testcases/official/hidden/case6, 1535080, 4380
+testcases/official/hidden/caseB, 5311881, 4142

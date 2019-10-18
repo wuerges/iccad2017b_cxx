@@ -139,7 +139,7 @@ namespace iccad {
         zs.push_back(s.b.z);
     }
 
-    vector<AStar::index> AStar::neighboors(AStar::index i) {
+    vector<AStar::index> AStar::neighboors(AStar::index i) const {
         vector<index> result;
 
         auto [x, y, z] = i;
@@ -155,7 +155,7 @@ namespace iccad {
         return result;
     }
 
-    const PT AStar::make_pt(index i) {
+    const PT AStar::make_pt(index i) const {
         auto [x, y, z] = i;
         return PT(xs[x], ys[y], zs[z]);
     }
@@ -198,7 +198,7 @@ namespace iccad {
         ),v.end());
     }
 
-    Route AStar::run(const Shape & shape_s, const Shape & shape_t) {
+    Route AStar::run(const Shape & shape_s, const Shape & shape_t) const {
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
         index s = find(shape_s.a);

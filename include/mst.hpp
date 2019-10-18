@@ -37,6 +37,14 @@ private:
 
     MUF muf;
 
+    Route astar_route(
+      const Treap & obstacles, 
+      const Treap & treap, 
+      const std::optional<AStar> & astar, 
+      const Shape & u, 
+      const Shape & v,
+      const V1D &boundary);
+
   };
 
 

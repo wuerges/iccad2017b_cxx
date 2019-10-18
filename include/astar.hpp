@@ -40,12 +40,12 @@ namespace iccad {
 
 
 
-        Route run(const Shape & shape_s, const Shape & shape_t) ;
+        Route run(const Shape & shape_s, const Shape & shape_t) const;
 
 
 private:
-        vector<index> neighboors(index i);
-        const PT make_pt(index i);
+        vector<index> neighboors(index i) const;
+        const PT make_pt(index i) const;
         int find(int c, const vector<int> & v) const ;
         index find(const PT p) const;
 
