@@ -38,7 +38,7 @@ int main(int argc, char ** argv) {
 
         // for(int n = 10; n <= 200; n = n * 2) {
 
-        int n = 6;
+        int n = 10;
         auto t1 = high_resolution_clock::now();
         stringstream ss;
         int r1 = account_route(i, n, ss, shapes, obstacles);
