@@ -117,19 +117,16 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
     
 
     if (muf.Find(u) != muf.Find(v)) {
-
-        Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
-      
+        Route rt = 
+              CONFIG_2STEP_MST 
+                ? AStar(treap, obstacles, u, v, boundary).run(u, v)
+                : astar_route(obstacles, treap, astar, u, v, boundary);
+       
         if(rt.length() > w) {
-
-        // if (obstacles.hits(a, b)) {
-            // int new_d;
-            // int new_d = AStar(treap, obstacles, u, v, boundary).run().length();
-            routed_edges.insert({rt.length(), u, v, Route(), false});
+            auto rx = CONFIG_2STEP_MST ? rt : Route();
+            routed_edges.insert({rt.length(), u, v, rx, CONFIG_2STEP_MST});        
         } else {
             muf.Union(u, v);
-            // if(distance(u, v) > 0)
-            // std::cout << "added to result\n";
             connected++;
             result.push_back(rt);
             if(connected == shapes.size() - 1) return result;
@@ -214,12 +211,16 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
         auto [w, u, v] = *edges.begin();
         edges.erase(edges.begin());
 
-        if (muf.Find(u) != muf.Find(v)) {      
-            Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
+        if (muf.Find(u) != muf.Find(v)) {
+            Route rt = 
+              CONFIG_2STEP_MST 
+                ? AStar(treap, obstacles, u, v, boundary).run(u, v)
+                : astar_route(obstacles, treap, astar, u, v, boundary);
 
             if(rt.length() > w) {
             // if (obstacles.hits(a, b)) {
-                routed_edges.insert({rt.length(), u, v, Route(), false});
+                auto rx = CONFIG_2STEP_MST ? rt : Route();
+                routed_edges.insert({rt.length(), u, v, rx, CONFIG_2STEP_MST});
             } else {
                 muf.Union(u, v);
                 connected++;
