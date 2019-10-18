@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+config fast @ 2.4Ghz
+testcases/official/original/case1, 3547, 40
+testcases/official/original/case2, 64618, 240
+testcases/official/original/case3, 729646, 8211
+testcases/official/alpha/caseA, 1257530, 7939
+testcases/official/hidden/case4, 9639, 59
+testcases/official/hidden/case5, 20514, 268
+testcases/official/hidden/case6, 1533323, 8773
+testcases/official/hidden/caseB, 5311440, 8199
