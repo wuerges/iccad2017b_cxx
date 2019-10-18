@@ -135,13 +135,21 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
   Connect adjacent shapes
    */
   for (const Shape &u : shapes) {
-    vector<Shape> vs = treap.collect(u.a, u.b);
-    for (auto v : vs) {
+    // vector<Shape> vs = treap.collect(u.a, u.b);
+    // for (auto v : vs) {
+    //   if (muf.Find(u) != muf.Find(v)) {
+    //     muf.Union(u, v);
+    //     connected++;
+    //   }
+    // }
+
+    treap.visit(u, [&](auto & v) {
       if (muf.Find(u) != muf.Find(v)) {
         muf.Union(u, v);
         connected++;
       }
-    }
+      return true;
+    });
   }
   const int64_t INF = 1e8;
 
