@@ -128,20 +128,13 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
   set<tuple<int, Shape, Shape>> edges;
   set<tuple<int, Shape, Shape, Route, bool>> routed_edges;
-  int64_t a = 0, b = 100;
+  uint64_t radius1 = 0, radius2 = 100;
   int connected = 0;
 
   /*
   Connect adjacent shapes
    */
-  for (const Shape &u : shapes) {
-    // vector<Shape> vs = treap.collect(u.a, u.b);
-    // for (auto v : vs) {
-    //   if (muf.Find(u) != muf.Find(v)) {
-    //     muf.Union(u, v);
-    //     connected++;
-    //   }
-    // }
+  for (const Shape &u : shapes) {    
 
     treap.visit(u, [&](auto & v) {
       if (muf.Find(u) != muf.Find(v)) {
@@ -151,19 +144,23 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       return true;
     });
   }
-  const int64_t INF = 1e8;
+  const uint64_t INF = 1e8;
 
   while (connected < shapes.size() - 1) {
     // std::cout << "connected: " << connected << "/" << shapes.size() << " a=" << a << " b=" << b<< '\n';
 
-    while (edges.empty() && b < INF) {
+    while (edges.empty() && radius2 < INF) {
       for(auto u : shapes) {
-        for(auto v : treap.collect_diamond_2(u, a, b)) {
+        // for(auto v : treap.collect_diamond_2(u, a, b)) {
+        //   edges.insert({distance(u, v), u, v});
+        // }
+        treap.visit_diamond_2(u,radius1,radius2, [&](auto & v) {
           edges.insert({distance(u, v), u, v});
-        }
+          return true;
+        });
       }
-      a = b;
-      b *= 2;
+      radius1 = radius2;
+      radius2 *= 2;
     }
     // if(edges.empty()) {
     //   return result;
@@ -202,12 +199,21 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
       Route rt;
 
       if(CONFIG_FAST_ASTAR) {
+        Shape window{a,b};
+        if(ROUTING_WINDOW > 0) {
+          window = window.expand(ROUTING_WINDOW);
+        }
         Treap obstacles2, treap2;
-        // Treap obstacles2;
-        obstacles2.populate(obstacles.collect(a, b));
-        // Treap treap2;
-        // treap2.populate(treap.collect(a, b));
-        rt = AStar(treap, obstacles2, u, v, boundary).run(u, v);          
+        obstacles.visit(window, [&](auto & xx) {
+          obstacles2.add(xx);
+          return true;
+        });
+        treap.visit(window, [&](auto & xx) {
+          treap2.add(xx);
+          return true;
+        });
+
+        rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);          
       }
       else {
         rt = astar->run(u, v);

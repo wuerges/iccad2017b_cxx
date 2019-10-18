@@ -1,0 +1,30 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing stride
+testcases/official/original/case1, 3547, 81
+testcases/official/original/case2, 64618, 333
+testcases/official/original/case3, 728650, 18928
+testcases/official/alpha/caseA, 1257428, 19247
+testcases/official/hidden/case4, 9639, 111
+testcases/official/hidden/case5, 20514, 372
+testcases/official/hidden/case6, 1533387, 13857
+testcases/official/hidden/caseB, 5311521, 16587
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing stride 50
+testcases/official/original/case1, 3547, 58
+testcases/official/original/case2, 64618, 289
+testcases/official/original/case3, 728650, 15671
+testcases/official/alpha/caseA, 1257428, 15072
+testcases/official/hidden/case4, 9639, 77
+testcases/official/hidden/case5, 20514, 323
+testcases/official/hidden/case6, 1533387, 11287
+testcases/official/hidden/caseB, 5311521, 12980
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+testing stride 100
+testcases/official/original/case1, 3547, 57
+testcases/official/original/case2, 64618, 283
+testcases/official/original/case3, 728650, 15399
+testcases/official/alpha/caseA, 1257428, 14711
+testcases/official/hidden/case4, 9639, 76
+testcases/official/hidden/case5, 20514, 318
+testcases/official/hidden/case6, 1533387, 11073
+testcases/official/hidden/caseB, 5311521, 12803

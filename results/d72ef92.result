@@ -1,0 +1,20 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+replacing collect with visit
+testcases/official/original/case1, 3547, 57
+testcases/official/original/case2, 64618, 294
+testcases/official/original/case3, 728650, 15565
+testcases/official/alpha/caseA, 1257428, 16114
+testcases/official/hidden/case4, 9639, 79
+testcases/official/hidden/case5, 20514, 337
+testcases/official/hidden/case6, 1533387, 13040
+testcases/official/hidden/caseB, 5311521, 13950
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+replacing collect with visit
+testcases/official/original/case1, 3547, 54
+testcases/official/original/case2, 64618, 285
+testcases/official/original/case3, 728650, 14978
+testcases/official/alpha/caseA, 1257428, 15436
+testcases/official/hidden/case4, 9639, 77
+testcases/official/hidden/case5, 20514, 318
+testcases/official/hidden/case6, 1533387, 11881
+testcases/official/hidden/caseB, 5311521, 13018
