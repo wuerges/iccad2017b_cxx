@@ -128,7 +128,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
   set<tuple<int, Shape, Shape>> edges;
   set<tuple<int, Shape, Shape, Route, bool>> routed_edges;
-  int64_t a = 0, b = 20;
+  int64_t a = 0, b = 100;
   int connected = 0;
 
   /*
