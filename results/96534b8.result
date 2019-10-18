@@ -104,3 +104,5 @@ testcases/official/original/case3, 728650, 15454
 testcases/official/alpha/caseA, 1257428, 15962
 testcases/official/hidden/case4, 9639, 74
 testcases/official/hidden/case5, 20514, 340
+testcases/official/hidden/case6, 1533323, 12351
+testcases/official/hidden/caseB, 5311440, 13031
