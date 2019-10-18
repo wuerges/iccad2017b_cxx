@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+official result for optimal routing
+testcases/official/original/case1, 3547, 56
+testcases/official/original/case2, 64618, 300
+testcases/official/original/case3, 728650, 15418
+testcases/official/alpha/caseA, 1257428, 15679
+testcases/official/hidden/case4, 9639, 76
+testcases/official/hidden/case5, 20514, 341
+testcases/official/hidden/case6, 1533323, 12219
+testcases/official/hidden/caseB, 5311440, 13023
