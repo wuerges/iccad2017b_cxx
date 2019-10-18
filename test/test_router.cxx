@@ -10,6 +10,7 @@
 #include <mst.hpp>
 #include <fstream>
 #include <sstream>
+#include <config.hpp>
 
 using namespace std;
 using namespace std::chrono;
@@ -34,10 +35,10 @@ int main(int argc, char ** argv) {
 
     vector<Shape> shapes = get_routed_shapes(i);
     vector<Shape> obstacles = get_obstacles(i);
-    random_shuffle(shapes.begin(), shapes.end());
-    random_shuffle(obstacles.begin(), obstacles.end());
+    // random_shuffle(shapes.begin(), shapes.end());
+    // random_shuffle(obstacles.begin(), obstacles.end());
 
-    int r1 = account_route(i, 6, fout, shapes, obstacles);
+    int r1 = account_route(i, LOCAL_NEIGHBOORS, fout, shapes, obstacles);
     cout << argv[1] << ": " << r1 << '\n';    
     
     return 0;

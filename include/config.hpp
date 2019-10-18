@@ -16,4 +16,7 @@ namespace iccad {
     // the number of pixels expanded in all directions 
     // the routing window is increased;
     constexpr int ROUTING_WINDOW = 100;
+
+    // the number of neighboors in the local solution
+    constexpr int LOCAL_NEIGHBOORS = 10;
 }

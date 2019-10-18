@@ -10,6 +10,7 @@
 #include <mst.hpp>
 #include <fstream>
 #include <sstream>
+#include <config.hpp>
 
 using namespace std;
 using namespace std::chrono;
@@ -38,10 +39,9 @@ int main(int argc, char ** argv) {
 
         // for(int n = 10; n <= 200; n = n * 2) {
 
-        int n = 10;
         auto t1 = high_resolution_clock::now();
         stringstream ss;
-        int r1 = account_route(i, n, ss, shapes, obstacles);
+        int r1 = account_route(i, LOCAL_NEIGHBOORS, ss, shapes, obstacles);
         auto t2 = high_resolution_clock::now();
         auto dur1 = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
         cout << argv[a] << ", " << r1 <<", " << dur1 << endl;
