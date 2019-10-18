@@ -3,7 +3,7 @@
 namespace iccad {
     // true : will only find 6 neighbor for each node.
     // false : will incrementaly increase the distance for all nodes.
-    constexpr bool CONFIG_FAST_MST = true; 
+    constexpr bool CONFIG_FAST_MST = false; 
 
     // true : will use astar
     // falze : will use dijkstra.
