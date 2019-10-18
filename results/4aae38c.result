@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+official global
+testcases/official/original/case1, 3547, 51
+testcases/official/original/case2, 64618, 172
+testcases/official/original/case3, 728650, 13470
+testcases/official/alpha/caseA, 1257428, 14161
+testcases/official/hidden/case4, 9639, 72
+testcases/official/hidden/case5, 20514, 206
+testcases/official/hidden/case6, 1533323, 9671
+testcases/official/hidden/caseB, 5311440, 11324
