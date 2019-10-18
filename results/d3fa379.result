@@ -1,10 +1,10 @@
 Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
 reduced clock
-testcases/official/original/case1, 3547, 75
-testcases/official/original/case2, 64618, 254
-testcases/official/original/case3, 728650, 18560
-testcases/official/alpha/caseA, 1257428, 19227
-testcases/official/hidden/case4, 9639, 103
-testcases/official/hidden/case5, 20514, 308
-testcases/official/hidden/case6, 1533323, 13565
-testcases/official/hidden/caseB, 5311440, 15476
+testcases/official/original/case1, 3547    & 75    \\ 
+testcases/official/original/case2, 64618   & 254   \\  
+testcases/official/original/case3, 728650  & 18560 \\    
+testcases/official/alpha/caseA,    1257428 & 19227 \\    
+testcases/official/hidden/case4,   9639    & 103   \\  
+testcases/official/hidden/case5,   20514   & 308   \\  
+testcases/official/hidden/case6,   1533323 & 13565 \\    
+testcases/official/hidden/caseB,   5311440 & 15476 \\    

@@ -93,14 +93,14 @@ namespace iccad {
 
         auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
         auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
-        if(!CONFIG_FAST_MST) {
-            pa.x -= 300;
-            pa.y -= 300;
-            pa.z -= 300;
-            pb.x += 300;
-            pb.y += 300;
-            pb.z += 300;
-        }
+        // if(!CONFIG_FAST_MST) {
+            pa.x -= ROUTING_WINDOW;
+            pa.y -= ROUTING_WINDOW;
+            pa.z -= ROUTING_WINDOW;
+            pb.x += ROUTING_WINDOW;
+            pb.y += ROUTING_WINDOW;
+            pb.z += ROUTING_WINDOW;
+        // }
 
         for (auto sx : obstacles.collect(pa, pb)) {
             add_shape(sx.expand(1));
