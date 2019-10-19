@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+global 2step @ 2.4Ghz
+testcases/official/original/case1, 3547, 74
+testcases/official/original/case2, 64618, 367
+testcases/official/original/case3, 728599, 25747
+testcases/official/alpha/caseA, 1257428, 21304
+testcases/official/hidden/case4, 9639, 104
+testcases/official/hidden/case5, 20514, 454
+testcases/official/hidden/case6, 1533323, 17819
+testcases/official/hidden/caseB, 5311440, 14723
