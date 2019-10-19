@@ -1,0 +1,30 @@
+Nome do modelo:                  Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+2-step mst config global @ 2.4Ghz
+testcases/official/original/case1, 3512, 72
+testcases/official/original/case2, 60983, 368
+testcases/official/original/case3, 672742, 26011
+testcases/official/alpha/caseA, 1212119, 21899
+testcases/official/hidden/case4, 9243, 105
+testcases/official/hidden/case5, 18387, 458
+testcases/official/hidden/case6, 1450364, 18133
+testcases/official/hidden/caseB, 5218826, 15257
+Nome do modelo:                  Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+2step @ 2.4Ghz
+testcases/official/original/case1, 3547, 73
+testcases/official/original/case2, 64618, 367
+testcases/official/original/case3, 728599, 25825
+testcases/official/alpha/caseA, 1257428, 21432
+testcases/official/hidden/case4, 9639, 102
+testcases/official/hidden/case5, 20514, 453
+testcases/official/hidden/case6, 1533323, 18018
+testcases/official/hidden/caseB, 5311440, 14882
+Nome do modelo:                  Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+3step @ 2.4Ghz
+testcases/official/original/case1, 3547, 72
+testcases/official/original/case2, 64618, 243
+testcases/official/original/case3, 728673, 17545
+testcases/official/alpha/caseA, 1257428, 18085
+testcases/official/hidden/case4, 9639, 103
+testcases/official/hidden/case5, 20514, 294
+testcases/official/hidden/case6, 1533323, 12780
+testcases/official/hidden/caseB, 5311440, 14565
