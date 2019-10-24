@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
+reruning for 3-step local
+testcases/official/original/case1, 3652, 24
+testcases/official/original/case2, 64712, 182
+testcases/official/original/case3, 733397, 5773
+testcases/official/alpha/caseA, 1258779, 5650
+testcases/official/hidden/case4, 9639, 38
+testcases/official/hidden/case5, 20514, 204
+testcases/official/hidden/case6, 1535047, 6446
+testcases/official/hidden/caseB, 5311881, 5896
