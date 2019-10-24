@@ -6,7 +6,7 @@ namespace iccad {
     constexpr bool CONFIG_FAST_MST = false; 
     
     // config 2 step
-    constexpr bool CONFIG_2STEP_MST = true; 
+    constexpr bool CONFIG_2STEP_MST = false; 
 
     // true : will use astar
     // falze : will use dijkstra.

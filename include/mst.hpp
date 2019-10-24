@@ -30,6 +30,8 @@ namespace iccad {
       const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
     vector<Route> run_radius_2(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
+    vector<Route> run_radius_3(const Treap & treap, const Treap & obstacles,
+      const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
 
 
 private:

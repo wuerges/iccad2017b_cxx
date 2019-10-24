@@ -139,7 +139,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
+vector<Route> MST::run_radius_3(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes, const vector<Shape> &obs_vector,
                                     const V1D &boundary) {
                                     
@@ -178,8 +178,8 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                 //   edges.insert({distance(u, v), u, v});
                 // }
                 treap.visit_diamond_2(u,radius1,radius2, [&](auto & v) {
-                edges.insert({distance(u, v), u, v});
-                return true;
+                    edges.insert({distance(u, v), u, v});
+                    return true;
                 });
             }
             radius1 = radius2;
@@ -233,6 +233,92 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
   //
 
   return result;
+}
+
+vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
+                                    const vector<Shape> &shapes, const vector<Shape> &obs_vector,
+                                    const V1D &boundary) {
+                                    
+                                      
+    vector<Route> result;
+    using std::set, std::tuple, std::get;
+    auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+
+    // using item = tuple<int, const Shape, const Shape, const Route, int>;
+    using item = tuple<int, const Shape, const Shape, const Route, int>;
+
+    set<item> edges;
+    uint64_t radius1 = 0, radius2 = 100;
+    int connected = 0;
+
+    /*
+    Connect adjacent shapes
+    */
+    for (const Shape &u : shapes) {    
+
+        treap.visit(u, [&](auto & v) {
+            if (muf.Find(u) != muf.Find(v)) {
+                muf.Union(u, v);
+                connected++;
+            }
+            return true;
+        });
+    }
+    const uint64_t INF = 1e8;
+
+    const Route dummy;
+
+    int frontier = 0;
+
+    while (connected < shapes.size() - 1) {
+        if(radius2 > INF) {
+            std::cout << "radius2="<<radius2<< '\n';
+        }
+        ASSERT(radius2 < INF);
+
+        while(edges.empty() || frontier > radius2 ) {
+            for(auto & u : shapes) {
+                treap.visit_diamond_2(u,radius1,radius2, [&](auto & v) {                    
+                    edges.insert(item{distance(u, v), u, v, dummy, 0});
+                    return true;
+                });
+            }
+            radius1 = radius2;
+            radius2 *= 2;
+        }
+
+        auto [_, u, v, rt, calc] = *edges.begin();
+        edges.erase(edges.begin());
+
+        if(muf.Find(u) != muf.Find(v)) {
+
+            if(calc == 2) {
+                muf.Union(u, v);
+                result.push_back(rt);
+                connected++;        
+                if(connected >= shapes.size() - 1) return result;
+            }
+            else if(calc == 1) {
+                auto rt3 = AStar(treap, obstacles, u, v, boundary).run(u, v);
+                frontier = std::max(frontier, rt3.length());
+                edges.insert({rt3.length(), u, v, rt3, 2});
+            }
+            else {
+                if(CONFIG_2STEP_MST) {
+                    auto rt3 = AStar(treap, obstacles, u, v, boundary).run(u, v);
+                    frontier = std::max(frontier, rt3.length());
+                    edges.insert({rt3.length(), u, v, rt3, 2});
+                }
+                else {
+                    auto rt2 = astar_route(obstacles, treap, astar, u, v, boundary);
+                    frontier = std::max(frontier, rt2.length());
+                    edges.insert({rt2.length(), u, v, dummy, 1});
+                }
+            }
+        }        
+    }
+
+    return result;
 }
 
 } // namespace iccad
