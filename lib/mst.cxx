@@ -4,6 +4,7 @@
 
 #include <set>
 #include <map>
+#include <memory>
 
 namespace iccad {
 using std::vector, std::pair, std::unordered_map, std::make_optional;
@@ -140,7 +141,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-vector<Route> MST::run_radius_3(const Treap &treap, const Treap &obstacles,
+vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes, const vector<Shape> &obs_vector,
                                     const V1D &boundary) {
                                     
@@ -236,7 +237,7 @@ vector<Route> MST::run_radius_3(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
+vector<Route> MST::run_radius_2_slow(const Treap &treap, const Treap &obstacles,
                                     const vector<Shape> &shapes, const vector<Shape> &obs_vector,
                                     const V1D &boundary) {
                                     
@@ -322,5 +323,75 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
     return result;
 }
 
+
+
+vector<Route> MST::run_slow(const Treap &treap, const Treap &obstacles,
+                                    const vector<Shape> &shapes, const vector<Shape> &obs_vector,
+                                    const V1D &boundary) {
+                                    
+                                      
+    vector<Route> result;
+    using std::map, std::tuple, std::get, std::unique_ptr;
+    auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+
+    // using item = tuple<int, const Shape, const Shape, const Route, int>;
+    using item = tuple<int, const Shape, const Shape, int>;
+
+    map<item, unique_ptr<Route>> edges;
+    int connected = 0;
+
+    /*
+    Connect adjacent shapes
+    */
+    for (const Shape &u : shapes) {    
+        treap.visit(u, [&](auto & v) {
+            if (muf.Find(u) != muf.Find(v)) {
+                muf.Union(u, v);
+                connected++;
+            }
+            return true;
+        });
+    }
+
+    for(auto & u : shapes) {
+        for(auto & v : treap.neighboors_diamond(u, LOCAL_NEIGHBOORS)) {
+            edges[item{distance(u, v), u, v, 0}] = nullptr;
+        }
+    }
+
+    while (connected < shapes.size() - 1) {
+
+        auto [_, u, v, calc] = edges.begin()->first;
+        auto rt = std::move(edges.begin()->second);
+
+        edges.erase(edges.begin());
+
+        if(muf.Find(u) != muf.Find(v)) {
+
+            if(calc == 2) {
+                muf.Union(u, v);
+                result.push_back(*rt);
+                connected++;        
+                if(connected >= shapes.size() - 1) return result;
+            }
+            else if(calc == 1) {
+                auto rt3 = AStar(treap, obstacles, u, v, boundary).run(u, v);
+                edges[{rt3.length(), u, v, 2}] = std::make_unique<Route>(rt3); 
+            }
+            else {
+                if(CONFIG_2STEP_MST) {
+                    auto rt3 = AStar(treap, obstacles, u, v, boundary).run(u, v);
+                    edges[{rt3.length(), u, v, 2}] = std::make_unique<Route>(rt3); 
+                }
+                else {
+                    auto rt2 = astar_route(obstacles, treap, astar, u, v, boundary);
+                    edges[{rt2.length(), u, v, 1}] = nullptr;
+                }
+            }
+        }        
+    }
+
+    return result;
+}
 
 } // namespace iccad

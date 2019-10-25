@@ -28,9 +28,11 @@ namespace iccad {
      */
     vector<Route> run(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
+    vector<Route> run_slow(const Treap & treap, const Treap & obstacles,
+      const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
     vector<Route> run_radius_2(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
-    vector<Route> run_radius_3(const Treap & treap, const Treap & obstacles,
+    vector<Route> run_radius_2_slow(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
 
 

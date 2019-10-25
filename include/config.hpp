@@ -3,7 +3,7 @@
 namespace iccad {
     // true : will only find 6 neighbor for each node.
     // false : will incrementaly increase the distance for all nodes.
-    constexpr bool CONFIG_FAST_MST = false; 
+    constexpr bool CONFIG_FAST_MST = true; 
     
     // config 2 step
     constexpr bool CONFIG_2STEP_MST = false; 
