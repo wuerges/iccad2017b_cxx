@@ -3,6 +3,7 @@
 #include <config.hpp>
 
 #include <set>
+#include <map>
 
 namespace iccad {
 using std::vector, std::pair, std::unordered_map, std::make_optional;
@@ -320,5 +321,6 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
     return result;
 }
+
 
 } // namespace iccad
