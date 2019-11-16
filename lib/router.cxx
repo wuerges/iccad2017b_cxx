@@ -20,7 +20,7 @@ namespace iccad {
 
     void Router::map_z_to_layer(Route & pts) {
         for(auto & pt : pts.route) {
-            pt.z = z_to_layer(pt.z, viaCost);
+            pt.coords[2] = z_to_layer(pt[2], viaCost);
         }            
     }
 

@@ -27,21 +27,21 @@ namespace iccad {
         for(int i = 2; i < route.size(); ++i) {
             PT & a = route[i-2], & b = route[i-1], & c = route[i];
             
-            if(a.x == b.x && b.x == c.x && a.z == b.z && b.z == c.z) {
-                b.y = a.y;
+            if(a[0] == b[0] && b[0] == c[0] && a[2] == b[2] && b[2] == c[2]) {
+                b.coords[1] = a[1];
             }
-            if(a.y == b.y && b.y == c.y && a.z == b.z && b.z == c.z) {
-                b.x = a.x;
+            if(a[1] == b[1] && b[1] == c[1] && a[2] == b[2] && b[2] == c[2]) {
+                b.coords[0] = a[0];
             }
-            if(a.x == b.x && b.x == c.x && a.y == b.y && b.y == c.y) {
-                b.z = a.z;
+            if(a[0] == b[0] && b[0] == c[0] && a[1] == b[1] && b[1] == c[1]) {
+                b.coords[2] = a[2];
             }
         }
         route.erase(unique(route.begin(), route.end()), route.end());
     }
 
     ostream & print2D(ostream &out, const PT & p) {
-        return out << "(" << p.x << "," << p.y << ")";        
+        return out << "(" << p[0] << "," << p[1] << ")";        
     }
 
     bool operator<(const Route & r1, const Route & r2) {
@@ -53,24 +53,24 @@ namespace iccad {
         const auto & r = r_.route;
         for(int i = 1; i < r.size(); ++i) {
             const PT & a = r[i-1], & b = r[i];
-            int layer = std::min(a.z, b.z);
-            if(a.y == b.y && a.z == b.z) {
+            int layer = std::min(a[2], b[2]);
+            if(a[1] == b[1] && a[2] == b[2]) {
                 out << "H-line M" << layer << " ";
                 print2D(out, a);
                 out << " ";
                 print2D(out, b);
                 out << '\n';
             }
-            else if(a.x == b.x && a.z == b.z) {
+            else if(a[0] == b[0] && a[2] == b[2]) {
                 out << "V-line M" << layer << " ";
                 print2D(out, a);
                 out << " ";
                 print2D(out, b);
                 out << '\n';
             }
-            else if(a.x == b.x && a.y == b.y) {
-                int beg = std::min(a.z, b.z);
-                int end = std::max(a.z, b.z);
+            else if(a[0] == b[0] && a[1] == b[1]) {
+                int beg = std::min(a[2], b[2]);
+                int end = std::max(a[2], b[2]);
                 for(int zi = beg; zi < end; ++zi) {
                     out << "Via V" << zi  << " ";
                     print2D(out, a);
@@ -94,12 +94,12 @@ namespace iccad {
         auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
         auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
         // if(!CONFIG_FAST_MST) {
-            pa.x -= ROUTING_WINDOW;
-            pa.y -= ROUTING_WINDOW;
-            pa.z -= ROUTING_WINDOW;
-            pb.x += ROUTING_WINDOW;
-            pb.y += ROUTING_WINDOW;
-            pb.z += ROUTING_WINDOW;
+            pa.coords[1] -= ROUTING_WINDOW;
+            pa.coords[0] -= ROUTING_WINDOW;
+            pa.coords[2] -= ROUTING_WINDOW;
+            pb.coords[0] += ROUTING_WINDOW;
+            pb.coords[1] += ROUTING_WINDOW;
+            pb.coords[2] += ROUTING_WINDOW;
         // }
 
         for (auto sx : obstacles.collect(pa, pb)) {
@@ -131,12 +131,12 @@ namespace iccad {
 
 
     void AStar::add_shape(const Shape & s) {
-        xs.push_back(s.a.x);
-        xs.push_back(s.b.x);
-        ys.push_back(s.a.y);
-        ys.push_back(s.b.y);
-        zs.push_back(s.a.z);
-        zs.push_back(s.b.z);
+        xs.push_back(s.a[0]);
+        xs.push_back(s.b[0]);
+        ys.push_back(s.a[1]);
+        ys.push_back(s.b[1]);
+        zs.push_back(s.a[2]);
+        zs.push_back(s.b[2]);
     }
 
     vector<AStar::index> AStar::neighboors(AStar::index i) const {
@@ -179,7 +179,7 @@ namespace iccad {
 
     AStar::index AStar::find(const PT p) const {
         try {
-            return {find(p.x, xs), find(p.y, ys), find(p.z, zs)};
+            return {find(p[0], xs), find(p[1], ys), find(p[2], zs)};
         }
         catch (int e) {
             using std::cerr;
@@ -208,15 +208,15 @@ namespace iccad {
         map<index, index> pred;
         set<ii> queue;
         
-        // auto xb = std::lower_bound(xs.begin(), xs.end(), shape_s.a.x);
-        // auto xe = std::upper_bound(xb, xs.end(), shape_s.b.x);
-        // auto yb = std::lower_bound(ys.begin(), ys.end(), shape_s.a.y);
-        // auto ye = std::upper_bound(yb, ys.end(), shape_s.b.y);
+        // auto xb = std::lower_bound(xs.begin(), xs.end(), shape_s.a[0]);
+        // auto xe = std::upper_bound(xb, xs.end(), shape_s.b[0]);
+        // auto yb = std::lower_bound(ys.begin(), ys.end(), shape_s.a[1]);
+        // auto ye = std::upper_bound(yb, ys.end(), shape_s.b[1]);
 
         // vector<pair<int64_t, PT>> cands;
         // for(auto ix = xb; ix != xe; ++ix) {
         //     for(auto iy = yb; iy != ye; ++iy)  {
-        //         PT cand{*ix, *iy, shape_s.a.z};
+        //         PT cand{*ix, *iy, shape_s.a[2]};
         //         cands.emplace_back(distance(cand, shape_t), cand);
         //     }
         // }
