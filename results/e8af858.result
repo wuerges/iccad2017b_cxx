@@ -1,0 +1,10 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+testcases/official/original/case1, 3547, 46
+testcases/official/original/case2, 64618, 223
+testcases/official/original/case3, 728599, 16274
+testcases/official/alpha/caseA, 1257428, 14416
+testcases/official/hidden/case4, 9639, 63
+testcases/official/hidden/case5, 20514, 271
+testcases/official/hidden/case6, 1533323, 11794
+testcases/official/hidden/caseB, 5311440, 9845
