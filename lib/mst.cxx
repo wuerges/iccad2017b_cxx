@@ -29,12 +29,12 @@ Route MST::astar_route(
             window = window.expand(ROUTING_WINDOW);
         }
         Treap obstacles2, treap2;
-        obstacles.visit(window, [&](auto & xx) {
-            obstacles2.add(xx);
+        obstacles.visit(window, [&](const Shape * xx) {
+            obstacles2.add(*xx);
             return true;
         });
-        treap.visit(window, [&](auto & xx) {
-            treap2.add(xx);
+        treap.visit(window, [&](const Shape * xx) {
+            treap2.add(*xx);
             return true;
         });
 
@@ -63,9 +63,9 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
   int connected = 0;
 
   for (const Shape &u : shapes) {    
-    treap.visit(u, [&](auto & v) {
-      if (muf.Find(u) != muf.Find(v)) {
-        muf.Union(u, v);
+    treap.visit(u, [&](const Shape * v) {
+      if (muf.Find(u) != muf.Find(*v)) {
+        muf.Union(u, *v);
         connected++;
       }
       return true;
@@ -159,9 +159,9 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
    */
   for (const Shape &u : shapes) {    
 
-    treap.visit(u, [&](auto & v) {
-      if (muf.Find(u) != muf.Find(v)) {
-        muf.Union(u, v);
+    treap.visit(u, [&](const Shape * v) {
+      if (muf.Find(u) != muf.Find(*v)) {
+        muf.Union(u, *v);
         connected++;
       }
       return true;
@@ -177,9 +177,9 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                 // for(auto v : treap.collect_diamond_2(u, a, b)) {
                 //   edges.insert({distance(u, v), u, v});
                 // }
-                treap.visit_diamond_2(u,radius1,radius2, [&](auto & v) {
-                edges.insert({distance(u, v), u, v});
-                return true;
+                treap.visit_diamond_2(u,radius1,radius2, [&](const Shape * v) {
+                  edges.insert({distance(u, *v), u, *v});
+                  return true;
                 });
             }
             radius1 = radius2;
