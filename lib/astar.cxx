@@ -102,9 +102,13 @@ namespace iccad {
             pb.coords[2] += ROUTING_WINDOW;
         // }
 
-        for (auto sx : obstacles.collect(pa, pb)) {
-            add_shape(sx.expand(1));
-        };
+        // for (auto sx : obstacles.collect(pa, pb)) {
+        //     add_shape(sx.expand(1));
+        // };
+        obstacles.visit(Shape(pa, pb), [this](const Shape * s) {
+            add_shape(s->expand(1));
+            return true;
+        });
 
         remove_duplicates(xs);
         fix_boundaries(xs, boundary[0], boundary[2]);
