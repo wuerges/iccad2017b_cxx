@@ -253,7 +253,7 @@ struct Edge {
     unique_ptr<Route> route;
     int step;
 
-    Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), step(0) {}    
+    Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
     Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
 };
 
@@ -265,72 +265,107 @@ vector<Route> MST::run_iterative(const Treap & treap,
 
     std::multimap<int, unique_ptr<Edge>> krusk;
     int connected = 0;
-    MUF<const Shape*> muf;
+    MUF<Shape> muf;
     vector<Route> result;
     
-    /*
-    Connect adjacent shapes
-    */
-    for (const Shape &u : shapes) {
+    // /*
+    // Connect adjacent shapes
+    // */
+    // for (const Shape &u : shapes) {
 
-        treap.visit(u, [&](const Shape * v) {
-            if (muf.Find(&u) != muf.Find(v)) {
-                muf.Union(&u, v);
-                connected++;
-            }
-            return true;
-        });
-    }
+    //     treap.visit(u, [&](const Shape * v) {
+    //         if (muf.Find(u) != muf.Find(*v)) {
+    //             muf.Union(u, *v);
+    //             connected++;
+    //         }
+    //         return true;
+    //     });
+    // }
 
     /*
     Initializing queues
     */
     for(const Shape &o : shapes) {
         unique_ptr<Edge> e(new Edge(o, treap));
+        int rem = 0;
+        while(!e->queue->empty() && e->queue->peek() == 0) {
+          auto v = e->queue->pop();
+          if (muf.Find(o) != muf.Find(*v)) {
+            muf.Union(o, *v);
+            connected++;
+          }
+
+          rem++;
+        }
+        printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
+        // break;
     }
 
-    while (connected < shapes.size() - 1) {
+    while (connected < shapes.size() - 1 && krusk.size() > 0) {
         printf("while %d/%d\n", connected, shapes.size()-1);
+        printf("deque -> %d\n", krusk.begin()->first);
         auto work = std::move(krusk.begin()->second);
+        printf("krusk->size() = %d\n", krusk.size());
         krusk.erase(krusk.begin());
 
         if(work->queue) {
-            printf("poping new edge\n");
+          printf("work->queue()\n");
+          if(!work->queue->empty()) {
             // this is a rtree queue
             auto u = work->queue->center;
             auto v = work->queue->pop();
-            while(distance(u, *v) == 0 || muf.Find(&u) == muf.Find(v)) {
-                v = work->queue->pop();
+            if(distance(u, *v) == 0) {
+              printf("ERROR\n");
             }
+            std::cout << u << "," <<  *v << '\n';
+            int new_key = work->queue->peek();
+            std::cout << "distance=" << distance(u, *v) << '\n';
+            std::cout << "new_key=" << new_key << '\n';
             krusk.emplace(distance(u, *v), new Edge(&u, v));
-            krusk.emplace(work->queue->peek(), std::move(work));
-        }        
-        else if(muf.Find(work->u) != muf.Find(work->v)) {
-            printf("regular edge\n");
-            // this is a regular edge
-            
-            if (work->step == 0) {
-                printf("step == 0\n");
-                Route rt = AStar(treap, obstacles, *(work->u), *(work->v), boundary).run(*(work->u), *(work->v));                
-                std::cout << "1: route length=" << rt.length() << '\n';
-                std::cout << "1: route" << rt << '\n';
-
-                work->route = make_unique<Route>(std::move(rt));
-                work->step++;
-                printf("going to emplace: %d %d %d\n", work->route->length(), work->step, 10);
-                krusk.emplace(work->route->length(), std::move(work));
-            }
-            else {
-                printf("step > 0\n");
-                std::cout << "2: route length=" <<work->route->length() << '\n';
-                std::cout << "2: route" << *work->route << '\n';
-            // the route has already been calculated
-                muf.Union(work->u, work->v);
-                result.push_back(*work->route);
-                connected++;
-            }            
+            krusk.emplace(new_key, std::move(work));
+          }
         }
+        else {
+          printf("testing muf?\n");
+          std::cout << *work->u << "," <<  *work->v << '\n';
+          const auto u = muf.Find(*work->u);
+          const auto v = muf.Find(*work->v);
+          std::cout << "muf1=" << u << '\n';
+          std::cout << "muf2=" << v << '\n';          
+          std::cout << (u != v) << '\n';
+          std::cout << (muf.Find(*work->u) != muf.Find(*work->v)) << '\n';
+            
+          if(u != v) {
+              printf("regular edge\n");
+              // this is a regular edge
+              
+              if (work->step == 0) {
+                  printf("1: step == 0\n");
+                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+                  std::cout << "1: route length=" << rt.length() << '\n';
+                  // std::cout << "1: route" << rt << '\n';
+
+                  work->route = make_unique<Route>(std::move(rt));
+                  work->step++;
+                  printf("1: going to emplace: %d %d %d\n", work->route->length(), work->step, 10);
+                  std::cout << "1: distance=" << distance(u, v) << '\n';
+                  int new_key = work->route->length();
+                  std::cout << "1: new_key=" << new_key << '\n';
+                  krusk.emplace(new_key, std::move(work));
+              }
+              else {
+                  printf("step > 0\n");
+                  std::cout << "2: route length=" <<work->route->length() << '\n';
+                  // std::cout << "2: route" << *work->route << '\n';
+              // the route has already been calculated
+                  muf.Union(u, v);
+                  result.push_back(*work->route);
+                  connected++;
+              }            
+          }
+        }
+        printf("end while\n");
     }
 
     printf("reached result\n");
