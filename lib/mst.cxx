@@ -132,7 +132,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
               CONFIG_2STEP_MST 
                 ? AStar(treap, obstacles, u, v, boundary).run(u, v)
                 : astar_route(obstacles, treap, astar, u, v, boundary);
-       
+
         if(rt.length() > w) {
             auto rx = CONFIG_2STEP_MST ? rt : Route();
             routed_edges.insert({rt.length(), u, v, rx, CONFIG_2STEP_MST});        
@@ -312,7 +312,10 @@ vector<Route> MST::run_iterative(const Treap & treap,
             
             if (work->step == 0) {
                 printf("step == 0\n");
-                auto rt = AStar(treap, obstacles, *work->u, *work->v, boundary).run(*work->u, *work->v);                
+                Route rt = AStar(treap, obstacles, *(work->u), *(work->v), boundary).run(*(work->u), *(work->v));                
+                std::cout << "1: route length=" << rt.length() << '\n';
+                std::cout << "1: route" << rt << '\n';
+
                 work->route = make_unique<Route>(std::move(rt));
                 work->step++;
                 printf("going to emplace: %d %d %d\n", work->route->length(), work->step, 10);
@@ -320,6 +323,8 @@ vector<Route> MST::run_iterative(const Treap & treap,
             }
             else {
                 printf("step > 0\n");
+                std::cout << "2: route length=" <<work->route->length() << '\n';
+                std::cout << "2: route" << *work->route << '\n';
             // the route has already been calculated
                 muf.Union(work->u, work->v);
                 result.push_back(*work->route);
