@@ -248,13 +248,24 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 }
 
 struct Edge {
-    const Shape* u, *v;
+    const Shape* u;
+    const Shape* v;
     const unique_ptr<RTreeQueue> queue;
     unique_ptr<Route> route;
     int step;
 
     Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
     Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
+
+    friend ostream & operator<<(ostream& out, const Edge& e) {
+      if(e.queue) {
+        out << "EdgeQueue{" << e.queue->center << ","<< e.queue->peek() << "}";
+      }
+      else {
+        out << "Edge{" << *e.u <<","<< *e.v<< "}";
+      }
+      return out;
+    }
 };
 
 vector<Route> MST::run_iterative(const Treap & treap, 
@@ -297,66 +308,113 @@ vector<Route> MST::run_iterative(const Treap & treap,
 
           rem++;
         }
-        printf("removed %d 0edges\n",rem);
+        // printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
         // break;
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
-        printf("while %d/%d\n", connected, shapes.size()-1);
-        printf("deque -> %d\n", krusk.begin()->first);
+        // std::cout << "---------------------\n";
+        // for(auto & [k,ed] :krusk) {
+        //   std::cout << "while: krusk[" << k << " = " << *ed << '\n';
+        // }
+        // printf("while %d/%d\n", connected, shapes.size()-1);
+        // printf("deque -> %d\n", krusk.begin()->first);
         auto work = std::move(krusk.begin()->second);
-        printf("krusk->size() = %d\n", krusk.size());
+        // printf("krusk->size() = %d\n", krusk.size());
         krusk.erase(krusk.begin());
+        // for(auto & [k,ed] :krusk) {
+        //   std::cout << "after erase: krusk[" << k << " = " << *ed << '\n';
+        // }
 
         if(work->queue) {
-          printf("work->queue()\n");
+          // printf("work->queue()\n");
+
           if(!work->queue->empty()) {
             // this is a rtree queue
-            auto u = work->queue->center;
-            auto v = work->queue->pop();
-            if(distance(u, *v) == 0) {
-              printf("ERROR\n");
-            }
-            std::cout << u << "," <<  *v << '\n';
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "after check empty: krusk[" << k << " = " << *ed << '\n';
+            // }            
+
+            const auto & u = work->queue->center;
+
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "after assign u: krusk[" << k << " = " << *ed << '\n';
+            // }            
+
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "before pop: krusk[" << k << " = " << *ed << '\n';
+            // }
+            const auto v = work->queue->pop();
+
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "after pop: krusk[" << k << " = " << *ed << '\n';
+            // }
+            // std::cout << "-1: going to add: " << u << "," <<  *v << '\n';
             int new_key = work->queue->peek();
-            std::cout << "distance=" << distance(u, *v) << '\n';
-            std::cout << "new_key=" << new_key << '\n';
-            krusk.emplace(distance(u, *v), new Edge(&u, v));
+            // std::cout << "-1: distance=" << distance(u, *v) << '\n';
+            // std::cout << "-1: new_key=" << new_key << '\n';
+
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "before emplace: krusk[" << k << " = " << *ed << '\n';
+            // }
+            krusk.emplace(distance(u, *v), make_unique<Edge>(&u, v));
+            // for(auto & [k,ed] :krusk) {
+            //   std::cout << "after emplace: krusk[" << k << " = " << *ed << '\n';
+            // }
             krusk.emplace(new_key, std::move(work));
           }
         }
         else {
-          printf("testing muf?\n");
-          std::cout << *work->u << "," <<  *work->v << '\n';
-          const auto u = muf.Find(*work->u);
-          const auto v = muf.Find(*work->v);
-          std::cout << "muf1=" << u << '\n';
-          std::cout << "muf2=" << v << '\n';          
-          std::cout << (u != v) << '\n';
-          std::cout << (muf.Find(*work->u) != muf.Find(*work->v)) << '\n';
+          // printf("testing muf?\n");
+          const Shape &mu = muf.Find(*work->u);
+          const Shape &mv = muf.Find(*work->v);
+          const Shape &u = *work->u;
+          const Shape &v = *work->v;
+          // std::cout << "0: " << "muf1=" << u << '\n';
+          // std::cout << "0: " << "muf2=" << v << '\n';          
+          // std::cout << "0: " << (u != v) << '\n';
+          // std::cout << "0: " << *work->u << "," <<  *work->v << '\n';
+          // std::cout << "0: work: " << work->u << " " << work->v << '\n';
+          // std::cout << "0: work: " << *work->u << " " << *work->v << '\n';
+          // // std::cout << "0: " << (muf.Find(*work->u) != muf.Find(*work->v)) << '\n';
+          // std::cout << "0: work: " << work->u << " " << work->v << '\n';
+          // std::cout << "0: work: " << *work->u << " " << *work->v << '\n';
+                  
             
-          if(u != v) {
-              printf("regular edge\n");
+          if(mu != mv) {
+              // printf("regular edge\n");
               // this is a regular edge
               
               if (work->step == 0) {
-                  printf("1: step == 0\n");
+                  // printf("1: step == 0\n");
                   Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-                  std::cout << "1: route length=" << rt.length() << '\n';
+                  // std::cout << "1: route length=" << rt.length() << '\n';
                   // std::cout << "1: route" << rt << '\n';
 
+                  // std::cout << "1: 1 work: " << work->u << " " << work->v << '\n';
+                  // std::cout << "1: 1 work: " << *work->u << " " << *work->v << '\n';
                   work->route = make_unique<Route>(std::move(rt));
+                  // std::cout << "1: 2 work: " << work->u << " " << work->v << '\n';
+                  // std::cout << "1: 2 work: " << *work->u << " " << *work->v << '\n';
                   work->step++;
-                  printf("1: going to emplace: %d %d %d\n", work->route->length(), work->step, 10);
-                  std::cout << "1: distance=" << distance(u, v) << '\n';
+                  // printf("1: going to emplace: %d %d\n", work->route->length(), work->step);
+                  // std::cout << "1: distance=" << distance(u, v) << '\n';
+                  // std::cout << "1: 3 work: " << work->u << " " << work->v << '\n';
+                  // std::cout << "1: 3 work: " << *work->u << " " << *work->v << '\n';
                   int new_key = work->route->length();
-                  std::cout << "1: new_key=" << new_key << '\n';
+                  // std::cout << "1: new_key=" << new_key << '\n';
+                  // std::cout << "1: new routed edge: " << u << " " << v << '\n';
+                  // std::cout << "1: 4 work: " << work->u << " " << work->v << '\n';
+                  // std::cout << "1: 4 work: " << *work->u << " " << *work->v << '\n';
                   krusk.emplace(new_key, std::move(work));
+                  // std::cout << "1: 5 krusk.begin(): " << krusk.begin()->second->u << " " << krusk.begin()->second->v << '\n';
+                  // std::cout << "1: 5 krusk.begin(): " << *krusk.begin()->second->u << " " << *krusk.begin()->second->v << '\n';
+
               }
               else {
-                  printf("step > 0\n");
-                  std::cout << "2: route length=" <<work->route->length() << '\n';
+                  // printf("step > 0\n");
+                  // std::cout << "2: route length=" <<work->route->length() << '\n';
                   // std::cout << "2: route" << *work->route << '\n';
               // the route has already been calculated
                   muf.Union(u, v);
@@ -365,10 +423,10 @@ vector<Route> MST::run_iterative(const Treap & treap,
               }            
           }
         }
-        printf("end while\n");
+        // printf("end while\n");
     }
 
-    printf("reached result\n");
+    // printf("reached result\n");
     return result;
 }
 

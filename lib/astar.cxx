@@ -203,7 +203,7 @@ namespace iccad {
     }
 
     Route AStar::run(const Shape & shape_s, const Shape & shape_t) const {
-        std::cout << "AStar::run("<< shape_s <<","<< shape_t<< ");\n";
+        // std::cout << "AStar::run("<< shape_s <<","<< shape_t<< ");\n";
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
         index s = find(shape_s.a);
