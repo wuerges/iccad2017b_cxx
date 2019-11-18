@@ -250,12 +250,12 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 struct Edge {
     const Shape* u;
     const Shape* v;
-    const unique_ptr<RTreeQueue> queue;
+    const unique_ptr<RTreeQueue2> queue;
     unique_ptr<Route> route;
     int step;
 
     Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
-    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
+    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue2(c, t)) {}
 
     friend ostream & operator<<(ostream& out, const Edge& e) {
       if(e.queue) {
