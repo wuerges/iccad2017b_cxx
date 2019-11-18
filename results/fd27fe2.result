@@ -1,0 +1,29 @@
+Nome do modelo:                  Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+testcases/official/original/case1, 3547, 31
+testcases/official/original/case2, 64618, 169
+testcases/official/original/case3, 728673, 6647
+Nome do modelo:                  Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+testcases/official/original/case1, 3547, 45
+testcases/official/original/case2, 64618, 148
+testcases/official/original/case3, 728673, 10730
+testcases/official/alpha/caseA, 1257428, 11905
+testcases/official/hidden/case4, 9639, 64
+testcases/official/hidden/case5, 20514, 168
+testcases/official/hidden/case6, 1533323, 8273
+testcases/official/hidden/caseB, 5311440, 9603
+Nome do modelo:                  Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+testcases/official/original/case1, 3547, 45
+testcases/official/original/case2, 64618, 208
+testcases/official/original/case3, 728599, 14969
+testcases/official/alpha/caseA, 1257428, 13783
+testcases/official/hidden/case4, 9639, 64
+testcases/official/hidden/case5, 20514, 251
+testcases/official/hidden/case6, 1533323, 11428
+testcases/official/hidden/caseB, 5311440, 9816
+Nome do modelo:                  Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+
+testcases/official/original/case1, 3547, 52
+testcases/official/original/case2, 64618, 205

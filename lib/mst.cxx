@@ -3,9 +3,11 @@
 #include <config.hpp>
 
 #include <set>
+#include <map>
+#include <memory>
 
 namespace iccad {
-using std::vector, std::pair, std::unordered_map, std::make_optional;
+using std::vector, std::pair, std::unordered_map, std::make_optional, std::unique_ptr, std::make_pair, std::make_unique;
 
 MST::MST(int n) : num_neighboors(n) {}
 
@@ -62,6 +64,8 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
   
   int connected = 0;
 
+  MUF<Shape> muf;
+
   for (const Shape &u : shapes) {    
     treap.visit(u, [&](const Shape * v) {
       if (muf.Find(u) != muf.Find(*v)) {
@@ -82,7 +86,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
 
     vector<Shape> vs ;
     RTreeQueue rqueue(u, treap);
-    for(int i = 0; i < 20; ++i) {
+    for(int i = 0; i < LOCAL_NEIGHBOORS; ++i) {
       vs.push_back(*rqueue.pop());
     }  
 
@@ -154,6 +158,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
   vector<Route> result;
   using std::set, std::tuple, std::get;
   auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+  MUF<Shape> muf;
 
 
   set<tuple<int, Shape, Shape>> edges;
@@ -241,5 +246,91 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 
   return result;
 }
+
+struct Edge {
+    const Shape* u, *v;
+    const unique_ptr<RTreeQueue> queue;
+    unique_ptr<Route> route;
+    int step;
+
+    Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), step(0) {}    
+    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
+};
+
+vector<Route> MST::run_iterative(const Treap & treap, 
+  const Treap & obstacles,
+  const vector<Shape> & shapes, 
+  const vector<Shape> & obs_vector, 
+  const V1D & boundary) {
+
+    std::multimap<int, unique_ptr<Edge>> krusk;
+    int connected = 0;
+    MUF<const Shape*> muf;
+    vector<Route> result;
+    
+    /*
+    Connect adjacent shapes
+    */
+    for (const Shape &u : shapes) {
+
+        treap.visit(u, [&](const Shape * v) {
+            if (muf.Find(&u) != muf.Find(v)) {
+                muf.Union(&u, v);
+                connected++;
+            }
+            return true;
+        });
+    }
+
+    /*
+    Initializing queues
+    */
+    for(const Shape &o : shapes) {
+        unique_ptr<Edge> e(new Edge(o, treap));
+        krusk.emplace(e->queue->peek(), std::move(e));
+    }
+
+    while (connected < shapes.size() - 1) {
+        printf("while %d/%d\n", connected, shapes.size()-1);
+        auto work = std::move(krusk.begin()->second);
+        krusk.erase(krusk.begin());
+
+        if(work->queue) {
+            printf("poping new edge\n");
+            // this is a rtree queue
+            auto u = work->queue->center;
+            auto v = work->queue->pop();
+            while(distance(u, *v) == 0 || muf.Find(&u) == muf.Find(v)) {
+                v = work->queue->pop();
+            }
+            krusk.emplace(distance(u, *v), new Edge(&u, v));
+            krusk.emplace(work->queue->peek(), std::move(work));
+        }        
+        else if(muf.Find(work->u) != muf.Find(work->v)) {
+            printf("regular edge\n");
+            // this is a regular edge
+            
+            if (work->step == 0) {
+                printf("step == 0\n");
+                auto rt = AStar(treap, obstacles, *work->u, *work->v, boundary).run(*work->u, *work->v);                
+                work->route = make_unique<Route>(std::move(rt));
+                work->step++;
+                printf("going to emplace: %d %d %d\n", work->route->length(), work->step, 10);
+                krusk.emplace(work->route->length(), std::move(work));
+            }
+            else {
+                printf("step > 0\n");
+            // the route has already been calculated
+                muf.Union(work->u, work->v);
+                result.push_back(*work->route);
+                connected++;
+            }            
+        }
+    }
+
+    printf("reached result\n");
+    return result;
+}
+
 
 } // namespace iccad
