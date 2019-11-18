@@ -1,9 +1,15 @@
 #pragma once
 
+enum MST_ALGORITHM {
+    LOCAL_MST,
+    GLOBAL_MST,
+    ITERATIVE_MST
+};
+
 namespace iccad {
     // true : will only find 6 neighbor for each node.
     // false : will incrementaly increase the distance for all nodes.
-    constexpr bool CONFIG_FAST_MST = false; 
+    constexpr int CONFIG_MST = ITERATIVE_MST; 
     
     // config 2 step
     constexpr bool CONFIG_2STEP_MST = true; 

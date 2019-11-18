@@ -332,5 +332,23 @@ vector<Route> MST::run_iterative(const Treap & treap,
     return result;
 }
 
+template<> 
+vector<Route> MST::run_mst<LOCAL_MST>(const Treap & treap, const Treap & obstacles,
+  const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    return run(treap, obstacles, shapes, obs, boundary);
+  }
+
+template<> 
+vector<Route> MST::run_mst<GLOBAL_MST>(const Treap & treap, const Treap & obstacles,
+  const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    return run_radius_2(treap, obstacles, shapes, obs, boundary);
+  }
+
+template<> 
+vector<Route> MST::run_mst<ITERATIVE_MST>(const Treap & treap, const Treap & obstacles,
+  const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    return run_iterative(treap, obstacles, shapes, obs, boundary);
+  }
+
 
 } // namespace iccad
