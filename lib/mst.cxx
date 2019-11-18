@@ -320,50 +320,30 @@ vector<Route> MST::run_iterative(const Treap & treap,
         // for(auto & [k,ed] :krusk) {
         //   std::cout << "while: krusk[" << k << " = " << *ed << '\n';
         // }
-        // printf("while %d/%d\n", connected, shapes.size()-1);
-        // printf("deque -> %d\n", krusk.begin()->first);
         auto work = std::move(krusk.begin()->second);
-        // printf("krusk->size() = %d\n", krusk.size());
         krusk.erase(krusk.begin());
-        // for(auto & [k,ed] :krusk) {
-        //   std::cout << "after erase: krusk[" << k << " = " << *ed << '\n';
-        // }
 
         if(work->queue) {
           // printf("work->queue()\n");
 
           if(!work->queue->empty()) {
-            // this is a rtree queue
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "after check empty: krusk[" << k << " = " << *ed << '\n';
-            // }            
-
             const auto & u = work->queue->center;
-
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "after assign u: krusk[" << k << " = " << *ed << '\n';
-            // }            
-
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "before pop: krusk[" << k << " = " << *ed << '\n';
-            // }
             const auto v = work->queue->pop();
-
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "after pop: krusk[" << k << " = " << *ed << '\n';
-            // }
-            // std::cout << "-1: going to add: " << u << "," <<  *v << '\n';
             int new_key = work->queue->peek();
-            // std::cout << "-1: distance=" << distance(u, *v) << '\n';
-            // std::cout << "-1: new_key=" << new_key << '\n';
 
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "before emplace: krusk[" << k << " = " << *ed << '\n';
-            // }
-            krusk.emplace(distance(u, *v), make_unique<Edge>(&u, v));
-            // for(auto & [k,ed] :krusk) {
-            //   std::cout << "after emplace: krusk[" << k << " = " << *ed << '\n';
-            // }
+            const Shape &mu = muf.Find(u);
+            const Shape &mv = muf.Find(*v);
+            if(mu != mv) { 
+              // adds new edge
+              unique_ptr<Edge> routed(new Edge(&u,v));
+              routed->route = make_unique<Route>(AStar(treap, obstacles, u, *v, boundary).run(u, *v));
+              // routed->route = make_unique<Route>(astar_route(obstacles, treap, astar, u, *v, boundary));
+              routed->step++;
+
+              int route_length = routed->route->length();
+              krusk.emplace(route_length, std::move(routed));
+            }
+
             krusk.emplace(new_key, std::move(work));
           }
         }
@@ -373,71 +353,37 @@ vector<Route> MST::run_iterative(const Treap & treap,
           const Shape &mv = muf.Find(*work->v);
           const Shape &u = *work->u;
           const Shape &v = *work->v;
-          // std::cout << "0: " << "muf1=" << u << '\n';
-          // std::cout << "0: " << "muf2=" << v << '\n';          
-          // std::cout << "0: " << (u != v) << '\n';
-          // std::cout << "0: " << *work->u << "," <<  *work->v << '\n';
-          // std::cout << "0: work: " << work->u << " " << work->v << '\n';
-          // std::cout << "0: work: " << *work->u << " " << *work->v << '\n';
-          // // std::cout << "0: " << (muf.Find(*work->u) != muf.Find(*work->v)) << '\n';
-          // std::cout << "0: work: " << work->u << " " << work->v << '\n';
-          // std::cout << "0: work: " << *work->u << " " << *work->v << '\n';
-                  
             
           if(mu != mv) {
               // printf("regular edge\n");
               // this is a regular edge
               
-              if(CONFIG_2STEP_MST) {
-                if(work->step == 0) {
-                  work->step++;
-                }
-              }
+              // if(CONFIG_2STEP_MST) {
+              //   if(work->step == 0) {
+              //     work->step++;
+              //   }
+              // }
 
-              if (work->step == 0) {
-                  // printf("1: step == 0\n");
-                  Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
-                  // Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-                  // std::cout << "1: route length=" << rt.length() << '\n';
-                  // std::cout << "1: route" << rt << '\n';
+              // if (work->step == 0) {
+              //     Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
+              //     work->route = make_unique<Route>(std::move(rt));
+              //     work->step++;
+              //     int new_key = work->route->length();
+              //     krusk.emplace(new_key, std::move(work));
 
-                  // std::cout << "1: 1 work: " << work->u << " " << work->v << '\n';
-                  // std::cout << "1: 1 work: " << *work->u << " " << *work->v << '\n';
-                  work->route = make_unique<Route>(std::move(rt));
-                  // std::cout << "1: 2 work: " << work->u << " " << work->v << '\n';
-                  // std::cout << "1: 2 work: " << *work->u << " " << *work->v << '\n';
-                  work->step++;
-                  // printf("1: going to emplace: %d %d\n", work->route->length(), work->step);
-                  // std::cout << "1: distance=" << distance(u, v) << '\n';
-                  // std::cout << "1: 3 work: " << work->u << " " << work->v << '\n';
-                  // std::cout << "1: 3 work: " << *work->u << " " << *work->v << '\n';
-                  int new_key = work->route->length();
-                  // std::cout << "1: new_key=" << new_key << '\n';
-                  // std::cout << "1: new routed edge: " << u << " " << v << '\n';
-                  // std::cout << "1: 4 work: " << work->u << " " << work->v << '\n';
-                  // std::cout << "1: 4 work: " << *work->u << " " << *work->v << '\n';
-                  krusk.emplace(new_key, std::move(work));
-                  // std::cout << "1: 5 krusk.begin(): " << krusk.begin()->second->u << " " << krusk.begin()->second->v << '\n';
-                  // std::cout << "1: 5 krusk.begin(): " << *krusk.begin()->second->u << " " << *krusk.begin()->second->v << '\n';
-
-              }
-              else if (work->step == 1) {
-                  // Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-                  work->route = make_unique<Route>(std::move(rt));
-                  work->step++;
-                  int new_key = work->route->length();
-                  krusk.emplace(new_key, std::move(work));
-              }
-              else {
-                  // printf("step > 0\n");
-                  // std::cout << "2: route length=" <<work->route->length() << '\n';
-                  // std::cout << "2: route" << *work->route << '\n';
-              // the route has already been calculated
+              // }
+              // else if (work->step == 1) {
+              //     Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+              //     work->route = make_unique<Route>(std::move(rt));
+              //     work->step++;
+              //     int new_key = work->route->length();
+              //     krusk.emplace(new_key, std::move(work));
+              // }
+              // else {
                   muf.Union(u, v);
                   result.push_back(*work->route);
                   connected++;
-              }            
+              // }            
           }
         }
         // printf("end while\n");
