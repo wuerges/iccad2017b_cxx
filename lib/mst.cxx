@@ -278,6 +278,8 @@ vector<Route> MST::run_iterative(const Treap & treap,
     int connected = 0;
     MUF<Shape> muf;
     vector<Route> result;
+    auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+
     
     // /*
     // Connect adjacent shapes
@@ -386,9 +388,16 @@ vector<Route> MST::run_iterative(const Treap & treap,
               // printf("regular edge\n");
               // this is a regular edge
               
+              if(CONFIG_2STEP_MST) {
+                if(work->step == 0) {
+                  work->step++;
+                }
+              }
+
               if (work->step == 0) {
                   // printf("1: step == 0\n");
-                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+                  Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
+                  // Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
                   // std::cout << "1: route length=" << rt.length() << '\n';
                   // std::cout << "1: route" << rt << '\n';
 
@@ -411,6 +420,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
                   // std::cout << "1: 5 krusk.begin(): " << krusk.begin()->second->u << " " << krusk.begin()->second->v << '\n';
                   // std::cout << "1: 5 krusk.begin(): " << *krusk.begin()->second->u << " " << *krusk.begin()->second->v << '\n';
 
+              }
+              else if (work->step == 1) {
+                  // Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+                  work->route = make_unique<Route>(std::move(rt));
+                  work->step++;
+                  int new_key = work->route->length();
+                  krusk.emplace(new_key, std::move(work));
               }
               else {
                   // printf("step > 0\n");

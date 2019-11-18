@@ -12,7 +12,7 @@ namespace iccad {
     constexpr int CONFIG_MST = ITERATIVE_MST; 
     
     // config 2 step
-    constexpr bool CONFIG_2STEP_MST = true; 
+    constexpr bool CONFIG_2STEP_MST = false; 
 
     // true : will use astar
     // falze : will use dijkstra.
