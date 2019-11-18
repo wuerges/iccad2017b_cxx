@@ -307,9 +307,13 @@ vector<Route> MST::run_iterative(const Treap & treap,
             muf.Union(o, *v);
             connected++;
           }
-
           rem++;
         }
+
+        for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
+          const auto v = e->queue->pop();
+          krusk.emplace(distance(o, *v), new Edge(&o, v));
+        }  
         // printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
         // break;
@@ -364,14 +368,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
               //   }
               // }
 
-              // if (work->step == 0) {
-              //     Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
-              //     work->route = make_unique<Route>(std::move(rt));
-              //     work->step++;
-              //     int new_key = work->route->length();
-              //     krusk.emplace(new_key, std::move(work));
+              if (work->step == 0) {
+                  Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
+                  work->route = make_unique<Route>(std::move(rt));
+                  work->step++;
+                  int new_key = work->route->length();
+                  krusk.emplace(new_key, std::move(work));
 
-              // }
+              }
               // else if (work->step == 1) {
               //     Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
               //     work->route = make_unique<Route>(std::move(rt));
@@ -379,11 +383,11 @@ vector<Route> MST::run_iterative(const Treap & treap,
               //     int new_key = work->route->length();
               //     krusk.emplace(new_key, std::move(work));
               // }
-              // else {
+              else {
                   muf.Union(u, v);
                   result.push_back(*work->route);
                   connected++;
-              // }            
+              }            
           }
         }
         // printf("end while\n");
