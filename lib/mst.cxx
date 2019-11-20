@@ -23,8 +23,8 @@ Route MST::astar_route(
     Route rt;
 
     if(CONFIG_FAST_ASTAR) {
-        auto a = min(min(u.a, v.a), min(u.b, v.b));
-        auto b = max(max(u.a, v.a), max(u.b, v.b));
+        auto a = min(min(u.p1, v.p1), min(u.p2, v.p2));
+        auto b = max(max(u.p1, v.p1), max(u.p2, v.p2));
 
         Shape window{a,b};
         if(ROUTING_WINDOW > 0) {

@@ -91,21 +91,23 @@ namespace iccad {
         add_shape(s1);
         add_shape(s2);
 
-        auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
-        auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
+        // auto pa = min(min(s1.a, s2.a), min(s1.b, s2.b));
+        // auto pb = max(max(s1.a, s2.a), max(s1.b, s2.b));
+
+        Shape window = minimumBound(s1, s2);
         // if(!CONFIG_FAST_MST) {
-            pa.coords[1] -= ROUTING_WINDOW;
-            pa.coords[0] -= ROUTING_WINDOW;
-            pa.coords[2] -= ROUTING_WINDOW;
-            pb.coords[0] += ROUTING_WINDOW;
-            pb.coords[1] += ROUTING_WINDOW;
-            pb.coords[2] += ROUTING_WINDOW;
+            window.p1.coords[1] -= ROUTING_WINDOW;
+            window.p1.coords[0] -= ROUTING_WINDOW;
+            window.p1.coords[2] -= ROUTING_WINDOW;
+            window.p2.coords[0] += ROUTING_WINDOW;
+            window.p2.coords[1] += ROUTING_WINDOW;
+            window.p2.coords[2] += ROUTING_WINDOW;
         // }
 
         // for (auto sx : obstacles.collect(pa, pb)) {
         //     add_shape(sx.expand(1));
         // };
-        obstacles.visit(Shape(pa, pb), [this](const Shape * s) {
+        obstacles.visit(window, [this](const Shape * s) {
             add_shape(s->expand(1));
             return true;
         });
@@ -135,12 +137,12 @@ namespace iccad {
 
 
     void AStar::add_shape(const Shape & s) {
-        xs.push_back(s.a[0]);
-        xs.push_back(s.b[0]);
-        ys.push_back(s.a[1]);
-        ys.push_back(s.b[1]);
-        zs.push_back(s.a[2]);
-        zs.push_back(s.b[2]);
+        xs.push_back(s.p1[0]);
+        xs.push_back(s.p2[0]);
+        ys.push_back(s.p1[1]);
+        ys.push_back(s.p2[1]);
+        zs.push_back(s.p1[2]);
+        zs.push_back(s.p2[2]);
     }
 
     vector<AStar::index> AStar::neighboors(AStar::index i) const {
@@ -206,8 +208,8 @@ namespace iccad {
         // std::cout << "AStar::run("<< shape_s <<","<< shape_t<< ");\n";
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
-        index s = find(shape_s.a);
-        index t = find(shape_t.a);
+        index s = find(shape_s.p1);
+        index t = find(shape_t.p1);
         
         map<index, int64_t> dst;
         map<index, index> pred;
