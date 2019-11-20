@@ -161,7 +161,7 @@ namespace iccad {
 
     const PT AStar::make_pt(index i) const {
         auto [x, y, z] = i;
-        return PT(xs[x], ys[y], zs[z]);
+        return PT{xs[x], ys[y], zs[z]};
     }
 
     int AStar::find(int c, const vector<int> & v) const {
