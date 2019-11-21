@@ -1,25 +1,43 @@
-# Parser e conversor para o problema B do iccad 2017.
+# Solver for ICCAD 2017 B 
 
-# Dependencias:
+This repository contains a few solutions for the ICCAD 2017 Problem B.
+The complete problem description is available inside the contest_page directory.
+
+# Dependencies:
 
 - cmake
 - boost > 1.60
 
-# Passos para compilar:
+# Submodules
+
+This project uses two submodules.
+- Rapidcheck: https://github.com/emil-e/rapidcheck
+- Cad Geometry: https://github.com/wuerges/cad_geometry
+
+
+# Steps to compile:
+
 ```
-clone <url do repo>
-cd <pasta do repo>
+clone <repo url>
+cd <repo directory>
+git submodule update --init
 mkdir build
 cd build
 cmake ..
 make
 ```
 
-# Passos para testar:
+# Steps for testing:
+
 ```
-cd <pasta do repo>/build
-./test/TestParse ../testcases/case3
+cd <repo directory>/build
+./test/TestParse <testcase path>
 ```
 
+ICCAD contest official testcases are contained in /testcases/official.
+Aditional debug testcases are in /testcases/unnoficial.
+
 # TODO
-- Quase tudo!
+
+Almost everything!
+
