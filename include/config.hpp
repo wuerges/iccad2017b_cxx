@@ -1,9 +1,15 @@
 #pragma once
 
+enum MST_ALGORITHM {
+    LOCAL_MST,
+    GLOBAL_MST,
+    ITERATIVE_MST
+};
+
 namespace iccad {
-    // true : will only find 6 neighbor for each node.
+    // true : will only find LOCAL_NEIGHBOORS neighbor for each node.
     // false : will incrementaly increase the distance for all nodes.
-    constexpr bool CONFIG_FAST_MST = false; 
+    constexpr int CONFIG_MST = LOCAL_MST; 
     
     // config 2 step
     constexpr bool CONFIG_2STEP_MST = true; 
@@ -21,5 +27,5 @@ namespace iccad {
     constexpr int ROUTING_WINDOW = 100;
 
     // the number of neighboors in the local solution
-    constexpr int LOCAL_NEIGHBOORS = 10;
+    constexpr int LOCAL_NEIGHBOORS = 20;
 }

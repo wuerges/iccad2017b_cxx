@@ -1,13 +1,10 @@
 #include <router.hpp>
 #include <astar.hpp>
-#include <kappamst.hpp>
 #include <config.hpp>
 
 #include <algorithm>
 
 namespace iccad {
-
-    
 
     Router::Router(int sp, int vc, V1D b, int n):spacing(sp), viaCost(vc)
         , boundary(b), num_neighboors(n) {
@@ -27,9 +24,9 @@ namespace iccad {
     Route Router::calculate_route(const Shape & s1, const Shape & s2) 
     {
         auto pts = AStar(treap, obstacles, s1, s2, boundary).run(s1, s2);
-        Route res(pts);
-        res.simplify();
-        return res;
+        // Route res(pts);
+        pts.simplify();
+        return pts;
     }
 
 
@@ -41,16 +38,11 @@ namespace iccad {
 
         int result = 0;
 
-        // for(auto s : shapes) std::cout << s << '\n';
-
         MST mst(num_neighboors);
-        auto res = CONFIG_FAST_MST ? mst.run(treap, obstacles, shapes, obs, boundary): 
-                                     mst.run_radius_2(treap, obstacles, shapes, obs, boundary);
 
-        // auto res = KMST(treap, obstacles, shapes, boundary).run();
+        vector<Route> res = mst.run_mst<CONFIG_MST>(treap, obstacles, shapes, obs, boundary);
 
         for(auto r : res) {
-            // auto r = calculate_route(a, b);
 
             result += r.length();
             

@@ -6,6 +6,7 @@
 #include <model.hpp>
 #include <muf.hpp>
 #include <astar.hpp>
+#include <config.hpp>
 
 #include <vector>
 #include <unordered_map>
@@ -28,14 +29,23 @@ namespace iccad {
      */
     vector<Route> run(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes, const vector<Shape> & obs_vector, const V1D & boundary) ;
+
+    vector<Route> run_iterative(const Treap & treap, 
+      const Treap & obstacles,
+      const vector<Shape> & shapes, 
+      const vector<Shape> & obs_vector, 
+      const V1D & boundary) ;
+
     vector<Route> run_radius_2(const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
 
+    template<int CFG> 
+    vector<Route> run_mst(const Treap & treap, const Treap & obstacles,
+      const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary);
 
+    
 private:
     int num_neighboors;
-
-    MUF muf;
 
     Route astar_route(
       const Treap & obstacles, 
@@ -46,6 +56,9 @@ private:
       const V1D &boundary);
 
   };
+
+
+
 
 
 }
