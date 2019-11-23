@@ -269,6 +269,7 @@ struct Edge {
 };
 
 static int total_routes = 0;
+static int used_simple_route = 0;
 static int astar_was_needed = 0;
 
 
@@ -279,6 +280,27 @@ unique_ptr<Route> local_route(
     const Shape & v,
     const V1D &boundary) {
   total_routes++;
+
+  // auto simple = simple_route(u, v);
+  // bool fail = simple.size() < 2;
+  // for(int i = 1; i < simple.size(); ++i) {
+  //   auto p1 = min(simple[i-1], simple[i]);
+  //   auto p2 = max(simple[i-1], simple[i]);
+  //   if(obstacles.hits(p1, p2)) {
+  //     fail = true;
+  //     break;
+  //   }
+  // }
+
+  // if(!fail) {
+  //   auto r = make_unique<Route>();
+  //   for(auto pt : simple) {
+  //     r->add_point(pt);
+  //   }
+  //   used_simple_route++;
+  //   return r;
+  // }
+
   auto window = minimumBound(u, v);
   if (obstacles.hits(window.p1, window.p2)) {
     astar_was_needed++;
@@ -389,6 +411,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
     }
 
     std::cout << "TOTAL ROUTES=" << total_routes << '\n';
+    std::cout << "USED SIMPLE ROUTE=" << used_simple_route << '\n';
     std::cout << "ASTAR WAS NEEDED=" << astar_was_needed << '\n';
 
     return result;
