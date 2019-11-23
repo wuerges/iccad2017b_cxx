@@ -310,10 +310,10 @@ vector<Route> MST::run_iterative(const Treap & treap,
           rem++;
         }
 
-        // for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
-        //   const auto v = e->queue->pop();
-        //   krusk.emplace(distance(o, *v), new Edge(&o, v));
-        // }  
+        for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
+          const auto v = e->queue->pop();
+          krusk.emplace(distance(o, *v), new Edge(&o, v));
+        }  
         // printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
         // break;
@@ -346,14 +346,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
               routed->step++;
 
               int route_length = routed->route->length();
-              // if(route_length == old_length) {
-              //   muf.Union(u, *v);
-              //   result.push_back(*routed->route);
-              //   connected++;
-              // }
-              // else {
+              if(route_length == old_length) {
+                muf.Union(u, *v);
+                result.push_back(*routed->route);
+                connected++;
+              }
+              else {
                 krusk.emplace(route_length, std::move(routed));
-              // }
+              }
             }
 
             krusk.emplace(new_key, std::move(work));
@@ -384,18 +384,26 @@ vector<Route> MST::run_iterative(const Treap & treap,
               //     krusk.emplace(new_key, std::move(work));
 
               // }
-              // else if (work->step == 1) {
-              //     Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-              //     work->route = make_unique<Route>(std::move(rt));
-              //     work->step++;
-              //     int new_key = work->route->length();
-              //     krusk.emplace(new_key, std::move(work));
-              // }
-              // else {
+              if (work->step == 0) {
+                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
+                  work->route = make_unique<Route>(std::move(rt));
+                  work->step++;
+                  int route_length = work->route->length();
+                  if(route_length == old_length) {
+                    muf.Union(u, v);
+                    result.push_back(*work->route);
+                    connected++;
+                  }
+                  else {
+                    krusk.emplace(route_length, std::move(work));
+                  }
+
+              }
+              else {
                   muf.Union(u, v);
                   result.push_back(*work->route);
                   connected++;
-              // }            
+              }            
           }
         }
         // printf("end while\n");
