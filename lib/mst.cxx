@@ -268,6 +268,16 @@ struct Edge {
     }
 };
 
+
+unique_ptr<Route> local_route(
+    const Treap & treap, 
+    const Treap & obstacles, 
+    const Shape & u, 
+    const Shape & v,
+    const V1D &boundary) {
+  return make_unique<Route>(AStar(treap, obstacles, u, v, boundary).run(u, v));
+}
+
 vector<Route> MST::run_iterative(const Treap & treap, 
   const Treap & obstacles,
   const vector<Shape> & shapes, 
@@ -278,22 +288,6 @@ vector<Route> MST::run_iterative(const Treap & treap,
     int connected = 0;
     MUF<Shape> muf;
     vector<Route> result;
-    auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
-
-    
-    // /*
-    // Connect adjacent shapes
-    // */
-    // for (const Shape &u : shapes) {
-
-    //     treap.visit(u, [&](const Shape * v) {
-    //         if (muf.Find(u) != muf.Find(*v)) {
-    //             muf.Union(u, *v);
-    //             connected++;
-    //         }
-    //         return true;
-    //     });
-    // }
 
     /*
     Initializing queues
@@ -314,9 +308,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
           const auto v = e->queue->pop();
           krusk.emplace(distance(o, *v), new Edge(&o, v));
         }  
-        // printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
-        // break;
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
@@ -341,8 +333,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
             if(mu != mv) { 
               // adds new edge
               unique_ptr<Edge> routed(new Edge(&u,v));
-              routed->route = make_unique<Route>(AStar(treap, obstacles, u, *v, boundary).run(u, *v));
-              // routed->route = make_unique<Route>(astar_route(obstacles, treap, astar, u, *v, boundary));
+              routed->route = local_route(treap, obstacles, u, *v, boundary);
               routed->step++;
 
               int route_length = routed->route->length();
@@ -360,33 +351,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
           }
         }
         else {
-          // printf("testing muf?\n");
           const Shape &mu = muf.Find(*work->u);
           const Shape &mv = muf.Find(*work->v);
           const Shape &u = *work->u;
           const Shape &v = *work->v;
             
           if(mu != mv) {
-              // printf("regular edge\n");
-              // this is a regular edge
-              
-              // if(CONFIG_2STEP_MST) {
-              //   if(work->step == 0) {
-              //     work->step++;
-              //   }
-              // }
-
-              // if (work->step == 0) {
-              //     Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
-              //     work->route = make_unique<Route>(std::move(rt));
-              //     work->step++;
-              //     int new_key = work->route->length();
-              //     krusk.emplace(new_key, std::move(work));
-
-              // }
               if (work->step == 0) {
-                  Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
-                  work->route = make_unique<Route>(std::move(rt));
+                  work->route = local_route(treap, obstacles, u, v, boundary);
                   work->step++;
                   int route_length = work->route->length();
                   if(route_length == old_length) {
@@ -406,10 +378,8 @@ vector<Route> MST::run_iterative(const Treap & treap,
               }            
           }
         }
-        // printf("end while\n");
     }
 
-    // printf("reached result\n");
     return result;
 }
 
