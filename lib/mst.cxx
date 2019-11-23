@@ -271,6 +271,7 @@ struct Edge {
 static int total_routes = 0;
 static int astar_was_needed = 0;
 
+
 unique_ptr<Route> local_route(
     const Treap & treap, 
     const Treap & obstacles, 
