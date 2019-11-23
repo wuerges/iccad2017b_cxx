@@ -250,12 +250,12 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
 struct Edge {
     const Shape* u;
     const Shape* v;
-    const unique_ptr<RTreeQueue2> queue;
+    const unique_ptr<RTreeQueue> queue;
     unique_ptr<Route> route;
     int step;
 
     Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
-    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue2(c, t)) {}
+    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
 
     friend ostream & operator<<(ostream& out, const Edge& e) {
       if(e.queue) {
@@ -310,10 +310,10 @@ vector<Route> MST::run_iterative(const Treap & treap,
           rem++;
         }
 
-        for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
-          const auto v = e->queue->pop();
-          krusk.emplace(distance(o, *v), new Edge(&o, v));
-        }  
+        // for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
+        //   const auto v = e->queue->pop();
+        //   krusk.emplace(distance(o, *v), new Edge(&o, v));
+        // }  
         // printf("removed %d 0edges\n",rem);
         krusk.emplace(e->queue->peek(), std::move(e));
         // break;
@@ -324,6 +324,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
         // for(auto & [k,ed] :krusk) {
         //   std::cout << "while: krusk[" << k << " = " << *ed << '\n';
         // }
+        int old_length = krusk.begin()->first;
         auto work = std::move(krusk.begin()->second);
         krusk.erase(krusk.begin());
 
@@ -345,7 +346,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
               routed->step++;
 
               int route_length = routed->route->length();
-              krusk.emplace(route_length, std::move(routed));
+              // if(route_length == old_length) {
+              //   muf.Union(u, *v);
+              //   result.push_back(*routed->route);
+              //   connected++;
+              // }
+              // else {
+                krusk.emplace(route_length, std::move(routed));
+              // }
             }
 
             krusk.emplace(new_key, std::move(work));
@@ -368,14 +376,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
               //   }
               // }
 
-              if (work->step == 0) {
-                  Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
-                  work->route = make_unique<Route>(std::move(rt));
-                  work->step++;
-                  int new_key = work->route->length();
-                  krusk.emplace(new_key, std::move(work));
+              // if (work->step == 0) {
+              //     Route rt = astar_route(obstacles, treap, astar, u, v, boundary);
+              //     work->route = make_unique<Route>(std::move(rt));
+              //     work->step++;
+              //     int new_key = work->route->length();
+              //     krusk.emplace(new_key, std::move(work));
 
-              }
+              // }
               // else if (work->step == 1) {
               //     Route rt = AStar(treap, obstacles, u, v, boundary).run(u, v);                
               //     work->route = make_unique<Route>(std::move(rt));
@@ -383,11 +391,11 @@ vector<Route> MST::run_iterative(const Treap & treap,
               //     int new_key = work->route->length();
               //     krusk.emplace(new_key, std::move(work));
               // }
-              else {
+              // else {
                   muf.Union(u, v);
                   result.push_back(*work->route);
                   connected++;
-              }            
+              // }            
           }
         }
         // printf("end while\n");
