@@ -215,24 +215,6 @@ namespace iccad {
         map<index, index> pred;
         set<ii> queue;
         
-        // auto xb = std::lower_bound(xs.begin(), xs.end(), shape_s.a[0]);
-        // auto xe = std::upper_bound(xb, xs.end(), shape_s.b[0]);
-        // auto yb = std::lower_bound(ys.begin(), ys.end(), shape_s.a[1]);
-        // auto ye = std::upper_bound(yb, ys.end(), shape_s.b[1]);
-
-        // vector<pair<int64_t, PT>> cands;
-        // for(auto ix = xb; ix != xe; ++ix) {
-        //     for(auto iy = yb; iy != ye; ++iy)  {
-        //         PT cand{*ix, *iy, shape_s.a[2]};
-        //         cands.emplace_back(distance(cand, shape_t), cand);
-        //     }
-        // }
-        // sort(cands.begin(), cands.end());
-        // auto [w0,p0] = cands.front();
-        
-        // dst[find(p0)] = 0;
-        // queue.insert({0, find(p0)});
-        
         dst[s] = 0;
         queue.insert({0, s});
         
@@ -246,11 +228,6 @@ namespace iccad {
                 break;
             }
             queue.erase(queue.begin());
-            // std::cout << "N of " << make_pt(u) << '\n';
-            // for(auto v : neighboors(u)) {
-            //     std::cout << ":-> " << make_pt(v) << '\n';
-            // }
-            // std::cout << '\n';
             
             for(auto v : neighboors(u)) {
 
@@ -258,39 +235,34 @@ namespace iccad {
                 auto u_pt = make_pt(u);
                 auto v_pt = make_pt(v);
 
-                // std::cout << "Query = " << Shape(u_pt, v_pt) << " = " << obstacles.query(v_pt, u_pt)  <<'\n';
-                // for(auto ob : obstacles.collect(v_pt, v_pt)) {
-                //     std::cout << "Obstacle: " << ob << '\n';
-                // }
-                // if(obstacles.query(v_pt, u_pt) > 0) {
                 if(obstacles.hits(v_pt, u_pt)) {
-                    // std::cout << "Point " << v_pt << " is in an obstacle\n";
-                    // for(auto ob : obstacles.collect(v_pt, v_pt)) {
-                    //     std::cout << "Obstacle: " << ob << '\n';
-                    // }
                     continue;
                 }
 
+
                 int w = manhatan(make_pt(u), make_pt(v));
-                // if(collides(Shape(make_pt(u), make_pt(u)), shape_s)) {
                 if(distance(make_pt(v), shape_s) == 0) {
                     w = 0;
+                    // dst[v] = 0;
                 }
+
+                // if(collides(Shape(make_pt(u), make_pt(u)), shape_s)) {
                 // if(distance(make_pt(u), shape_s) == 0) w = 0;
 
                 auto it = dst.find(v);
                 int64_t old_w = it != dst.end() ? it->second : INF;
 
-                
-                if(old_w > dst[u] + w) {
-                    dst[v] = dst[u] + w;
+                int a_star = distance(make_pt(v), shape_t);
+                int64_t new_w = dst[u] + w;
+
+                if(old_w > new_w) {
+                    dst[v] = new_w;
                     pred[v] = u;
                     queue.erase({old_w, v});
 
                     if(CONFIG_ASTAR) {
                         // A* heuristic
-                        int a_star = distance(make_pt(v), shape_t);
-                        queue.insert({dst[v]+a_star, v}); 
+                        queue.insert({new_w+a_star, v}); 
 
                     }
                     else {
