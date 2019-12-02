@@ -338,7 +338,8 @@ vector<Route> MST::run_iterative(const Treap & treap,
           const auto v = e->queue->pop();
           krusk.emplace(distance(o, *v), new Edge(&o, v));
         }  
-        krusk.emplace(e->queue->peek(), std::move(e));
+        int new_key = e->queue->peek();
+        krusk.emplace(new_key, std::move(e));
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
@@ -434,6 +435,112 @@ vector<Route> MST::run_mst<ITERATIVE_MST>(const Treap & treap, const Treap & obs
   const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
     return run_iterative(treap, obstacles, shapes, obs, boundary);
   }
+
+template<> 
+vector<Route> MST::run_mst<ITERATIVE_DOUBLE_QUEUE>(
+  const Treap & treap, 
+  const Treap & obstacles,
+  const vector<Shape> & shapes,  
+  const vector<Shape> &obs, 
+  const V1D & boundary
+  ) {
+
+    using Edge_t = tuple<const Shape*, const Shape*, unique_ptr<Route>>;
+    using Vert_t = pair<const Shape*, unique_ptr<RTreeQueue>>;
+
+    std::multimap<int, Vert_t> vert_q;
+    std::multimap<int, Edge_t> edge_q;
+    int connected = 0;
+    MUF<Shape> muf;
+    vector<Route> result;
+
+    /*
+    Initializing queues
+    */
+    for(const Shape &o : shapes) {
+        unique_ptr<RTreeQueue> e(new RTreeQueue(o, treap));
+        int rem = 0;
+        while(!e->empty() && e->peek() == 0) {
+          auto v = e->pop();
+          if (muf.Find(o) != muf.Find(*v)) {
+            muf.Union(o, *v);
+            connected++;
+          }
+          rem++;
+        }
+
+        for(int i = 0; i < LOCAL_NEIGHBOORS && !e->empty(); ++i) {
+          const Shape *  v = e->pop();
+          edge_q.emplace(distance(o, *v), Edge_t(&o, v, nullptr));
+        }
+        int new_key = e->peek();
+        vert_q.emplace(new_key, Vert_t(&o, std::move(e)));
+    }
+
+    while (connected < shapes.size() - 1) {
+
+      if (!vert_q.empty() && vert_q.begin()->first < edge_q.begin()->first) {
+        auto vert = std::move(vert_q.begin()->second);
+        vert_q.erase(vert_q.begin());
+
+        const Shape *  u = vert.first;
+        const Shape *  v = vert.second->pop();
+
+        int new_key = vert.second->peek();
+        vert_q.emplace(new_key, std::move(vert));
+
+        const Shape &mu = muf.Find(*u);
+        const Shape &mv = muf.Find(*v);
+        if (mu != mv) {
+          auto route = local_route(treap, obstacles, *u, *v, boundary);
+          auto dist = distance(*u, *v);
+          if (route->length() <= dist) {
+            muf.Union(*u, *v);
+            result.push_back(*route);            
+          }
+          else {
+            int new_len = route->length();
+            edge_q.emplace(new_len, Edge_t(u, v, std::move(route)));
+          }
+        }
+      }
+      else {
+        auto [u, v, route] = std::move(edge_q.begin()->second);
+        edge_q.erase(edge_q.begin());
+
+        const Shape &mu = muf.Find(*u);
+        const Shape &mv = muf.Find(*v);
+        if (mu != mv) {
+          if(route) {
+            muf.Union(*u, *v);
+            connected++;
+            result.push_back(*route);            
+          }
+          else {
+            auto route = local_route(treap, obstacles, *u, *v, boundary);
+            auto dist = distance(*u, *v);
+            if (route->length() <= dist) {
+              muf.Union(*u, *v);
+              connected++;
+              result.push_back(*route);            
+            }
+            else {
+              int new_len = route->length();
+              edge_q.emplace(new_len, Edge_t(u, v, std::move(route)));
+            } 
+          }
+        }        
+      }
+    }
+
+    std::cout << "TOTAL ROUTES=" << total_routes << '\n';
+    std::cout << "USED SIMPLE ROUTE=" << used_simple_route << '\n';
+    std::cout << "ASTAR WAS NEEDED=" << astar_was_needed << '\n';
+
+    return result;
+}
+
+
 
 
 } // namespace iccad

@@ -3,7 +3,8 @@
 enum MST_ALGORITHM {
     LOCAL_MST,
     GLOBAL_MST,
-    ITERATIVE_MST
+    ITERATIVE_MST,
+    ITERATIVE_DOUBLE_QUEUE
 };
 
 namespace iccad {
