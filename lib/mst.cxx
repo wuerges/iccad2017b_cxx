@@ -255,7 +255,7 @@ struct Edge {
     int step;
 
     Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
-    Edge(const Shape & c, const RTree & t): queue(new RTreeQueue(c, t)) {}
+    Edge(const Shape  *c, const RTree & t): u(c), queue(new RTreeQueue(*c, t)) {}
 
     friend ostream & operator<<(ostream& out, const Edge& e) {
       if(e.queue) {
@@ -316,19 +316,19 @@ vector<Route> MST::run_iterative(const Treap & treap,
 
     std::multimap<int, unique_ptr<Edge>> krusk;
     int connected = 0;
-    MUF<Shape> muf;
+    MUF<const Shape*> muf;
     vector<Route> result;
 
     /*
     Initializing queues
     */
     for(const Shape &o : shapes) {
-        unique_ptr<Edge> e(new Edge(o, treap));
+        unique_ptr<Edge> e(new Edge(&o, treap));
         int rem = 0;
         while(!e->queue->empty() && e->queue->peek() == 0) {
           auto v = e->queue->pop();
-          if (muf.Find(o) != muf.Find(*v)) {
-            muf.Union(o, *v);
+          if (muf.Find(&o) != muf.Find(v)) {
+            muf.Union(&o, v);
             connected++;
           }
           rem++;
@@ -355,21 +355,21 @@ vector<Route> MST::run_iterative(const Treap & treap,
           // printf("work->queue()\n");
 
           if(!work->queue->empty()) {
-            const auto & u = work->queue->center;
+            const auto u = work->u;
             const auto v = work->queue->pop();
             int new_key = work->queue->peek();
 
-            const Shape &mu = muf.Find(u);
-            const Shape &mv = muf.Find(*v);
+            const Shape * mu = muf.Find(u);
+            const Shape * mv = muf.Find(v);
             if(mu != mv) { 
               // adds new edge
-              unique_ptr<Edge> routed(new Edge(&u,v));
-              routed->route = local_route(treap, obstacles, u, *v, boundary);
+              unique_ptr<Edge> routed(new Edge(u,v));
+              routed->route = local_route(treap, obstacles, *u, *v, boundary);
               routed->step++;
 
               int route_length = routed->route->length();
               if(route_length == old_length) {
-                muf.Union(u, *v);
+                muf.Union(u, v);
                 result.push_back(*routed->route);
                 connected++;
               }
@@ -382,14 +382,14 @@ vector<Route> MST::run_iterative(const Treap & treap,
           }
         }
         else {
-          const Shape &mu = muf.Find(*work->u);
-          const Shape &mv = muf.Find(*work->v);
-          const Shape &u = *work->u;
-          const Shape &v = *work->v;
+          const Shape *mu = muf.Find(work->u);
+          const Shape *mv = muf.Find(work->v);
+          const Shape *u = work->u;
+          const Shape *v = work->v;
             
           if(mu != mv) {
               if (work->step == 0) {
-                  work->route = local_route(treap, obstacles, u, v, boundary);
+                  work->route = local_route(treap, obstacles, *u, *v, boundary);
                   work->step++;
                   int route_length = work->route->length();
                   if(route_length == old_length) {
