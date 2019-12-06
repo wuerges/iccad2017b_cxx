@@ -65,7 +65,7 @@ vector<Route> MST::run_mst<ITERATIVE_MST_3STEP>(
             krusk.emplace(distance(o, *v), new Edge(&o, v));
         }  
         int new_key = e->queue->peek();
-        krusk.emplace(new_key, std::move(e));
+        // krusk.emplace(new_key, std::move(e));
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
