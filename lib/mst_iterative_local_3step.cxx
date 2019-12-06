@@ -31,7 +31,7 @@ struct Edge {
 };
 
 template<>
-vector<Route> MST::run_mst<ITERATIVE_MST_3STEP>(
+vector<Route> MST::run_mst<ITERATIVE_MST_LOCAL_3STEP>(
   const vector<Shape> & shapes, 
   const vector<Shape> & obs_vector, 
   const V1D & boundary) 
@@ -65,7 +65,7 @@ vector<Route> MST::run_mst<ITERATIVE_MST_3STEP>(
             krusk.emplace(distance(o, *v), new Edge(&o, v));
         }  
         int new_key = e->queue->peek();
-        krusk.emplace(new_key, std::move(e));
+        // krusk.emplace(new_key, std::move(e)); This line is what makes the global technique global
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
