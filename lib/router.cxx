@@ -21,26 +21,27 @@ namespace iccad {
         }            
     }
 
-    Route Router::calculate_route(const Shape & s1, const Shape & s2) 
-    {
-        auto pts = AStar(treap, obstacles, s1, s2, boundary).run(s1, s2);
-        // Route res(pts);
-        pts.simplify();
-        return pts;
-    }
+    // Route Router::calculate_route(const Shape & s1, const Shape & s2) 
+    // {
+    //     auto pts = AStar(treap, obstacles, s1, s2, boundary).run(s1, s2);
+    //     // Route res(pts);
+    //     pts.simplify();
+    //     return pts;
+    // }
 
 
     int Router::perform_global_routing(const vector<Shape> & shapes, 
         const vector<Shape> & obs, 
         ostream & out) {
-        treap.populate(shapes);
-        obstacles.populate(obs);
+        // treap.populate(shapes);
+        // obstacles.populate(obs);
 
         int result = 0;
 
-        MST mst(num_neighboors);
+        MST mst;
 
-        vector<Route> res = mst.run_mst<CONFIG_MST>(treap, obstacles, shapes, obs, boundary);
+        // vector<Route> res = mst.run_mst<CONFIG_MST>(treap, obstacles, shapes, obs, boundary);
+        vector<Route> res = mst.run_mst<CONFIG_MST>(shapes, obs, boundary);
 
         for(auto r : res) {
 

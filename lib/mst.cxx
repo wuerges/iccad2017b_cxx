@@ -9,7 +9,7 @@
 namespace iccad {
 using std::vector, std::pair, std::unordered_map, std::make_optional, std::unique_ptr, std::make_pair, std::make_unique;
 
-MST::MST(int n) : num_neighboors(n) {}
+// MST::MST(int n) : num_neighboors(n) {}
 
 
 Route MST::astar_route(
@@ -247,31 +247,33 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
   return result;
 }
 
-struct Edge {
-    const Shape* u;
-    const Shape* v;
-    const unique_ptr<RTreeQueue> queue;
-    unique_ptr<Route> route;
-    int step;
-
-    Edge(const Shape *s1, const Shape * s2): u(s1), v(s2), queue(nullptr), step(0) {}    
-    Edge(const Shape  *c, const RTree & t): u(c), queue(new RTreeQueue(*c, t)) {}
-
-    friend ostream & operator<<(ostream& out, const Edge& e) {
-      if(e.queue) {
-        out << "EdgeQueue{" << e.queue->center << ","<< e.queue->peek() << "}";
-      }
-      else {
-        out << "Edge{" << *e.u <<","<< *e.v<< "}";
-      }
-      return out;
-    }
-};
 
 static int total_routes = 0;
 static int used_simple_route = 0;
 static int astar_was_needed = 0;
 
+unique_ptr<Route> local_route_step_2(
+    const Treap & treap, 
+    const Treap & obstacles, 
+    const Shape & u, 
+    const Shape & v,
+    const V1D &boundary) {
+  
+  auto window = minimumBound(u, v);
+  if(ROUTING_WINDOW > 0) {
+      window = window.expand(ROUTING_WINDOW);
+  }
+  Treap obstacles2, treap2;
+  obstacles.visit(window, [&](const Shape * xx) {
+      obstacles2.add(*xx);
+      return true;
+  });
+  treap.visit(window, [&](const Shape * xx) {
+      treap2.add(*xx);
+      return true;
+  });
+  return make_unique<Route>(AStar(treap2, obstacles2, u, v, boundary).run(u, v));
+}
 
 unique_ptr<Route> local_route(
     const Treap & treap, 
@@ -279,7 +281,8 @@ unique_ptr<Route> local_route(
     const Shape & u, 
     const Shape & v,
     const V1D &boundary) {
-  total_routes++;
+
+  // total_routes++;
 
   // auto simple = simple_route(u, v);
   // bool fail = simple.size() < 2;
@@ -301,149 +304,56 @@ unique_ptr<Route> local_route(
   //   return r;
   // }
 
-  auto window = minimumBound(u, v);
-  if (obstacles.hits(window.p1, window.p2)) {
-    astar_was_needed++;
-  }
+  // auto window = minimumBound(u, v);
+  // if (obstacles.hits(window.p1, window.p2)) {
+  //   astar_was_needed++;
+  // }
   return make_unique<Route>(AStar(treap, obstacles, u, v, boundary).run(u, v));
 }
 
-vector<Route> MST::run_iterative(const Treap & treap, 
-  const Treap & obstacles,
-  const vector<Shape> & shapes, 
-  const vector<Shape> & obs_vector, 
-  const V1D & boundary) {
 
-    std::multimap<int, unique_ptr<Edge>> krusk;
-    int connected = 0;
-    MUF<const Shape*> muf;
-    vector<Route> result;
-
-    /*
-    Initializing queues
-    */
-    for(const Shape &o : shapes) {
-        unique_ptr<Edge> e(new Edge(&o, treap));
-        int rem = 0;
-        while(!e->queue->empty() && e->queue->peek() == 0) {
-          auto v = e->queue->pop();
-          if (muf.Find(&o) != muf.Find(v)) {
-            muf.Union(&o, v);
-            connected++;
-          }
-          rem++;
-        }
-
-        for(int i = 0; i < LOCAL_NEIGHBOORS && !e->queue->empty(); ++i) {
-          const auto v = e->queue->pop();
-          krusk.emplace(distance(o, *v), new Edge(&o, v));
-        }  
-        int new_key = e->queue->peek();
-        krusk.emplace(new_key, std::move(e));
-    }
-
-    while (connected < shapes.size() - 1 && krusk.size() > 0) {
-        // std::cout << "---------------------\n";
-        // for(auto & [k,ed] :krusk) {
-        //   std::cout << "while: krusk[" << k << " = " << *ed << '\n';
-        // }
-        int old_length = krusk.begin()->first;
-        auto work = std::move(krusk.begin()->second);
-        krusk.erase(krusk.begin());
-
-        if(work->queue) {
-          // printf("work->queue()\n");
-
-          if(!work->queue->empty()) {
-            const auto u = work->u;
-            const auto v = work->queue->pop();
-            int new_key = work->queue->peek();
-
-            const Shape * mu = muf.Find(u);
-            const Shape * mv = muf.Find(v);
-            if(mu != mv) { 
-              // adds new edge
-              unique_ptr<Edge> routed(new Edge(u,v));
-              routed->route = local_route(treap, obstacles, *u, *v, boundary);
-              routed->step++;
-
-              int route_length = routed->route->length();
-              if(route_length == old_length) {
-                muf.Union(u, v);
-                result.push_back(*routed->route);
-                connected++;
-              }
-              else {
-                krusk.emplace(route_length, std::move(routed));
-              }
-            }
-
-            krusk.emplace(new_key, std::move(work));
-          }
-        }
-        else {
-          const Shape *mu = muf.Find(work->u);
-          const Shape *mv = muf.Find(work->v);
-          const Shape *u = work->u;
-          const Shape *v = work->v;
-            
-          if(mu != mv) {
-              if (work->step == 0) {
-                  work->route = local_route(treap, obstacles, *u, *v, boundary);
-                  work->step++;
-                  int route_length = work->route->length();
-                  if(route_length == old_length) {
-                    muf.Union(u, v);
-                    result.push_back(*work->route);
-                    connected++;
-                  }
-                  else {
-                    krusk.emplace(route_length, std::move(work));
-                  }
-
-              }
-              else {
-                  muf.Union(u, v);
-                  result.push_back(*work->route);
-                  connected++;
-              }            
-          }
-        }
-    }
-
-    // std::cout << "TOTAL ROUTES=" << total_routes << '\n';
-    // std::cout << "USED SIMPLE ROUTE=" << used_simple_route << '\n';
-    // std::cout << "ASTAR WAS NEEDED=" << astar_was_needed << '\n';
-
-    return result;
-}
 
 template<> 
-vector<Route> MST::run_mst<LOCAL_MST>(const Treap & treap, const Treap & obstacles,
+vector<Route> MST::run_mst<LOCAL_MST>(
+  // const Treap & treap, const Treap & obstacles,
   const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    RTree treap, obstacles;
+    treap.populate(shapes);
+    obstacles.populate(obs);
     return run(treap, obstacles, shapes, obs, boundary);
   }
 
 template<> 
-vector<Route> MST::run_mst<GLOBAL_MST>(const Treap & treap, const Treap & obstacles,
+vector<Route> MST::run_mst<GLOBAL_MST>(
+  // const Treap & treap, const Treap & obstacles,
   const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    RTree treap, obstacles;
+    treap.populate(shapes);
+    obstacles.populate(obs);
     return run_radius_2(treap, obstacles, shapes, obs, boundary);
   }
 
 template<> 
-vector<Route> MST::run_mst<ITERATIVE_MST>(const Treap & treap, const Treap & obstacles,
+vector<Route> MST::run_mst<ITERATIVE_MST>(
+  // const Treap & treap, const Treap & obstacles,
   const vector<Shape> & shapes,  const vector<Shape> &obs, const V1D & boundary) {
+    RTree treap, obstacles;
+    treap.populate(shapes);
+    obstacles.populate(obs);
     return run_iterative(treap, obstacles, shapes, obs, boundary);
   }
 
 template<> 
 vector<Route> MST::run_mst<ITERATIVE_DOUBLE_QUEUE>(
-  const Treap & treap, 
-  const Treap & obstacles,
+  // const Treap & treap, 
+  // const Treap & obstacles,
   const vector<Shape> & shapes,  
   const vector<Shape> &obs, 
   const V1D & boundary
   ) {
+    RTree treap, obstacles;
+    treap.populate(shapes);
+    obstacles.populate(obs);
 
     using Edge_t = tuple<const Shape*, const Shape*, unique_ptr<Route>>;
     using Vert_t = pair<const Shape*, unique_ptr<RTreeQueue>>;

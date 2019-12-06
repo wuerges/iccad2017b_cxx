@@ -18,13 +18,13 @@ namespace iccad {
         int spacing, viaCost;
         V1D boundary;
         int num_neighboors;
-        Treap  treap, obstacles;
+        // Treap  treap, obstacles;
 
         Router(int sp, int vc, V1D b, int n);
 
         void map_z_to_layer(Route & pts);
 
-        Route calculate_route(const Shape & s1, const Shape & s2) ;
+        // Route calculate_route(const Shape & s1, const Shape & s2) ;
 
 
         int perform_global_routing(const vector<Shape> & shapes, 

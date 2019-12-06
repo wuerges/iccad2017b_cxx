@@ -4,13 +4,14 @@ enum MST_ALGORITHM {
     LOCAL_MST,
     GLOBAL_MST,
     ITERATIVE_MST,
+    ITERATIVE_MST_3STEP,
     ITERATIVE_DOUBLE_QUEUE
 };
 
 namespace iccad {
     // true : will only find LOCAL_NEIGHBOORS neighbor for each node.
     // false : will incrementaly increase the distance for all nodes.
-    constexpr int CONFIG_MST = ITERATIVE_MST; 
+    constexpr int CONFIG_MST = ITERATIVE_MST_3STEP; 
     
     // config 2 step
     constexpr bool CONFIG_2STEP_MST = true; 

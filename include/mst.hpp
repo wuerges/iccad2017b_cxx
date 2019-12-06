@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 namespace iccad {
   using std::vector, std::pair, std::unordered_map;
@@ -21,7 +22,7 @@ namespace iccad {
       Computes the MST, using Kruskall.
       \param n the target number of neighboors to generate adjacency.
      */
-    MST(int n);
+    // MST(int n);
 
     /*!
       \param treap A Treap containing the routed shapes.
@@ -40,12 +41,13 @@ namespace iccad {
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary) ;
 
     template<int CFG> 
-    vector<Route> run_mst(const Treap & treap, const Treap & obstacles,
+    vector<Route> run_mst(
+      // const Treap & treap, const Treap & obstacles,
       const vector<Shape> & shapes,  const vector<Shape> &obs_vector, const V1D & boundary);
 
     
 private:
-    int num_neighboors;
+    // int num_neighboors;
 
     Route astar_route(
       const Treap & obstacles, 
@@ -58,7 +60,19 @@ private:
   };
 
 
+std::unique_ptr<Route> local_route(
+    const Treap & treap, 
+    const Treap & obstacles, 
+    const Shape & u, 
+    const Shape & v,
+    const V1D &boundary);
 
+std::unique_ptr<Route> local_route_step_2(
+    const Treap & treap, 
+    const Treap & obstacles, 
+    const Shape & u, 
+    const Shape & v,
+    const V1D &boundary);
 
 
 }
