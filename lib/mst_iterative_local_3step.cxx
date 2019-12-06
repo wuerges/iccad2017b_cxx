@@ -12,6 +12,7 @@ using std::vector, std::pair, std::unordered_map, std::make_optional, std::uniqu
 struct Edge {
     const Shape* u;
     const Shape* v;
+    int num_neighbors = 0;
     const unique_ptr<RTreeQueue> queue;
     unique_ptr<Route> route;
     int step;
@@ -64,8 +65,8 @@ vector<Route> MST::run_mst<ITERATIVE_MST_LOCAL_3STEP>(
             const auto v = e->queue->pop();
             krusk.emplace(distance(o, *v), new Edge(&o, v));
         }  
-        int new_key = e->queue->peek();
-        // krusk.emplace(new_key, std::move(e)); This line is what makes the global technique global
+        // int new_key = e->queue->peek();
+        // krusk.emplace(new_key, std::move(e)); //This line is what makes the global technique global
     }
 
     while (connected < shapes.size() - 1 && krusk.size() > 0) {
@@ -80,7 +81,8 @@ vector<Route> MST::run_mst<ITERATIVE_MST_LOCAL_3STEP>(
         if(work->queue) {
             // printf("work->queue()\n");
 
-            if(!work->queue->empty()) {
+            if(work->num_neighbors < LOCAL_NEIGHBOORS && !work->queue->empty()) {
+                work->num_neighbors++;
                 const auto u = work->u;
                 const auto v = work->queue->pop();
                 int new_key = work->queue->peek();
