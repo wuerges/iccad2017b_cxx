@@ -93,14 +93,23 @@ vector<Route> MST::run_mst<ITERATIVE_MST_3STEP>(
                     routed->route = local_route_step_2(obstacles, *u, *v, boundary);
                     routed->step++;
 
-                    int route_length = routed->route->length();
-                    if(route_length == old_length) {
-                        muf.Union(u, v);
-                        result.push_back(*routed->route);
-                        connected++;
+                    int route_length_step_2 = routed->route->length();
+                    if(route_length_step_2 == old_length) {
+                        routed->route = local_route(obstacles, *u, *v, boundary);
+                        routed->step++;
+                        int route_length = routed->route->length();
+
+                        if(route_length == old_length) {
+                            muf.Union(u, v);
+                            result.push_back(*routed->route);
+                            connected++;
+                        }
+                        else {
+                            krusk.emplace(route_length, std::move(routed));
+                        }
                     }
                     else {
-                        krusk.emplace(route_length, std::move(routed));
+                        krusk.emplace(route_length_step_2, std::move(routed));
                     }
                 }
 
@@ -117,19 +126,29 @@ vector<Route> MST::run_mst<ITERATIVE_MST_3STEP>(
                 if (work->step == 0) {
                     work->route = local_route_step_2(obstacles, *u, *v, boundary);
                     work->step++;
-                    int route_length = work->route->length();
-                    if(route_length == old_length) {
-                        muf.Union(u, v);
-                        result.push_back(*work->route);
-                        connected++;
+
+                    int route_length_step_2 = work->route->length();
+                    if(route_length_step_2 == old_length) {
+                        work->route = local_route(obstacles, *u, *v, boundary);
+                        work->step++;
+                        int route_length = work->route->length();
+
+                        if(route_length == old_length) {
+                            muf.Union(u, v);
+                            result.push_back(*work->route);
+                            connected++;
+                        }
+                        else {
+                            krusk.emplace(route_length, std::move(work));
+                        }
                     }
                     else {
-                        krusk.emplace(route_length, std::move(work));
+                        krusk.emplace(route_length_step_2, std::move(work));
                     }
 
                 }
                 else if (work->step == 1) {
-                    work->route = local_route_step_2(obstacles, *u, *v, boundary);
+                    work->route = local_route(obstacles, *u, *v, boundary);
                     work->step++;
                     int route_length = work->route->length();
                     if(route_length == old_length) {
