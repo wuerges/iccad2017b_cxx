@@ -61,14 +61,12 @@ private:
 
 
 std::unique_ptr<Route> local_route(
-    const Treap & treap, 
     const Treap & obstacles, 
     const Shape & u, 
     const Shape & v,
     const V1D &boundary);
 
 std::unique_ptr<Route> local_route_step_2(
-    const Treap & treap, 
     const Treap & obstacles, 
     const Shape & u, 
     const Shape & v,

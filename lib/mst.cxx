@@ -249,7 +249,6 @@ static int used_simple_route = 0;
 static int astar_was_needed = 0;
 
 unique_ptr<Route> local_route_step_2(
-    const Treap & treap, 
     const Treap & obstacles, 
     const Shape & u, 
     const Shape & v,
@@ -264,46 +263,14 @@ unique_ptr<Route> local_route_step_2(
       obstacles2.add(*xx);
       return true;
   });
-  treap.visit(window, [&](const Shape * xx) {
-      treap2.add(*xx);
-      return true;
-  });
   return make_unique<Route>(AStar(obstacles2, u, v, boundary).run(u, v));
 }
 
 unique_ptr<Route> local_route(
-    const Treap & treap, 
     const Treap & obstacles, 
     const Shape & u, 
     const Shape & v,
     const V1D &boundary) {
-
-  // total_routes++;
-
-  // auto simple = simple_route(u, v);
-  // bool fail = simple.size() < 2;
-  // for(int i = 1; i < simple.size(); ++i) {
-  //   auto p1 = min(simple[i-1], simple[i]);
-  //   auto p2 = max(simple[i-1], simple[i]);
-  //   if(obstacles.hits(p1, p2)) {
-  //     fail = true;
-  //     break;
-  //   }
-  // }
-
-  // if(!fail) {
-  //   auto r = make_unique<Route>();
-  //   for(auto pt : simple) {
-  //     r->add_point(pt);
-  //   }
-  //   used_simple_route++;
-  //   return r;
-  // }
-
-  // auto window = minimumBound(u, v);
-  // if (obstacles.hits(window.p1, window.p2)) {
-  //   astar_was_needed++;
-  // }
   return make_unique<Route>(AStar(obstacles, u, v, boundary).run(u, v));
 }
 
@@ -398,7 +365,7 @@ vector<Route> MST::run_mst<ITERATIVE_DOUBLE_QUEUE>(
         const Shape &mu = muf.Find(*u);
         const Shape &mv = muf.Find(*v);
         if (mu != mv) {
-          auto route = local_route(treap, obstacles, *u, *v, boundary);
+          auto route = local_route(obstacles, *u, *v, boundary);
           auto dist = distance(*u, *v);
           if (route->length() <= dist) {
             muf.Union(*u, *v);
@@ -423,7 +390,7 @@ vector<Route> MST::run_mst<ITERATIVE_DOUBLE_QUEUE>(
             result.push_back(*route);            
           }
           else {
-            auto route = local_route(treap, obstacles, *u, *v, boundary);
+            auto route = local_route(obstacles, *u, *v, boundary);
             auto dist = distance(*u, *v);
             if (route->length() <= dist) {
               muf.Union(*u, *v);

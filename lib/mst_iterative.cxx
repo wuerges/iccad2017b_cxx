@@ -88,7 +88,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
             if(mu != mv) { 
               // adds new edge
               unique_ptr<Edge> routed(new Edge(u,v));
-              routed->route = local_route(treap, obstacles, *u, *v, boundary);
+              routed->route = local_route(obstacles, *u, *v, boundary);
               routed->step++;
 
               int route_length = routed->route->length();
@@ -113,7 +113,7 @@ vector<Route> MST::run_iterative(const Treap & treap,
             
           if(mu != mv) {
               if (work->step == 0) {
-                  work->route = local_route(treap, obstacles, *u, *v, boundary);
+                  work->route = local_route(obstacles, *u, *v, boundary);
                   work->step++;
                   int route_length = work->route->length();
                   if(route_length == old_length) {
