@@ -30,17 +30,13 @@ Route MST::astar_route(
         if(ROUTING_WINDOW > 0) {
             window = window.expand(ROUTING_WINDOW);
         }
-        Treap obstacles2, treap2;
+        Treap obstacles2;
         obstacles.visit(window, [&](const Shape * xx) {
             obstacles2.add(*xx);
             return true;
         });
-        treap.visit(window, [&](const Shape * xx) {
-            treap2.add(*xx);
-            return true;
-        });
 
-        rt = AStar(treap2, obstacles2, u, v, boundary).run(u, v);          
+        rt = AStar(obstacles2, u, v, boundary).run(u, v);          
     }
     else {
         rt = astar->run(u, v);
@@ -57,7 +53,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
   using std::set, std::tuple, std::optional, std::get;
   const int64_t INF = 1e8;
 
-  auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+  auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (obstacles, shapes, obs_vector, boundary));
 
   set<tuple<int, Shape, Shape >> edges;
   set<tuple<int, Shape, Shape, Route, bool>> routed_edges;
@@ -115,7 +111,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
           if(connected == shapes.size() - 1) return result;
         }
         else {
-          auto rt2 = AStar(treap, obstacles, u2, v2, boundary).run(u2, v2);
+          auto rt2 = AStar(obstacles, u2, v2, boundary).run(u2, v2);
           routed_edges.insert({rt.length(), u2, v2, rt2, true});
         }
       }
@@ -130,7 +126,7 @@ vector<Route> MST::run(const Treap &treap, const Treap &obstacles,
     if (muf.Find(u) != muf.Find(v)) {
         Route rt = 
               CONFIG_2STEP_MST 
-                ? AStar(treap, obstacles, u, v, boundary).run(u, v)
+                ? AStar( obstacles, u, v, boundary).run(u, v)
                 : astar_route(obstacles, treap, astar, u, v, boundary);
 
         if(rt.length() > w) {
@@ -157,7 +153,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                                       
   vector<Route> result;
   using std::set, std::tuple, std::get;
-  auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (treap, obstacles, shapes, obs_vector, boundary));
+  auto astar = CONFIG_FAST_ASTAR ? std::nullopt : make_optional(AStar (obstacles, shapes, obs_vector, boundary));
   MUF<Shape> muf;
 
 
@@ -214,7 +210,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
                     if(connected == shapes.size() - 1) return result;
                 }
                 else {
-                    auto rt2 = AStar(treap, obstacles, u2, v2, boundary).run(u2, v2);
+                    auto rt2 = AStar(obstacles, u2, v2, boundary).run(u2, v2);
                     routed_edges.insert({rt.length(), u2, v2, rt2, true});
                 }
             }
@@ -226,7 +222,7 @@ vector<Route> MST::run_radius_2(const Treap &treap, const Treap &obstacles,
         if (muf.Find(u) != muf.Find(v)) {
             Route rt = 
               CONFIG_2STEP_MST 
-                ? AStar(treap, obstacles, u, v, boundary).run(u, v)
+                ? AStar(obstacles, u, v, boundary).run(u, v)
                 : astar_route(obstacles, treap, astar, u, v, boundary);
 
             if(rt.length() > w) {
@@ -272,7 +268,7 @@ unique_ptr<Route> local_route_step_2(
       treap2.add(*xx);
       return true;
   });
-  return make_unique<Route>(AStar(treap2, obstacles2, u, v, boundary).run(u, v));
+  return make_unique<Route>(AStar(obstacles2, u, v, boundary).run(u, v));
 }
 
 unique_ptr<Route> local_route(
@@ -308,7 +304,7 @@ unique_ptr<Route> local_route(
   // if (obstacles.hits(window.p1, window.p2)) {
   //   astar_was_needed++;
   // }
-  return make_unique<Route>(AStar(treap, obstacles, u, v, boundary).run(u, v));
+  return make_unique<Route>(AStar(obstacles, u, v, boundary).run(u, v));
 }
 
 

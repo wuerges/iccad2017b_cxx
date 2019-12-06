@@ -86,8 +86,8 @@ namespace iccad {
     }
 
 
-    AStar::AStar(const Treap & sh, const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
-    :shapes(sh), obstacles(obs), boundary(b) {
+    AStar::AStar(const Treap & obs, const Shape & s1, const Shape & s2, V1D b)
+    :obstacles(obs), boundary(b) {
         add_shape(s1);
         add_shape(s2);
 
@@ -120,8 +120,8 @@ namespace iccad {
 
     }
 
-    AStar::AStar(const Treap & sh, const Treap & obs, const vector<Shape> & sh_vector, const vector<Shape> & obs_vector, V1D b) 
-    :shapes(sh), obstacles(obs), boundary(b) {
+    AStar::AStar(const Treap & obs, const vector<Shape> & sh_vector, const vector<Shape> & obs_vector, V1D b) 
+    :obstacles(obs), boundary(b) {
         for(auto &s : sh_vector) {
             add_shape(s);
         }
