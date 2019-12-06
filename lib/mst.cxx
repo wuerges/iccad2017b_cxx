@@ -411,9 +411,9 @@ vector<Route> MST::run_iterative(const Treap & treap,
         }
     }
 
-    std::cout << "TOTAL ROUTES=" << total_routes << '\n';
-    std::cout << "USED SIMPLE ROUTE=" << used_simple_route << '\n';
-    std::cout << "ASTAR WAS NEEDED=" << astar_was_needed << '\n';
+    // std::cout << "TOTAL ROUTES=" << total_routes << '\n';
+    // std::cout << "USED SIMPLE ROUTE=" << used_simple_route << '\n';
+    // std::cout << "ASTAR WAS NEEDED=" << astar_was_needed << '\n';
 
     return result;
 }
