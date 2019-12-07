@@ -208,7 +208,11 @@ namespace iccad {
         // std::cout << "AStar::run("<< shape_s <<","<< shape_t<< ");\n";
         using ii = pair<int64_t, index>;
         const int64_t INF = 1e9;
-        index s = find(shape_s.p1);
+
+        auto start_p = closest_point(shape_s, shape_t);
+
+        // index s = find(shape_s.p1);
+        index s = find(start_p);
         index t = find(shape_t.p1);
         
         map<index, int64_t> dst;
