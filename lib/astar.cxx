@@ -256,7 +256,7 @@ namespace iccad {
                 auto it = dst.find(v);
                 int64_t old_w = it != dst.end() ? it->second : INF;
 
-                int a_star = distance(make_pt(v), shape_t);
+                int a_star = distance(make_pt(v), shape_t) * 1.01;
                 int64_t new_w = dst[u] + w;
 
                 if(old_w > new_w) {
